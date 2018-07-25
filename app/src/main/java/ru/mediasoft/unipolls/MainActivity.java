@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Disposable disposable = userInfoApi.getUserInfo("https://api.surveymonkey.com/v3/users/me")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(userInfoModel -> {
-                    first_name.setText(userInfoModel.first_name}),
+                .subscribe(userInfoModel -> first_name.setText(userInfoModel.first_name),
                         throwable -> showErrorMessage(throwable.getMessage()));
     }
 
