@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.mediasoft.unipolls.BlankFragment">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/avatar_imagebtn"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/name_textview"
+            style="@style/SMTitleTheme"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/avatar_imagebtn"
+
+            android:text="@string/Name"
+
+            />
+
+        <EditText
+            android:id="@+id/name_edittext"
+            style="@style/SMTextTheme"
+
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/name_textview"
+
+            android:text="@string/EmptyEditText"
+
+            />
+
+        <TextView
+            android:id="@+id/email_textview"
+            style="@style/SMTitleTheme"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/name_edittext"
+            android:layout_marginTop="15dp"
+
+            android:text="@string/Email"
+
+            />
+
+        <EditText
+            android:id="@+id/email_edittext"
+            style="@style/SMTextTheme"
+
+            android:layout_alignParentStart="true"
+
+            android:layout_below="@+id/email_textview"
+            android:text="@string/EmptyEditText" />
+
+        <Button
+            android:id="@+id/go_to_survelist_btn"
+            style="@style/SMButtonTheme"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/email_edittext"
+            android:layout_marginTop="14dp"
+
+            android:text="@string/My_survey"
+
+            />
+
+        <Button
+            android:id="@+id/exit_btn"
+            style="@style/SMButtonTheme"
+
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/go_to_survelist_btn"
+            android:layout_marginTop="17dp"
+            android:text="@string/Exit"
+            android:theme="@style/SMButtonTheme" />
+    </RelativeLayout>
+
+</FrameLayout>

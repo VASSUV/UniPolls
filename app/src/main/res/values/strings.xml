@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">UniPolls</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Name">Имя</string>
+    <string name="EmptyEditText">...</string>
+    <string name="Email">Электронная почта</string>
+    <string name="My_survey">Мои опросы</string>
+    <string name="Exit">Выход</string>
+    <string name="Login">Вход</string>
+    <string name="Registration">Регистрация</string>
 </resources>
