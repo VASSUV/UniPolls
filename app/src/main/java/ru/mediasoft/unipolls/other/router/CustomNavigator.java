@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.exportcenter.android.fabric.FrmFabric;
+//import ru.exportcenter.android.fabric.FrmFabric;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.commands.Back;
 import ru.terrakok.cicerone.commands.BackTo;
@@ -193,9 +193,9 @@ public abstract class CustomNavigator implements Navigator {
         return screenNames;
     }
 
-    public String getLastScreenName() {
-        return (screenNames.size() == 0) ? FrmFabric.Type.EMPTY.name() : screenNames.get(screenNames.size() - 1);
-    }
+//    public String getLastScreenName() {
+//        return (screenNames.size() == 0) ? FrmFabric.Type.EMPTY.name() : screenNames.get(screenNames.size() - 1);
+//    }
 
     public void setScreenNames(List<String> value) {
         screenNames = value;
