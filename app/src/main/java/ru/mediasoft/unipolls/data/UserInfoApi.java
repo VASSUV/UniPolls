@@ -4,9 +4,9 @@ import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Url;
-import ru.mediasoft.unipolls.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 
-import static ru.mediasoft.unipolls.Constants.AUTH_BEARER;
+import static ru.mediasoft.unipolls.other.Constants.AUTH_BEARER;
 
 public interface UserInfoApi {
 

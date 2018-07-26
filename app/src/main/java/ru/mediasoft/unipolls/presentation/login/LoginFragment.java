@@ -1,42 +1,54 @@
-package ru.mediasoft.unipolls.ui.fragment.LoginFragment;
+package ru.mediasoft.unipolls.presentation.login;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.mediasoft.unipolls.presentation.view.LoginFragment.LoginView;
-import ru.mediasoft.unipolls.presentation.presenter.LoginFragment.LoginPresenter;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 
-import              ru.mediasoft.unipolls.ui.fragment.BaseFragment                      ;
+import java.util.Objects;
 
+import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-
-public class LoginFragment extends              BaseFragment                       implements LoginView {
-    public static final String TAG = "LoginFragment";
-	@InjectPresenter
-	LoginPresenter mLoginPresenter;
-
+public class LoginFragment extends MvpAppCompatFragment implements LoginView {
+    LoginPresenter mLoginPresenter = new LoginPresenter();
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
-
         Bundle args = new Bundle();
         fragment.setArguments(args);
-
         return fragment;
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final   ViewGroup container,
-            final Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mLoginPresenter.onCreate((App) Objects.requireNonNull(getActivity()).getApplicationContext(), this);
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_login_test, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        view.findViewById(R.id.login_button_test).setOnClickListener(mLoginPresenter::onLoginButtonClick);
+    }
+
+    @Override
+    public void showProgressBar() {
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
     }
 }

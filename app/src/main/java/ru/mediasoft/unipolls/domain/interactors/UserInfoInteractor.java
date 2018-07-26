@@ -4,7 +4,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.mediasoft.unipolls.data.UserInfoApi;
-import ru.mediasoft.unipolls.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 
 public class UserInfoInteractor {
     private UserInfoApi userInfoApi;

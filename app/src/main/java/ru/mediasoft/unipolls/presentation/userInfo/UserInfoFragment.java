@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 
+import java.util.Objects;
+
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
@@ -18,7 +20,7 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
 
     UserInfoPresenter presenter = new UserInfoPresenter();
 
-    private TextView first_name, sec_name, email;
+    private TextView name, email;
 
     public static UserInfoFragment newInstance() {
         UserInfoFragment fragment = new UserInfoFragment();
@@ -31,7 +33,7 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.onCreate((App) getActivity().getApplicationContext(), this);
+        presenter.onCreate((App) Objects.requireNonNull(getActivity()).getApplicationContext(), this);
     }
 
     @Nullable
@@ -44,22 +46,21 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        first_name = view.findViewById(R.id.first_name);
-        sec_name = view.findViewById(R.id.second_name);
+        name = view.findViewById(R.id.first_name);
         email = view.findViewById(R.id.email);
 
-        view.findViewById(R.id.getInfo).setOnClickListener(presenter::onGetInfoButtonClick);
-        view.findViewById(R.id.go_to).setOnClickListener(presenter::GotoSomeWhere);
+        presenter.GetUserInfo(view);
+
+
+        view.findViewById(R.id.exit_test).setOnClickListener(presenter::onExitButtonClick);
+
+        //view.findViewById(R.id.getInfo).setOnClickListener(presenter::onGetInfoButtonClick);
+//      view.findViewById(R.id.go_to).setOnClickListener(presenter::GotoSomeWhere);
     }
 
     @Override
-    public void setFirstName(String fName) {
-        first_name.setText(fName);
-    }
-
-    @Override
-    public void setSeconName(String secName) {
-        sec_name.setText(secName);
+    public void setName(String fName, String secName) {
+        name.setText(fName.concat(" ").concat(secName));
     }
 
     @Override
@@ -70,5 +71,21 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Override
     public void showErrorMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void clearFields() {
+        name.setText("");
+        email.setText("");
+    }
+
+    @Override
+    public void showProgressBar() {
+        Objects.requireNonNull(getActivity()).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        Objects.requireNonNull(getActivity()).findViewById(R.id.progressBar).setVisibility(View.GONE);
     }
 }

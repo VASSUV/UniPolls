@@ -1,11 +1,24 @@
-package ru.mediasoft.unipolls.presentation.presenter.LoginFragment;
+package ru.mediasoft.unipolls.presentation.login;
 
 
-import ru.mediasoft.unipolls.presentation.view.LoginFragment.LoginView;
+import android.view.View;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
-@InjectViewState
-public class LoginPresenter extends MvpPresenter<LoginView>  {
+import ru.mediasoft.unipolls.App;
 
+@InjectViewState
+public class LoginPresenter extends MvpPresenter<LoginView> {
+
+    LoginView loginView;
+
+    public void onCreate(App applicationContext, LoginView loginView) {
+        this.loginView = loginView;
+    }
+
+    public void onLoginButtonClick(View view) {
+        loginView.showProgressBar();
+        App.getRouter().navigateTo("USERINFO");
+    }
 }

@@ -1,7 +1,8 @@
-package ru.mediasoft.unipolls.presentation.view.LoginFragment;
+package ru.mediasoft.unipolls.presentation.login;
 
 import com.arellomobile.mvp.MvpView;
 
-public interface LoginView extends MvpView {
-
+interface LoginView extends MvpView {
+    void hideProgressBar();
+    void showProgressBar();
 }
