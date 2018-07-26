@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="go to somewhere"
+        android:onClick="GotoSomeWhere"
         android:textSize="24sp"
         />
 

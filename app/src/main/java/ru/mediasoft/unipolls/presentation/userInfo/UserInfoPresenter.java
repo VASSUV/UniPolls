@@ -52,4 +52,8 @@ public class UserInfoPresenter {
     private void showErrorMessage(String message) {
         //Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
     }
+
+    public void GotoSomeWhere(View view) {
+        App.getRouter().navigateTo("TEST");
+    }
 }

@@ -5,19 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.R;
 
-public class SplashFragment extends MvpFragment implements SplashView {
-    public static final String TAG = "SplashFragment";
+public class SplashFragment extends MvpAppCompatFragment implements SplashView {
     @InjectPresenter
     SplashPresenter presenter;
+//    @Nullable Bundle args
 
-
-    public static SplashFragment newInstance(Bundle args) {
+    public static SplashFragment newInstance() {
         SplashFragment fragment = new SplashFragment();
+        Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,4 +32,5 @@ public class SplashFragment extends MvpFragment implements SplashView {
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
 }

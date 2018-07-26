@@ -1,5 +1,7 @@
 package ru.mediasoft.unipolls.presentation.testfrag;
 
+import android.view.View;
+
 import ru.mediasoft.unipolls.App;
 import ru.terrakok.cicerone.Router;
 
@@ -9,5 +11,9 @@ public class TestPresenter {
 
     public void onCreate(App applicationContext, TestView testView) {
         this.testView = testView;
+    }
+
+    public void onGoBackButtonClick(View view) {
+        App.getRouter().backTo("START");
     }
 }

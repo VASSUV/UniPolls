@@ -9,17 +9,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
-public class UserInfoFragment extends MvpFragment implements UserInfoView {
+public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoView {
+
     UserInfoPresenter presenter = new UserInfoPresenter();
 
     private TextView first_name, sec_name, email;
 
-    private TextView mySurveys;
+    public static UserInfoFragment newInstance() {
+        UserInfoFragment fragment = new UserInfoFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
     @Override
@@ -43,6 +49,7 @@ public class UserInfoFragment extends MvpFragment implements UserInfoView {
         email = view.findViewById(R.id.email);
 
         view.findViewById(R.id.getInfo).setOnClickListener(presenter::onGetInfoButtonClick);
+        view.findViewById(R.id.go_to).setOnClickListener(presenter::GotoSomeWhere);
     }
 
     @Override
