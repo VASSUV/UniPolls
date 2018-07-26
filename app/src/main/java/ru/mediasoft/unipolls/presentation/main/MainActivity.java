@@ -14,6 +14,7 @@ import ru.mediasoft.unipolls.other.router.CustomNavigator;
 public class MainActivity extends MvpAppCompatActivity {
 
     CustomNavigator.OnChangeFragmentListener listener;
+    private Screen screen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,11 @@ public class MainActivity extends MvpAppCompatActivity {
 
         App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
         App.getRouter().newRootScreen("START");
+        listener = () -> {
+            switch (screen){
+
+            }
+        };
     }
 
     private CustomNavigator navigator = new CustomNavigator(getSupportFragmentManager(), R.id.fragment_container, listener) {
@@ -29,7 +35,7 @@ public class MainActivity extends MvpAppCompatActivity {
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
 
-            final Screen screen = Screen.valueOf(screenKey);
+           screen = Screen.valueOf(screenKey);
             if(screen == null) {
                 showSystemMessage("Unknown screenKey!", 1);
                 return null;
