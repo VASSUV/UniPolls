@@ -9,11 +9,14 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.other.Screen;
 
 public class SplashFragment extends MvpAppCompatFragment implements SplashView {
     @InjectPresenter
     SplashPresenter presenter;
 //    @Nullable Bundle args
+
+    final Screen screen = Screen.SPLASH;
 
     public static SplashFragment newInstance() {
         SplashFragment fragment = new SplashFragment();

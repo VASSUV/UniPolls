@@ -18,7 +18,7 @@ public class UserInfoModel {
     public String id;
 
     public class Scopes{
-        List<String> available;
-        List<String> granted;
+        public List<String> available;
+        public List<String> granted;
     }
 }

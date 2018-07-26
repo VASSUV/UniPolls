@@ -11,8 +11,8 @@ public enum Screen {
     TEST,
     START;
 
-    public static MvpAppCompatFragment create(Screen key) {
-        switch (key) {
+    public MvpAppCompatFragment create() {
+        switch (this) {
             case START:
                 return UserInfoFragment.newInstance();
             case TEST:

@@ -9,39 +9,36 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.other.Screen;
-import ru.terrakok.cicerone.Navigator;
-import ru.terrakok.cicerone.android.SupportFragmentNavigator;
+import ru.mediasoft.unipolls.other.router.CustomNavigator;
 
 public class MainActivity extends MvpAppCompatActivity {
+
+    CustomNavigator.OnChangeFragmentListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
+        App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
         App.getRouter().newRootScreen("START");
     }
 
-    private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(), R.id.fragment_container) {
+    private CustomNavigator navigator = new CustomNavigator(getSupportFragmentManager(), R.id.fragment_container, listener) {
 
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
-            switch (screenKey) {
-                case "START":
-                    return Screen.create(Screen.START);
-                case "SPLASH":
-                    return Screen.create(Screen.SPLASH);
-                case "TEST":
-                    return Screen.create(Screen.TEST);
-                default:
-                    showSystemMessage("Unknown screenkey!");
+
+            final Screen screen = Screen.valueOf(screenKey);
+            if(screen == null) {
+                showSystemMessage("Unknown screenKey!", 1);
+                return null;
             }
-            return null;
+           return screen.create();
         }
 
         @Override
-        protected void showSystemMessage(String message) {
+        protected void showSystemMessage(String message, int type) {
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
         }
 
@@ -49,14 +46,27 @@ public class MainActivity extends MvpAppCompatActivity {
         protected void exit() {
             finish();
         }
+
+        @Override
+        protected int getEnterAnimation(String oldScreenKey, String newScreenKey) {
+            return 0;
+        }
+
+        @Override
+        protected int getExitAnimation(String oldScreenKey, String newScreenKey) {
+            return 0;
+        }
+
+        @Override
+        protected int getPopEnterAnimation(String oldScreenKey, String newScreenKey) {
+            return 0;
+        }
+
+        @Override
+        protected int getPopExitAnimation(String oldScreenKey, String newScreenKey) {
+            return 0;
+        }
     };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
-    }
 
     @Override
     protected void onDestroy() {
