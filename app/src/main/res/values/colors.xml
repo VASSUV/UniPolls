@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#00fa91</color>
+    <color name="colorPrimaryDark">#00854e</color>
+    <color name="colorAc">#ff6410</color>
+
+    <color name="colourSMGreen">#00bf6f</color>
+    <color name="colourSMOrange">#ff6410</color>
+    <color name="colourSMWhite">#ffffff</color>
+    <color name="colourSMLightGreen">#88e5be</color>
+    <color name="colourSMGrey">#272727</color>
+    <color name="legacy_primary">#106200</color>
+
 </resources>
