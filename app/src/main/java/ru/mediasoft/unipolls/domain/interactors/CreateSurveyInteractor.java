@@ -4,17 +4,19 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.mediasoft.unipolls.data.SMApi;
-import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
+import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
 
-public class UserInfoInteractor {
+public class CreateSurveyInteractor {
+
     private SMApi smApi;
 
-    public UserInfoInteractor(SMApi smApi) {
+    public CreateSurveyInteractor(SMApi smApi){
         this.smApi = smApi;
     }
 
-    public void getUserInfo(SingleObserver<UserInfoModel> sub){
-        smApi.getUserInfo()
+    public void createSurvey(String name, SingleObserver<CreateSurveyModel> sub){
+        smApi.createSurvey(new CreateSurveyRequestModel(name))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(sub);

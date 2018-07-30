@@ -21,4 +21,8 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
         loginView.showProgressBar();
         App.getRouter().navigateTo("USERINFO");
     }
+
+    public void onRegistrationButtonClick(View view) {
+        App.getRouter().navigateTo("REGISTRATION");
+    }
 }

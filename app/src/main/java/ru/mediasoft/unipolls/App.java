@@ -2,9 +2,6 @@ package ru.mediasoft.unipolls;
 
 import com.arellomobile.mvp.MvpApplication;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.mediasoft.unipolls.data.NetworkService;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
@@ -31,15 +28,6 @@ public class App extends MvpApplication {
         return INSTANCE.cicerone.getRouter();
     }
     //-----------------------------------------------------
-
-    public List<Data> data = new ArrayList<>();
-
-    public class Data{
-        String href;
-        String nickname;
-        String id;
-        String title;
-    }
 
     final public NetworkService networkService = new NetworkService();
 }

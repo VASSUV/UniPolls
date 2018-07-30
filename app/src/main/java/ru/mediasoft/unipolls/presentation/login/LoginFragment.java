@@ -32,14 +32,15 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login_test, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.login_button_test).setOnClickListener(mLoginPresenter::onLoginButtonClick);
+        view.findViewById(R.id.login_button).setOnClickListener(mLoginPresenter::onLoginButtonClick);
+        view.findViewById(R.id.registration_button).setOnClickListener(mLoginPresenter::onRegistrationButtonClick);
     }
 
     @Override

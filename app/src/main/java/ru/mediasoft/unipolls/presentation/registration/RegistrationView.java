@@ -1,4 +1,4 @@
-package ru.mediasoft.unipolls.presentation.presentation.view.;
+package ru.mediasoft.unipolls.presentation.registration;
 
 import com.arellomobile.mvp.MvpView;
 

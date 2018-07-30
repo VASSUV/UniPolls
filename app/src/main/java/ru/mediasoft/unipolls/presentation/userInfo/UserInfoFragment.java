@@ -39,23 +39,20 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragmnent_userinfo, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        name = view.findViewById(R.id.first_name);
-        email = view.findViewById(R.id.email);
+        name = view.findViewById(R.id.user_name);
+        email = view.findViewById(R.id.user_email);
 
         presenter.GetUserInfo(view);
 
-
-        view.findViewById(R.id.exit_test).setOnClickListener(presenter::onExitButtonClick);
-
-        //view.findViewById(R.id.getInfo).setOnClickListener(presenter::onGetInfoButtonClick);
-//      view.findViewById(R.id.go_to).setOnClickListener(presenter::GotoSomeWhere);
+        view.findViewById(R.id.my_surveys_list).setOnClickListener(presenter::onMySurveysButtonClick);
+        view.findViewById(R.id.logout).setOnClickListener(presenter::onExitButtonClick);
     }
 
     @Override

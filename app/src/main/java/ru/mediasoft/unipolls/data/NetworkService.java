@@ -8,11 +8,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class NetworkService {
 
     final private Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(UserInfoApi.BASE_URL)
+            .baseUrl(SMApi.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build();
 
-    final public UserInfoApi userInfoApi = retrofit.create(UserInfoApi.class);
+    final public SMApi smApi = retrofit.create(SMApi.class);
 }

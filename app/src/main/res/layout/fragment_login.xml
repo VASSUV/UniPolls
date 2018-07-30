@@ -1,90 +1,71 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colourSMGreen"
-    tools:context="ru.mediasoft.unipolls.presentation.login.LoginFragment">
+    android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/monkey_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/monkey1"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/login_textview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Login"
+            android:textSize="24sp" />
 
-            <ImageButton
-                android:id="@+id/monkey_logo"
-                style="@style/Widget.AppCompat.ImageButton"
-                android:layout_width="220dp"
-                android:layout_height="220dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/monkey1"
-                android:visibility="visible"/>
+        <EditText
+            android:id="@+id/login_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_textview"
+            android:hint="login"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/login_textview"
-                style="@style/SMTitleTheme"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="Login"
-                />
+        <TextView
+            android:id="@+id/pass_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_edittext"
+            android:layout_marginTop="20dp"
+            android:text="Password"
+            android:textSize="24sp" />
 
-            <EditText
-                android:id="@+id/login_edittext"
-                style="@style/SMTextTheme"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/login_textview"
-                android:hint="login" />
+        <EditText
+            android:id="@+id/pass_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pass_textview"
+            android:hint="password" />
 
-            <TextView
-                android:id="@+id/pass_textview"
-                style="@style/SMTitleTheme"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/login_edittext"
-                android:layout_marginTop="20dp"
-                android:text="Password" />
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pass_edittext"
+            android:text="@string/Login"
+            android:layout_centerHorizontal="true"/>
 
-            <EditText
-                android:id="@+id/pass_edittext"
-                style="@style/SMTextTheme"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/pass_textview"
-                android:hint="password"
-                />
+        <Button
+            android:id="@+id/registration_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/login_button"
+            android:text="@string/Registration" />
 
-            <LinearLayout
-
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/pass_edittext"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/login_button"
-                    style="@style/SMButtonTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/Login"
-                    />
-
-                <Button
-                    android:id="@+id/registration_button"
-                    style="@style/SMButtonContrastTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/Registration"
-                    />
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
-
-
+    </RelativeLayout>
 </FrameLayout>

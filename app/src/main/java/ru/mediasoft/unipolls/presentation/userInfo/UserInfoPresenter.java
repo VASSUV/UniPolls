@@ -5,14 +5,14 @@ import android.view.View;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.data.UserInfoApi;
+import ru.mediasoft.unipolls.data.SMApi;
 import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 import ru.mediasoft.unipolls.domain.interactors.UserInfoInteractor;
 import ru.terrakok.cicerone.Router;
 
 public class UserInfoPresenter {
 
-    private UserInfoApi userInfoApi;
+    private SMApi smApi;
     private UserInfoView userInfoView;
     private UserInfoInteractor userInfoInteractor;
     private Router router;
@@ -23,9 +23,9 @@ public class UserInfoPresenter {
 
 
     public void onCreate(App applicationContext, UserInfoView userInfoView) {
-        userInfoApi = applicationContext.networkService.userInfoApi;
+        smApi = applicationContext.networkService.smApi;
         this.userInfoView = userInfoView;
-        userInfoInteractor = new UserInfoInteractor(userInfoApi);
+        userInfoInteractor = new UserInfoInteractor(smApi);
     }
 
     public void GetUserInfo(View view) {
@@ -50,5 +50,10 @@ public class UserInfoPresenter {
     public void onExitButtonClick(View view) {
         userInfoView.clearFields();
         App.getRouter().backTo("START");
+    }
+
+    public void onMySurveysButtonClick(View view) {
+        userInfoView.showProgressBar();
+        App.getRouter().navigateTo("MYSURVEYS");
     }
 }
