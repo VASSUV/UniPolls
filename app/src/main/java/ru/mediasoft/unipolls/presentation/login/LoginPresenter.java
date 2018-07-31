@@ -22,6 +22,6 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     }
 
     public void onRegistrationButtonClick(View view) {
-        App.getRouter().navigateTo(Screen.POLL_LIST.name());
+        App.getRouter().navigateTo(Screen.REGISTRATION.name());
     }
 }
