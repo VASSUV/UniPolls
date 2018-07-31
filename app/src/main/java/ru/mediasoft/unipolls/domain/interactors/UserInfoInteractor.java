@@ -3,6 +3,7 @@ package ru.mediasoft.unipolls.domain.interactors;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.data.SMApi;
 import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 
@@ -14,7 +15,7 @@ public class UserInfoInteractor {
     }
 
     public void getUserInfo(SingleObserver<UserInfoModel> sub){
-        smApi.getUserInfo()
+        App.INSTANCE.networkService.smApi.getUserInfo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(sub);

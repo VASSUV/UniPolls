@@ -7,12 +7,10 @@ import android.view.View;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.data.SMApi;
-import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
 import ru.mediasoft.unipolls.domain.interactors.CreateSurveyInteractor;
+import ru.mediasoft.unipolls.other.Screen;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
@@ -25,37 +23,42 @@ public class MySurveysPresenter extends MvpPresenter<MySurveysView> {
     private String name;
 
     public MySurveysPresenter() {
-        router = App.INSTANCE.getRouter();
+        router = App.getRouter();
     }
 
     public void onCreate(App applicationContext, MySurveysView mySurveysView) {
         mySurveysView.hideProgressBar();
-        smApi = applicationContext.networkService.smApi;
+        smApi = App.INSTANCE.networkService.smApi;
         this.mySurveysView = mySurveysView;
         createSurveyInteractor = new CreateSurveyInteractor(smApi);
     }
 
+//    public void onAddSurveyButtonClick(View view) {
+//        mySurveysView.showProgressBar();
+//        createSurveyInteractor.createSurvey(name, new SingleObserver<CreateSurveyModel>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(CreateSurveyModel createSurveyModel) {
+//                mySurveysView.hideProgressBar();
+//                mySurveysView.showMessage("Succes");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                mySurveysView.hideProgressBar();
+//                mySurveysView.showErrorMessage("Error");
+//            }
+//
+//        });
+//    }
+
     public void onAddSurveyButtonClick(View view) {
         mySurveysView.showProgressBar();
-        createSurveyInteractor.createSurvey(name, new SingleObserver<CreateSurveyModel>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onSuccess(CreateSurveyModel createSurveyModel) {
-                mySurveysView.hideProgressBar();
-                mySurveysView.showMessage("Succes");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mySurveysView.hideProgressBar();
-                mySurveysView.showMessage("Error");
-            }
-
-        });
+        App.getRouter().navigateTo(Screen.NEWSURVEYNAME.name());
     }
 
     public TextWatcher getTextListener() {

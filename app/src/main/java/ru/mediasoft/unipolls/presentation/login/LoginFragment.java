@@ -1,15 +1,15 @@
 package ru.mediasoft.unipolls.presentation.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-
-import java.util.Objects;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
@@ -27,7 +27,13 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLoginPresenter.onCreate((App) Objects.requireNonNull(getActivity()).getApplicationContext(), this);
+        Context applicationContext = getActivity().getApplicationContext();
+        if(applicationContext == null){
+            showErrorMessage("getApplicationContext() вернула null!");
+        }
+        else{
+            mLoginPresenter.onCreate((App) applicationContext, this);
+        }
     }
 
     @Override
@@ -45,11 +51,25 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
 
     @Override
     public void showProgressBar() {
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        if (getActivity().findViewById(R.id.progressBar) == null) {
+            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
+        } else {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hideProgressBar() {
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+        if (getActivity().findViewById(R.id.progressBar) == null) {
+            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
+        } else {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
     }
 }

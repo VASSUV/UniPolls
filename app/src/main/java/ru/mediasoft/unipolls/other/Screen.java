@@ -4,6 +4,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 
 import ru.mediasoft.unipolls.presentation.login.LoginFragment;
 import ru.mediasoft.unipolls.presentation.mysurveys.MySurveysFragment;
+import ru.mediasoft.unipolls.presentation.newsurveyname.NewSurveyNameFragment;
 import ru.mediasoft.unipolls.presentation.registration.RegistrationFragment;
 import ru.mediasoft.unipolls.presentation.userInfo.UserInfoFragment;
 
@@ -11,7 +12,9 @@ public enum Screen {
     SPLASH,
     START,
     USERINFO,
-    REGISTRATION, MYSURVEYS;
+    REGISTRATION,
+    MYSURVEYS,
+    NEWSURVEYNAME;
 
     public MvpAppCompatFragment create() {
         switch (this) {
@@ -23,6 +26,8 @@ public enum Screen {
                 return RegistrationFragment.newInstance();
             case MYSURVEYS:
                     return MySurveysFragment.newInstance();
+            case NEWSURVEYNAME:
+                return NewSurveyNameFragment.newInstance();
             default:
                 break;
         }

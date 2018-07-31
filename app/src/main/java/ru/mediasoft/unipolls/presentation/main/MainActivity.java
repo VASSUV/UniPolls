@@ -22,7 +22,7 @@ public class MainActivity extends MvpAppCompatActivity {
         setContentView(R.layout.activity_main);
 
         App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
-        App.getRouter().newRootScreen("START");
+        App.getRouter().newRootScreen(Screen.START.name());
         listener = () -> {
             switch (screen){
             }

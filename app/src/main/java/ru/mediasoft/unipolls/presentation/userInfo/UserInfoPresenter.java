@@ -1,5 +1,6 @@
 package ru.mediasoft.unipolls.presentation.userInfo;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import io.reactivex.SingleObserver;
@@ -8,6 +9,7 @@ import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.data.SMApi;
 import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 import ru.mediasoft.unipolls.domain.interactors.UserInfoInteractor;
+import ru.mediasoft.unipolls.other.Screen;
 import ru.terrakok.cicerone.Router;
 
 public class UserInfoPresenter {
@@ -18,17 +20,17 @@ public class UserInfoPresenter {
     private Router router;
 
     public UserInfoPresenter(){
-        router = App.INSTANCE.getRouter();
+        router = App.getRouter();
     }
 
 
-    public void onCreate(App applicationContext, UserInfoView userInfoView) {
-        smApi = applicationContext.networkService.smApi;
+    public void onCreate(@NonNull App applicationContext, UserInfoView userInfoView) {
+        smApi = App.INSTANCE.networkService.smApi;
         this.userInfoView = userInfoView;
         userInfoInteractor = new UserInfoInteractor(smApi);
     }
 
-    public void GetUserInfo(View view) {
+    public void getUserInfo(View view) {
         userInfoInteractor.getUserInfo(new SingleObserver<UserInfoModel>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -49,11 +51,11 @@ public class UserInfoPresenter {
 
     public void onExitButtonClick(View view) {
         userInfoView.clearFields();
-        App.getRouter().backTo("START");
+        App.getRouter().backTo(Screen.START.name());
     }
 
     public void onMySurveysButtonClick(View view) {
         userInfoView.showProgressBar();
-        App.getRouter().navigateTo("MYSURVEYS");
+        App.getRouter().navigateTo(Screen.MYSURVEYS.name());
     }
 }

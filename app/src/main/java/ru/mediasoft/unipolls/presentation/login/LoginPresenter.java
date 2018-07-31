@@ -7,6 +7,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import ru.mediasoft.unipolls.App;
+import ru.mediasoft.unipolls.other.Screen;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<LoginView> {
@@ -19,10 +20,10 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
 
     public void onLoginButtonClick(View view) {
         loginView.showProgressBar();
-        App.getRouter().navigateTo("USERINFO");
+        App.getRouter().navigateTo(Screen.USERINFO.name());
     }
 
     public void onRegistrationButtonClick(View view) {
-        App.getRouter().navigateTo("REGISTRATION");
+        App.getRouter().navigateTo(Screen.REGISTRATION.name());
     }
 }

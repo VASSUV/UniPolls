@@ -1,5 +1,6 @@
 package ru.mediasoft.unipolls.presentation.userInfo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,8 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-
-import java.util.Objects;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
@@ -33,7 +32,13 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.onCreate((App) Objects.requireNonNull(getActivity()).getApplicationContext(), this);
+        Context applicationContext = getActivity().getApplicationContext();
+        if(applicationContext == null){
+            showErrorMessage("getApplicationContext() вернула null!");
+        }
+        else{
+            presenter.onCreate((App) applicationContext, this);
+        }
     }
 
     @Nullable
@@ -49,7 +54,7 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
         name = view.findViewById(R.id.user_name);
         email = view.findViewById(R.id.user_email);
 
-        presenter.GetUserInfo(view);
+        presenter.getUserInfo(view);
 
         view.findViewById(R.id.my_surveys_list).setOnClickListener(presenter::onMySurveysButtonClick);
         view.findViewById(R.id.logout).setOnClickListener(presenter::onExitButtonClick);
@@ -78,11 +83,23 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
 
     @Override
     public void showProgressBar() {
-        Objects.requireNonNull(getActivity()).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        if(getActivity().findViewById(R.id.progressBar) == null)
+        {
+            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
+        }
+        else {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hideProgressBar() {
-        Objects.requireNonNull(getActivity()).findViewById(R.id.progressBar).setVisibility(View.GONE);
+        if(getActivity().findViewById(R.id.progressBar) == null)
+        {
+            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
+        }
+        else {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+        }
     }
 }
