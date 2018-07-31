@@ -8,8 +8,8 @@ import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.data.SMApi;
 import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
-import ru.mediasoft.unipolls.domain.interactors.UserInfoInteractor;
 import ru.mediasoft.unipolls.other.Screen;
+import ru.mediasoft.unipolls.domain.interactor.UserInfoInteractor;
 import ru.terrakok.cicerone.Router;
 
 public class UserInfoPresenter {
@@ -27,7 +27,7 @@ public class UserInfoPresenter {
     public void onCreate(@NonNull App applicationContext, UserInfoView userInfoView) {
         smApi = App.INSTANCE.networkService.smApi;
         this.userInfoView = userInfoView;
-        userInfoInteractor = new UserInfoInteractor(smApi);
+        userInfoInteractor = new UserInfoInteractor();
     }
 
     public void getUserInfo(View view) {
