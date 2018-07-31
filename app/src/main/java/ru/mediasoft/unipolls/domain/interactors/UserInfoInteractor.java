@@ -3,18 +3,19 @@ package ru.mediasoft.unipolls.domain.interactors;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import ru.mediasoft.unipolls.data.UserInfoApi;
-import ru.mediasoft.unipolls.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.App;
+import ru.mediasoft.unipolls.data.SMApi;
+import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 
 public class UserInfoInteractor {
-    private UserInfoApi userInfoApi;
+    private SMApi smApi;
 
-    public UserInfoInteractor(UserInfoApi userInfoApi) {
-        this.userInfoApi = userInfoApi;
+    public UserInfoInteractor(SMApi smApi) {
+        this.smApi = smApi;
     }
 
     public void getUserInfo(SingleObserver<UserInfoModel> sub){
-        userInfoApi.getUserInfo("https://api.surveymonkey.com/v3/users/me")
+        App.INSTANCE.networkService.smApi.getUserInfo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(sub);

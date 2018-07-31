@@ -1,4 +1,4 @@
-package ru.mediasoft.unipolls.dataclass;
+package ru.mediasoft.unipolls.domain.dataclass;
 
 import java.util.List;
 

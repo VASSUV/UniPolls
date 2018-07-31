@@ -1,5 +1,6 @@
 package ru.mediasoft.unipolls.presentation.userInfo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +19,7 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
 
     UserInfoPresenter presenter = new UserInfoPresenter();
 
-    private TextView first_name, sec_name, email;
+    private TextView name, email;
 
     public static UserInfoFragment newInstance() {
         UserInfoFragment fragment = new UserInfoFragment();
@@ -31,35 +32,37 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.onCreate((App) getActivity().getApplicationContext(), this);
+        Context applicationContext = getActivity().getApplicationContext();
+        if(applicationContext == null){
+            showErrorMessage("getApplicationContext() вернула null!");
+        }
+        else{
+            presenter.onCreate((App) applicationContext, this);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragmnent_userinfo, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        first_name = view.findViewById(R.id.first_name);
-        sec_name = view.findViewById(R.id.second_name);
-        email = view.findViewById(R.id.email);
+        name = view.findViewById(R.id.user_name);
+        email = view.findViewById(R.id.user_email);
 
-        view.findViewById(R.id.getInfo).setOnClickListener(presenter::onGetInfoButtonClick);
-        view.findViewById(R.id.go_to).setOnClickListener(presenter::GotoSomeWhere);
+        presenter.getUserInfo(view);
+
+        view.findViewById(R.id.my_surveys_list).setOnClickListener(presenter::onMySurveysButtonClick);
+        view.findViewById(R.id.logout).setOnClickListener(presenter::onExitButtonClick);
     }
 
     @Override
-    public void setFirstName(String fName) {
-        first_name.setText(fName);
-    }
-
-    @Override
-    public void setSeconName(String secName) {
-        sec_name.setText(secName);
+    public void setName(String fName, String secName) {
+        name.setText(fName.concat(" ").concat(secName));
     }
 
     @Override
@@ -70,5 +73,33 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Override
     public void showErrorMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void clearFields() {
+        name.setText("");
+        email.setText("");
+    }
+
+    @Override
+    public void showProgressBar() {
+        if(getActivity().findViewById(R.id.progressBar) == null)
+        {
+            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
+        }
+        else {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if(getActivity().findViewById(R.id.progressBar) == null)
+        {
+            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
+        }
+        else {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+        }
     }
 }

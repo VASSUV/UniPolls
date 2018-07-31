@@ -1,59 +1,61 @@
 package ru.mediasoft.unipolls.presentation.userInfo;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.data.UserInfoApi;
-import ru.mediasoft.unipolls.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.data.SMApi;
+import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
 import ru.mediasoft.unipolls.domain.interactors.UserInfoInteractor;
+import ru.mediasoft.unipolls.other.Screen;
 import ru.terrakok.cicerone.Router;
 
 public class UserInfoPresenter {
 
-    private UserInfoApi userInfoApi;
+    private SMApi smApi;
     private UserInfoView userInfoView;
     private UserInfoInteractor userInfoInteractor;
     private Router router;
 
     public UserInfoPresenter(){
-        router = App.INSTANCE.getRouter();
+        router = App.getRouter();
     }
 
 
-    public void onCreate(App applicationContext, UserInfoView userInfoView) {
-        userInfoApi = applicationContext.networkService.userInfoApi;
+    public void onCreate(@NonNull App applicationContext, UserInfoView userInfoView) {
+        smApi = App.INSTANCE.networkService.smApi;
         this.userInfoView = userInfoView;
-        userInfoInteractor = new UserInfoInteractor(userInfoApi);
+        userInfoInteractor = new UserInfoInteractor(smApi);
     }
 
-    public void onGetInfoButtonClick(View view) {
+    public void getUserInfo(View view) {
         userInfoInteractor.getUserInfo(new SingleObserver<UserInfoModel>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
-
             @Override
             public void onSuccess(UserInfoModel userInfoModel) {
-                userInfoView.setFirstName(userInfoModel.first_name);
-                userInfoView.setSeconName(userInfoModel.last_name);
+                userInfoView.setName(userInfoModel.first_name, userInfoModel.last_name);
                 userInfoView.setEmail(userInfoModel.email);
+                userInfoView.hideProgressBar();
             }
-
             @Override
             public void onError(Throwable e) {
-                showErrorMessage(e.getMessage());
+                userInfoView.showErrorMessage(e.getMessage());
             }
         });
     }
 
-    private void showErrorMessage(String message) {
-        //Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+    public void onExitButtonClick(View view) {
+        userInfoView.clearFields();
+        App.getRouter().backTo(Screen.START.name());
     }
 
-    public void GotoSomeWhere(View view) {
-        App.getRouter().navigateTo("TEST");
+    public void onMySurveysButtonClick(View view) {
+        userInfoView.showProgressBar();
+        App.getRouter().navigateTo(Screen.MYSURVEYS.name());
     }
 }

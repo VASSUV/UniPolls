@@ -22,10 +22,9 @@ public class MainActivity extends MvpAppCompatActivity {
         setContentView(R.layout.activity_main);
 
         App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
-        App.getRouter().newRootScreen("START");
+        App.getRouter().newRootScreen(Screen.START.name());
         listener = () -> {
             switch (screen){
-
             }
         };
     }
@@ -34,7 +33,6 @@ public class MainActivity extends MvpAppCompatActivity {
 
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
-
            screen = Screen.valueOf(screenKey);
             if(screen == null) {
                 showSystemMessage("Unknown screenKey!", 1);
@@ -73,6 +71,14 @@ public class MainActivity extends MvpAppCompatActivity {
             return 0;
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+            finish();
+        }
+    }
 
     @Override
     protected void onDestroy() {
