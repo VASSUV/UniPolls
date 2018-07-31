@@ -11,6 +11,7 @@ import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.domain.interactor.GetSurveysInteractor;
+import ru.mediasoft.unipolls.other.Screen;
 
 @InjectViewState
 public class PollListPresenter extends MvpPresenter<PollListView> {
@@ -49,10 +50,10 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
     }
 
     public void goToDetailFragment(Bundle args){
-        App.getRouter().navigateTo("DETAIL", args);
+        App.getRouter().navigateTo(Screen.DETAIL.name(), args);
     }
     public void goToAddingPollFragment(){
-        App.getRouter().navigateTo("ADDING_POLL");
+        App.getRouter().navigateTo(Screen.ADDING_POLL.name());
     }
 
 }

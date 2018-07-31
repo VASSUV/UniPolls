@@ -51,7 +51,6 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
         Poll currentPoll = pollList.get(position);
 
         holder.txtPollName.setText(currentPoll.getTitle());
-        //holder.txtCompletedCount.setText(currentPoll.get());
     }
 
     @Override
@@ -71,7 +70,6 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
             imgFlag = itemView.findViewById(R.id.imgFlag);
             imgLogo = itemView.findViewById(R.id.imgLogo);
             txtPollName = itemView.findViewById(R.id.txtPollName);
-            //txtCompletedCount = itemView.findViewById(R.id.txtCompletedCount);
             btnDetails = itemView.findViewById(R.id.btnDetails);
             btnDetails.setOnClickListener(v -> {
                 if(onDetailButtonClickListener != null){

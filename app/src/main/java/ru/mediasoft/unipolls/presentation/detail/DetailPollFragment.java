@@ -134,7 +134,7 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
         //-----------------------------------------------------
 
 
-        StringBuilder responseCount = new StringBuilder(getActivity().getResources().getString(R.string.response_count));
+        StringBuilder responseCount = new StringBuilder(getActivity().getString(R.string.response_count));
         responseCount.append("   ")
                 .append(searchResultDetails.getResponseCount());
         txtResponseCount.setText(responseCount);
@@ -148,23 +148,16 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     }
 
     private void showLoader(boolean flag){
-        if(flag){
-            progBar.setVisibility(View.VISIBLE);
-            txtDateModified.setVisibility(View.GONE);
-            txtDateCreated.setVisibility(View.GONE);
-            txtTitle.setVisibility(View.GONE);
-            recViewQuestions.setVisibility(View.GONE);
-            txtQuestions.setVisibility(View.GONE);
-            txtResponseCount.setVisibility(View.GONE);
-        }else{
-            progBar.setVisibility(View.GONE);
-            txtDateModified.setVisibility(View.VISIBLE);
-            txtDateCreated.setVisibility(View.VISIBLE);
-            txtTitle.setVisibility(View.VISIBLE);
-            recViewQuestions.setVisibility(View.VISIBLE);
-            txtQuestions.setVisibility(View.VISIBLE);
-            txtResponseCount.setVisibility(View.VISIBLE);
-        }
+        int a = flag ? View.VISIBLE : View.GONE;
+        int b = flag ? View.GONE : View.VISIBLE;
+
+        progBar.setVisibility(a);
+        txtDateModified.setVisibility(b);
+        txtDateCreated.setVisibility(b);
+        txtTitle.setVisibility(b);
+        recViewQuestions.setVisibility(b);
+        txtQuestions.setVisibility(b);
+        txtResponseCount.setVisibility(b);
     }
 
     @Override

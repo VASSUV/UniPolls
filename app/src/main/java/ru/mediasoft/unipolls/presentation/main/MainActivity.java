@@ -92,6 +92,6 @@ public class MainActivity extends MvpAppCompatActivity {
     }
 
     public void setActionBarTitle(String title) {
-        getSupportActionBar().setTitle(title);
+        setTitle(title);
     }
 }

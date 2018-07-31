@@ -40,6 +40,6 @@ public class AddingPollFragment extends MvpAppCompatFragment implements AddingPo
     public void onResume() {
         super.onResume();
 
-        ((MainActivity)getActivity()).setActionBarTitle(getActivity().getResources().getString(R.string.new_poll));
+        ((MainActivity)getActivity()).setActionBarTitle(getActivity().getString(R.string.new_poll));
     }
 }

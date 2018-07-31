@@ -42,7 +42,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         String heading = currentQuestion.getHeadings().get(0).getHeading();
 
         holder.txtHeading.setText(heading);
-        holder.txtNum.setText(String.valueOf(position + 1));
+        holder.txtNum.setText(String.valueOf(currentQuestion.getPosition()));
     }
 
     @Override
