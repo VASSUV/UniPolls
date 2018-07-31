@@ -13,4 +13,12 @@
     <string name="details">Детали</string>
     <string name="date_created">Дата создания:</string>
     <string name="date_modified">Дата последнего изменения:</string>
+    <string name="questions">Вопросы:</string>
+    <string name="response_count">Количество ответов:</string>
+
+    <string name="questions_fragment_title">Опросы</string>
+    <string name="no_questions">Не найдено ни одного вопроса</string>
+    <string name="add_new_poll">Добавить опрос</string>
+    <string name="new_poll">Новый опрос</string>
+
 </resources>

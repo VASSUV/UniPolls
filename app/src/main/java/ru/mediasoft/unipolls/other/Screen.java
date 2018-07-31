@@ -8,6 +8,7 @@ import ru.mediasoft.unipolls.presentation.login.LoginFragment;
 import ru.mediasoft.unipolls.presentation.mysurveys.MySurveysFragment;
 import ru.mediasoft.unipolls.presentation.newsurveyname.NewSurveyNameFragment;
 import ru.mediasoft.unipolls.presentation.registration.RegistrationFragment;
+import ru.mediasoft.unipolls.presentation.addpoll.AddingPollFragment;
 import ru.mediasoft.unipolls.presentation.detail.DetailPollFragment;
 import ru.mediasoft.unipolls.presentation.polls.PollListFragment;
 import ru.mediasoft.unipolls.presentation.splash.SplashFragment;
@@ -21,10 +22,11 @@ public enum Screen {
     MYSURVEYS,
     NEWSURVEYNAME,
     POLL_LIST,
+    ADDING_POLL,
     DETAIL;
 
 
-    public MvpAppCompatFragment create() {
+    public MvpAppCompatFragment create(Bundle args) {
         switch (this) {
             case START:
                 return LoginFragment.newInstance();
@@ -33,16 +35,24 @@ public enum Screen {
             case REGISTRATION:
                 return RegistrationFragment.newInstance();
             case MYSURVEYS:
-                    return MySurveysFragment.newInstance();
+                return MySurveysFragment.newInstance();
             case NEWSURVEYNAME:
                 return NewSurveyNameFragment.newInstance();
-            default:
-                break;
             case SPLASH:
                 return SplashFragment.newInstance();
             case POLL_LIST:
                 return PollListFragment.newInstance();
+            case ADDING_POLL:
+                return AddingPollFragment.newInstance();
+            case DETAIL:
+                return DetailPollFragment.newInstance(args);
+            default:
+                return null;
         }
-        return null;
+    }
+
+
+    public MvpAppCompatFragment create() {
+        return create(new Bundle());
     }
 }

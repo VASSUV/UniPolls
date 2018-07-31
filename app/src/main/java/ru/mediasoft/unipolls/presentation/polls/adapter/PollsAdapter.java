@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.domain.dataclass.Poll;
+import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
 
 public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHolder> {
 

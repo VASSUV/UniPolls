@@ -3,18 +3,21 @@ package ru.mediasoft.unipolls.presentation.polls;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.domain.dataclass.Poll;
+import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
 import ru.mediasoft.unipolls.other.Constants;
+import ru.mediasoft.unipolls.presentation.main.MainActivity;
 import ru.mediasoft.unipolls.presentation.polls.adapter.PollsAdapter;
-import ru.mediasoft.unipolls.domain.dataclass.SearchResult;
+import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -60,6 +63,7 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         firstOperations(view);
 
         presenter.onRequest();
+        setHasOptionsMenu(true);
     }
 
     private void firstOperations(View view) {
@@ -80,12 +84,12 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         Bundle args = new Bundle();
         args.putString(Constants.BundleKeys.POLL_TITLE_KEY, pollList.get(position).getTitle());
         args.putString(Constants.BundleKeys.POLL_ID_KEY, pollList.get(position).getId());
-        presenter.goToDetailActivity(args);
+        presenter.goToDetailFragment(args);
     }
 
     @Override
-    public void setSurveysData(SearchResult searchResult) {
-        pollList = searchResult.getData();
+    public void setSurveysData(SearchResultSurveys searchResultSurveys) {
+        pollList = searchResultSurveys.getData();
         adapter.setPollList(pollList);
         adapter.notifyDataSetChanged();
         progBar.setVisibility(View.GONE);
@@ -94,7 +98,28 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     @Override
     public void showErrorMessage(Throwable e) {
         Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
-        Log.i("sanya", "Error: " + e.toString());
         presenter.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((MainActivity)getActivity()).setActionBarTitle(getActivity().getResources().getString(R.string.questions_fragment_title));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.list_polls, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_poll_item:
+                presenter.goToAddingPollFragment();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,81 +1,68 @@
-package ru.mediasoft.unipolls.domain.dataclass;
+package ru.mediasoft.unipolls.domain.dataclass.polldetails;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PollInfo {
+import java.util.List;
+
+public class SearchResultDetails {
     @SerializedName("response_count")
     @Expose
     private Integer responseCount;
-
     @SerializedName("page_count")
     @Expose
     private Integer pageCount;
-
     @SerializedName("date_created")
     @Expose
     private String dateCreated;
-
     @SerializedName("folder_id")
     @Expose
     private String folderId;
-
     @SerializedName("nickname")
     @Expose
     private String nickname;
-
     @SerializedName("id")
     @Expose
     private String id;
-
     @SerializedName("question_count")
     @Expose
     private Integer questionCount;
-
     @SerializedName("category")
     @Expose
     private String category;
-
     @SerializedName("preview")
     @Expose
     private String preview;
-
     @SerializedName("is_owner")
     @Expose
     private Boolean isOwner;
-
     @SerializedName("language")
     @Expose
     private String language;
-
     @SerializedName("footer")
     @Expose
     private Boolean footer;
-
     @SerializedName("date_modified")
     @Expose
     private String dateModified;
-
     @SerializedName("analyze_url")
     @Expose
     private String analyzeUrl;
-
+    @SerializedName("pages")
+    @Expose
+    private List<Page> pages = null;
     @SerializedName("summary_url")
     @Expose
     private String summaryUrl;
-
     @SerializedName("href")
     @Expose
     private String href;
-
     @SerializedName("title")
     @Expose
     private String title;
-
     @SerializedName("collect_url")
     @Expose
     private String collectUrl;
-
     @SerializedName("edit_url")
     @Expose
     private String editUrl;
@@ -190,6 +177,14 @@ public class PollInfo {
 
     public void setAnalyzeUrl(String analyzeUrl) {
         this.analyzeUrl = analyzeUrl;
+    }
+
+    public List<Page> getPages() {
+        return pages;
+    }
+
+    public void setPages(List<Page> pages) {
+        this.pages = pages;
     }
 
     public String getSummaryUrl() {

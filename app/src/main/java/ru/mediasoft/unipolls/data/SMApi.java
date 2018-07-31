@@ -8,9 +8,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
-import ru.mediasoft.unipolls.domain.dataclass.PollInfo;
-import ru.mediasoft.unipolls.domain.dataclass.SearchResult;
-import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
+import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
+import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
 import ru.mediasoft.unipolls.other.Constants;
 
 
@@ -26,9 +26,9 @@ public interface SMApi {
 
     @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
     @GET("surveys")
-    Single<SearchResult> getSurveys();
+    Single<SearchResultSurveys> getSurveys();
 
     @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
-    @GET("/v3/surveys/{id}")
-    Single<PollInfo> getSurveyThroughId(@Path("id") String id);
+    @GET("/v3/surveys/{id}/details")
+    Single<SearchResultDetails> getSurveyDetails(@Path("id") String id);
 }

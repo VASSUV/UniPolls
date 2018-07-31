@@ -1,11 +1,11 @@
-package ru.mediasoft.unipolls.domain.dataclass;
+package ru.mediasoft.unipolls.domain.dataclass.polllist;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PollResponses {
+public class SearchResultSurveys {
     @SerializedName("per_page")
     @Expose
     private Integer perPage;
@@ -14,10 +14,11 @@ public class PollResponses {
     private Integer total;
     @SerializedName("data")
     @Expose
-    private List<Object> data = null;
+    private List<Poll> pollList = null;
     @SerializedName("page")
     @Expose
     private Integer page;
+    @SerializedName("links")
 
     public Integer getPerPage() {
         return perPage;
@@ -35,12 +36,12 @@ public class PollResponses {
         this.total = total;
     }
 
-    public List<Object> getData() {
-        return data;
+    public List<Poll> getData() {
+        return pollList;
     }
 
-    public void setData(List<Object> data) {
-        this.data = data;
+    public void setData(List<Poll> pollList) {
+        this.pollList = pollList;
     }
 
     public Integer getPage() {
@@ -50,4 +51,5 @@ public class PollResponses {
     public void setPage(Integer page) {
         this.page = page;
     }
+
 }

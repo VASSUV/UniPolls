@@ -3,9 +3,8 @@ package ru.mediasoft.unipolls.presentation.detail;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import ru.mediasoft.unipolls.domain.dataclass.PollInfo;
-import ru.mediasoft.unipolls.domain.interactor.GetPollInfoInteractor;
-import ru.mediasoft.unipolls.presentation.detail.DetailPollView;
+import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
+import ru.mediasoft.unipolls.domain.interactor.GetSurveyDetailsInteractor;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -13,25 +12,24 @@ import com.arellomobile.mvp.MvpPresenter;
 @InjectViewState
 public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
-    private GetPollInfoInteractor getPollInfoInteractor;
+    private GetSurveyDetailsInteractor getSurveyDetailsInteractor;
 
     private Disposable disposable;
 
     public void onCreate(){
-        getPollInfoInteractor = new GetPollInfoInteractor();
+        getSurveyDetailsInteractor = new GetSurveyDetailsInteractor();
     }
 
-    public void doRequest(String id){
-        getPollInfoInteractor.getPollInfo(id)
-                .subscribe(new SingleObserver<PollInfo>() {
+    public void getPollDetails(String id){
+        getSurveyDetailsInteractor.getSurveyDetails(id, new SingleObserver<SearchResultDetails>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onSuccess(PollInfo pollInfo) {
-                        getViewState().setResult(pollInfo);
+                    public void onSuccess(SearchResultDetails searchResultDetails) {
+                        getViewState().setResult(searchResultDetails);
                     }
 
                     @Override

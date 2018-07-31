@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:style="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     tools:context=".presentation.detail.DetailPollFragment">
 
@@ -29,11 +30,50 @@
         android:layout_marginTop="8dp"
         android:text="@string/date_modified" />
 
+    <TextView
+        android:id="@+id/txtResponseCount"
+        android:layout_width="wrap_content"
+        tools:text="Количество ответов:"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/txtDateModified"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtQuestions"
+        android:text="@string/questions"
+        android:layout_below="@+id/txtResponseCount"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recViewQuestions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtDateModified"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtQuestions"
         android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/txtNoQuestions"
+        android:layout_below="@id/txtQuestions"
+        android:text="@string/no_questions"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/progBarDetails"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:indeterminateTint="@color/colorPrimary"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

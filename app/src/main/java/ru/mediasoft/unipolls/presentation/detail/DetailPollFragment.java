@@ -1,23 +1,27 @@
 package ru.mediasoft.unipolls.presentation.detail;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.mediasoft.unipolls.domain.dataclass.PollInfo;
+import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 import ru.mediasoft.unipolls.other.Constants;
 
 
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.presentation.detail.adapter.QuestionsAdapter;
+import ru.mediasoft.unipolls.presentation.main.MainActivity;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class DetailPollFragment extends MvpAppCompatFragment implements DetailPollView {
     public static final String TAG = "DetailPollFragment";
@@ -27,13 +31,22 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     private String pollTitle;
     private String pollId;
 
-    private TextView txtTitle, txtDateCreated, txtDateModified;
+    private TextView txtTitle, txtDateCreated, txtDateModified, txtQuestions, txtResponseCount, txtNoQuestions;
+    private ProgressBar progBar;
+
+    private RecyclerView recViewQuestions;
+    private QuestionsAdapter questionsAdapter;
 
 
     public static DetailPollFragment newInstance(Bundle args) {
         DetailPollFragment fragment = new DetailPollFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -62,8 +75,20 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
         txtTitle.setText(pollTitle);
         txtDateCreated = view.findViewById(R.id.txtDateCreated);
         txtDateModified = view.findViewById(R.id.txtDateModified);
+        txtResponseCount = view.findViewById(R.id.txtResponseCount);
+        txtNoQuestions = view.findViewById(R.id.txtNoQuestions);
 
-        presenter.doRequest(pollId);
+        txtQuestions = view.findViewById(R.id.txtQuestions);
+
+        progBar = view.findViewById(R.id.progBarDetails);
+
+        questionsAdapter = new QuestionsAdapter(getActivity());
+        recViewQuestions = view.findViewById(R.id.recViewQuestions);
+        recViewQuestions.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recViewQuestions.setAdapter(questionsAdapter);
+
+        presenter.getPollDetails(pollId);
+        showLoader(true);
     }
 
     @Override
@@ -73,19 +98,79 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     }
 
     @Override
-    public void setResult(PollInfo pollInfo) {
-        String dCbuf = pollInfo.getDateCreated();
-        String dMbuf = pollInfo.getDateModified();
+    public void setResult(SearchResultDetails searchResultDetails) {
+
+        showLoader(false);
+
+        // Выделение отформатированной даты из json
+        String dCbuf = searchResultDetails.getDateCreated();
+        String dMbuf = searchResultDetails.getDateModified();
 
         dCbuf = dCbuf.substring(0, dCbuf.indexOf("T"));
         dMbuf = dMbuf.substring(0, dMbuf.indexOf("T"));
 
-        /*SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        Date date = format.parse(pollInfo.getDateCreated());*/
+        String[] dCreatedArr = dCbuf.split("-");
+        String[] dModifiedArr = dMbuf.split("-");
 
-        String dateCreated = txtDateCreated.getText() + dCbuf;
-        String dateModified = txtDateModified.getText() + dMbuf;
+        StringBuilder sbCreated = new StringBuilder("   ");
+        sbCreated.append(dCreatedArr[2])
+                .append("-")
+                .append(dCreatedArr[1])
+                .append("-")
+                .append(dCreatedArr[0]);
+        StringBuilder sbModified = new StringBuilder("   ");
+        sbModified.append(dModifiedArr[2])
+                .append("-")
+                .append(dModifiedArr[1])
+                .append("-")
+                .append(dModifiedArr[0]);
+
+
+        String dateCreated = txtDateCreated.getText() + sbCreated.toString();
+        String dateModified = txtDateModified.getText() + sbModified.toString();
+
         txtDateCreated.setText(dateCreated);
         txtDateModified.setText(dateModified);
+        //-----------------------------------------------------
+
+
+        StringBuilder responseCount = new StringBuilder(getActivity().getResources().getString(R.string.response_count));
+        responseCount.append("   ")
+                .append(searchResultDetails.getResponseCount());
+        txtResponseCount.setText(responseCount);
+
+        if(searchResultDetails.getPages().get(0).getQuestions().size() == 0){
+            txtNoQuestions.setVisibility(View.VISIBLE);
+        }else {
+            questionsAdapter.setQuestionList(searchResultDetails.getPages().get(0).getQuestions());
+            questionsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void showLoader(boolean flag){
+        if(flag){
+            progBar.setVisibility(View.VISIBLE);
+            txtDateModified.setVisibility(View.GONE);
+            txtDateCreated.setVisibility(View.GONE);
+            txtTitle.setVisibility(View.GONE);
+            recViewQuestions.setVisibility(View.GONE);
+            txtQuestions.setVisibility(View.GONE);
+            txtResponseCount.setVisibility(View.GONE);
+        }else{
+            progBar.setVisibility(View.GONE);
+            txtDateModified.setVisibility(View.VISIBLE);
+            txtDateCreated.setVisibility(View.VISIBLE);
+            txtTitle.setVisibility(View.VISIBLE);
+            recViewQuestions.setVisibility(View.VISIBLE);
+            txtQuestions.setVisibility(View.VISIBLE);
+            txtResponseCount.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((MainActivity)getActivity()).setActionBarTitle(getActivity().getResources().getString(R.string.details));
     }
 }
