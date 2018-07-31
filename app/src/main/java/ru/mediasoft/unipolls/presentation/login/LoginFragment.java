@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
 public class LoginFragment extends MvpAppCompatFragment implements LoginView {
-    LoginPresenter mLoginPresenter = new LoginPresenter();
+    @InjectPresenter
+    LoginPresenter mLoginPresenter;
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -32,7 +34,7 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
             showErrorMessage("getApplicationContext() вернула null!");
         }
         else{
-            mLoginPresenter.onCreate((App) applicationContext, this);
+            mLoginPresenter.onCreate();
         }
     }
 

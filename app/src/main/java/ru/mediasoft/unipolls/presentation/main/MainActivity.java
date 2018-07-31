@@ -10,6 +10,7 @@ import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.router.CustomNavigator;
+import ru.mediasoft.unipolls.presentation.detail.DetailPollFragment;
 
 public class MainActivity extends MvpAppCompatActivity {
 
@@ -37,6 +38,10 @@ public class MainActivity extends MvpAppCompatActivity {
             if(screen == null) {
                 showSystemMessage("Unknown screenKey!", 1);
                 return null;
+            }
+
+            if(screen == Screen.DETAIL){
+                return screen.create((Bundle) data);
             }
            return screen.create();
         }
@@ -84,5 +89,9 @@ public class MainActivity extends MvpAppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         App.INSTANCE.getNavigatorHolder().removeNavigator();
+    }
+
+    public void setActionBarTitle(String title) {
+        setTitle(title);
     }
 }

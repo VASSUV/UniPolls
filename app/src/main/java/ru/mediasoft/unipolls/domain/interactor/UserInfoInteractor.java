@@ -1,18 +1,12 @@
-package ru.mediasoft.unipolls.domain.interactors;
+package ru.mediasoft.unipolls.domain.interactor;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.data.SMApi;
-import ru.mediasoft.unipolls.domain.dataclass.UserInfoModel;
+import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
 
 public class UserInfoInteractor {
-    private SMApi smApi;
-
-    public UserInfoInteractor(SMApi smApi) {
-        this.smApi = smApi;
-    }
 
     public void getUserInfo(SingleObserver<UserInfoModel> sub){
         App.INSTANCE.networkService.smApi.getUserInfo()
