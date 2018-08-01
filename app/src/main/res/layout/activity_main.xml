@@ -14,11 +14,22 @@
         tools:context=".presentation.main.MainActivity">
     </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/pre_loader"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="#8981807c"
+        android:focusable="true"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
 </FrameLayout>

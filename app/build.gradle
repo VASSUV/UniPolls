@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.arello-mobile:moxy-app-compat:1.5.5'
 
     implementation 'ru.terrakok.cicerone:cicerone:1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
 
 //    implementation 'com.surveymonkey:surveymonkey-android-sdk:1.0.6'

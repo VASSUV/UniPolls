@@ -32,7 +32,6 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     private String pollId;
 
     private TextView txtTitle, txtDateCreated, txtDateModified, txtQuestions, txtResponseCount, txtNoQuestions;
-    private ProgressBar progBar;
 
     private RecyclerView recViewQuestions;
     private QuestionsAdapter questionsAdapter;
@@ -80,15 +79,12 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
 
         txtQuestions = view.findViewById(R.id.txtQuestions);
 
-        progBar = view.findViewById(R.id.progBarDetails);
-
         questionsAdapter = new QuestionsAdapter(getActivity());
         recViewQuestions = view.findViewById(R.id.recViewQuestions);
         recViewQuestions.setLayoutManager(new LinearLayoutManager(getActivity()));
         recViewQuestions.setAdapter(questionsAdapter);
 
         presenter.getPollDetails(pollId);
-        showLoader(true);
     }
 
     @Override
@@ -99,8 +95,6 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
 
     @Override
     public void setResult(SearchResultDetails searchResultDetails) {
-
-        showLoader(false);
 
         // Выделение отформатированной даты из json
         String dCbuf = searchResultDetails.getDateCreated();
@@ -145,19 +139,6 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
             questionsAdapter.setQuestionList(searchResultDetails.getPages().get(0).getQuestions());
             questionsAdapter.notifyDataSetChanged();
         }
-    }
-
-    private void showLoader(boolean flag){
-        int a = flag ? View.VISIBLE : View.GONE;
-        int b = flag ? View.GONE : View.VISIBLE;
-
-        progBar.setVisibility(a);
-        txtDateModified.setVisibility(b);
-        txtDateCreated.setVisibility(b);
-        txtTitle.setVisibility(b);
-        recViewQuestions.setVisibility(b);
-        txtQuestions.setVisibility(b);
-        txtResponseCount.setVisibility(b);
     }
 
     @Override

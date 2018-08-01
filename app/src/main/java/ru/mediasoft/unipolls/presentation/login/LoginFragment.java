@@ -52,24 +52,6 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     }
 
     @Override
-    public void showProgressBar() {
-        if (getActivity().findViewById(R.id.progressBar) == null) {
-            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
-        } else {
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void hideProgressBar() {
-        if (getActivity().findViewById(R.id.progressBar) == null) {
-            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
-        } else {
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public void showErrorMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 

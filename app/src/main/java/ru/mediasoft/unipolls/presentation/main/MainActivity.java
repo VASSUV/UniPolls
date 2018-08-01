@@ -2,30 +2,39 @@ package ru.mediasoft.unipolls.presentation.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.router.CustomNavigator;
-import ru.mediasoft.unipolls.presentation.detail.DetailPollFragment;
 
-public class MainActivity extends MvpAppCompatActivity {
+public class MainActivity extends MvpAppCompatActivity implements MainView{
+
+    @InjectPresenter
+    MainPresenter presenter;
 
     CustomNavigator.OnChangeFragmentListener listener;
     private Screen screen;
+
+    private View loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loader = findViewById(R.id.pre_loader);
+
         App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
         App.getRouter().newRootScreen(Screen.START.name());
         listener = () -> {
-            switch (screen){
+            switch (screen) {
+
             }
         };
     }
@@ -34,16 +43,16 @@ public class MainActivity extends MvpAppCompatActivity {
 
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
-           screen = Screen.valueOf(screenKey);
-            if(screen == null) {
+            screen = Screen.valueOf(screenKey);
+            if (screen == null) {
                 showSystemMessage("Unknown screenKey!", 1);
                 return null;
             }
 
-            if(screen == Screen.DETAIL){
+            if (screen == Screen.DETAIL) {
                 return screen.create((Bundle) data);
             }
-           return screen.create();
+            return screen.create();
         }
 
         @Override
@@ -80,7 +89,7 @@ public class MainActivity extends MvpAppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             finish();
         }
     }
@@ -93,5 +102,27 @@ public class MainActivity extends MvpAppCompatActivity {
 
     public void setActionBarTitle(String title) {
         setTitle(title);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.onStop();
+        super.onStop();
+    }
+
+    @Override
+    public void showLoader() {
+        loader.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void hideLoader() {
+        loader.setVisibility(View.GONE);
     }
 }
