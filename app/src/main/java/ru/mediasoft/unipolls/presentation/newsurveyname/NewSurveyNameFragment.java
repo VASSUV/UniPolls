@@ -24,8 +24,7 @@ public class NewSurveyNameFragment extends MvpAppCompatFragment implements NewSu
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_new_survey_name, container, false);
     }
 

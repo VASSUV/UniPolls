@@ -7,4 +7,5 @@ import com.arellomobile.mvp.MvpPresenter;
 @InjectViewState
 public class NewSurveyNamePresenter extends MvpPresenter<NewSurveyNameView> {
 
+
 }

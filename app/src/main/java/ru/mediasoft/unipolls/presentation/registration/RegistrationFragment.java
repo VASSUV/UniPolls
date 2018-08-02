@@ -17,8 +17,7 @@ import ru.mediasoft.unipolls.R;
 public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView {
 
 	@InjectPresenter
-	RegistrationPresenter mRegistrationPresenter = new RegistrationPresenter();
-
+	RegistrationPresenter mRegistrationPresenter;
 
     WebView webView;
 
@@ -63,4 +62,22 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         webView = view.findViewById(R.id.reg_webview);
         mRegistrationPresenter.openUrl(webView);
     }
+
+    @Override
+    public void showProgressBar() {
+        setVisibilityProgressBar(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        setVisibilityProgressBar(View.GONE);
+    }
+
+    private void setVisibilityProgressBar(int visibility) {
+        try{getActivity().findViewById(R.id.progressBar).setVisibility(visibility);}
+        catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
 }

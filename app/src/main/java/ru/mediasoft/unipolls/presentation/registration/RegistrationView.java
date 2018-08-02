@@ -7,4 +7,6 @@ public interface RegistrationView extends MvpView {
     void showErrorMessage(String message);
     void showMessage(String message);
 
+    void hideProgressBar();
+    void showProgressBar();
 }

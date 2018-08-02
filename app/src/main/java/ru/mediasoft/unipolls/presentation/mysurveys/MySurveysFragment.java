@@ -31,7 +31,13 @@ public class MySurveysFragment extends MvpAppCompatFragment implements MySurveys
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMySurveysPresenter.onCreate();
+        Context applicationContext = getActivity().getApplicationContext();
+        if(applicationContext == null){
+            showErrorMessage("getApplicationContext() вернула null!");
+        }
+        else {
+            mMySurveysPresenter.onCreate();
+        }
     }
 
     @Override

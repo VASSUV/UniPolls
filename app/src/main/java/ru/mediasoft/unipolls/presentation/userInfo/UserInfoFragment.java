@@ -17,7 +17,6 @@ import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
 public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoView {
-
     @InjectPresenter
     UserInfoPresenter presenter;
 

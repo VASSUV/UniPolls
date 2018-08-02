@@ -20,10 +20,8 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     }
 
     public void onLoginButtonClick(View view) {
-        EventBus.getDefault().post(new ShowLoaderEvent());
-        App.getRouter().navigateTo(Screen.USERINFO.name());
-    }
-
+        App.getRouter().newRootScreen(Screen.USERINFO.name());
+}
     public void onRegistrationButtonClick(View view) {
         App.getRouter().navigateTo(Screen.POLL_LIST.name());
     }

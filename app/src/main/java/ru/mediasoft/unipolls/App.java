@@ -12,7 +12,7 @@ import ru.terrakok.cicerone.Router;
 
 public class App extends MvpApplication {
 
-    //----------cicerone----------------------------------
+    //----------------cicerone-------------------------------------
     public static App INSTANCE;
     private Cicerone<Router> cicerone;
 
@@ -30,7 +30,13 @@ public class App extends MvpApplication {
     public static Router getRouter() {
         return INSTANCE.cicerone.getRouter();
     }
-    //-----------------------------------------------------
+
+    //----------------cicerone-------------------------------------
+
+    //----------------webview data---------------------------------
+    public static String USER_CODE;
+    //----------------webview data---------------------------------
+
 
     final public NetworkService networkService = new NetworkService();
 }
