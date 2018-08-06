@@ -4,5 +4,5 @@ import com.arellomobile.mvp.MvpView;
 
 public interface MainView extends MvpView {
     void showLoader();
-    void hideLoader();
+    void hideLoader();;
 }

@@ -28,7 +28,6 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +38,6 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         else {
             mRegistrationPresenter.onCreate((App)applicationContext, this);
         }
-    }
-    @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -64,20 +54,13 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     }
 
     @Override
-    public void showProgressBar() {
-        setVisibilityProgressBar(View.VISIBLE);
+    public void showErrorMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void hideProgressBar() {
-        setVisibilityProgressBar(View.GONE);
-    }
-
-    private void setVisibilityProgressBar(int visibility) {
-        try{getActivity().findViewById(R.id.progressBar).setVisibility(visibility);}
-        catch(Throwable t){
-            t.printStackTrace();
-        }
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
 }

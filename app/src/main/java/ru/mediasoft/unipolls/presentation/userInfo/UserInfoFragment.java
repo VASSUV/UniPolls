@@ -38,7 +38,7 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
             showErrorMessage("getApplicationContext() вернула null!");
         }
         else{
-            presenter.onCreate();
+            presenter.onCreate((App)applicationContext);
         }
     }
 

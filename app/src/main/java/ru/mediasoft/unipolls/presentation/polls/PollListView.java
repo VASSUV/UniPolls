@@ -7,4 +7,5 @@ import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 public interface PollListView extends MvpView {
     void setSurveysData(SearchResultSurveys searchResultSurveys);
     void showErrorMessage(Throwable e);
+    void showErrorMessage(String message);
 }

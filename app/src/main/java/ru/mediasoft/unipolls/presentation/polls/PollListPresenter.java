@@ -11,11 +11,11 @@ import org.greenrobot.eventbus.EventBus;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.domain.interactor.GetSurveysInteractor;
 import ru.mediasoft.unipolls.other.Screen;
+import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
+import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 
 @InjectViewState
 public class PollListPresenter extends MvpPresenter<PollListView> {
@@ -38,7 +38,7 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
 
     private void onRequest(){
         EventBus.getDefault().post(new ShowLoaderEvent());
-        getSurveysInteractor.getSurveys(new SingleObserver<SearchResultSurveys>() {
+        getSurveysInteractor.getSurveys(App.getSharPref().getToken() ,new SingleObserver<SearchResultSurveys>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;
@@ -68,7 +68,6 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
         App.getRouter().navigateTo(Screen.DETAIL.name(), args);
     }
     public void goToAddingPollFragment(){
-        App.getRouter().navigateTo(Screen.ADDING_POLL.name());
+        App.getRouter().navigateTo(Screen.NEWSURVEYNAME.name());
     }
-
 }

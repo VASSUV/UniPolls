@@ -10,12 +10,12 @@ import org.greenrobot.eventbus.EventBus;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.data.SMApi;
 import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
-import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.domain.interactor.UserInfoInteractor;
+import ru.mediasoft.unipolls.other.Screen;
+import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
+import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
@@ -30,13 +30,13 @@ public class UserInfoPresenter extends MvpPresenter<UserInfoView>{
     }
 
 
-    public void onCreate() {
+    public void onCreate(App applicationContext) {
         userInfoInteractor = new UserInfoInteractor();
     }
 
     public void getUserInfo(View view) {
         EventBus.getDefault().post(new ShowLoaderEvent());
-        userInfoInteractor.getUserInfo(new SingleObserver<UserInfoModel>() {
+        userInfoInteractor.getUserInfo(App.getSharPref().getToken() ,new SingleObserver<UserInfoModel>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -56,11 +56,12 @@ public class UserInfoPresenter extends MvpPresenter<UserInfoView>{
     }
 
     public void onExitButtonClick(View view) {
+        App.getSharPref().removeCodeAndToken();
         getViewState().clearFields();
-        App.getRouter().backTo(Screen.START.name());
+        App.getRouter().newRootScreen(Screen.START.name());
     }
 
     public void onMySurveysButtonClick(View view) {
-        App.getRouter().navigateTo(Screen.MYSURVEYS.name());
+        App.getRouter().navigateTo(Screen.POLL_LIST.name());
     }
 }

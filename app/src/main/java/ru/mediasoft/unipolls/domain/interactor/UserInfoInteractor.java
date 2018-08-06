@@ -8,8 +8,8 @@ import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
 
 public class UserInfoInteractor {
 
-    public void getUserInfo(SingleObserver<UserInfoModel> sub){
-        App.INSTANCE.networkService.smApi.getUserInfo()
+    public void getUserInfo(String token, SingleObserver<UserInfoModel> sub){
+        App.INSTANCE.networkService.smApi.getUserInfo(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(sub);

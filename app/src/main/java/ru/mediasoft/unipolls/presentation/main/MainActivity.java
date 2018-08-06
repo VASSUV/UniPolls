@@ -31,7 +31,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
         loader = findViewById(R.id.pre_loader);
 
         App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
-        App.getRouter().newRootScreen(Screen.START.name());
+        presenter.setRootScreen((App)this.getApplicationContext());
+
         listener = () -> {
             switch (screen) {
 

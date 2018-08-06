@@ -28,7 +28,7 @@ public class MySurveysPresenter extends MvpPresenter<MySurveysView> {
 
     public void onCreate() {
         smApi = App.INSTANCE.networkService.smApi;
-        createSurveyInteractor = new CreateSurveyInteractor(smApi);
+        //createSurveyInteractor = new CreateSurveyInteractor(smApi);
     }
 
 //    public void onAddSurveyButtonClick(View view) {

@@ -1,24 +1,33 @@
 package ru.mediasoft.unipolls;
 
-import com.arellomobile.mvp.MvpApplication;
+import android.app.Application;
 
 import ru.mediasoft.unipolls.data.NetworkService;
-import java.util.ArrayList;
-import java.util.List;
-
+import ru.mediasoft.unipolls.data.repositories.SharedPrefRepository;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
-public class App extends MvpApplication {
+public class App extends Application {
+
+
+    //----------------SharedPrefRep--------------------------------
+    private SharedPrefRepository sharedPrefRepository;
+
+    public static SharedPrefRepository getSharPref(){
+        return INSTANCE.sharedPrefRepository;
+    }
+    //----------------SharedPrefRep--------------------------------
 
     //----------------cicerone-------------------------------------
     public static App INSTANCE;
+
     private Cicerone<Router> cicerone;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sharedPrefRepository = new SharedPrefRepository(getApplicationContext());
         INSTANCE = this;
         cicerone = Cicerone.create();
     }
@@ -30,13 +39,8 @@ public class App extends MvpApplication {
     public static Router getRouter() {
         return INSTANCE.cicerone.getRouter();
     }
-
-    //----------------cicerone-------------------------------------
-
-    //----------------webview data---------------------------------
-    public static String USER_CODE;
-    //----------------webview data---------------------------------
-
+    //---------------cicerone--------------------------------------
 
     final public NetworkService networkService = new NetworkService();
+
 }

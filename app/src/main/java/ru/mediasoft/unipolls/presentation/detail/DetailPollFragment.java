@@ -8,20 +8,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
-import ru.mediasoft.unipolls.other.Constants;
-
-
-import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.presentation.detail.adapter.QuestionsAdapter;
-import ru.mediasoft.unipolls.presentation.main.MainActivity;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+
+import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
+import ru.mediasoft.unipolls.other.Constants;
+import ru.mediasoft.unipolls.presentation.detail.adapter.QuestionsAdapter;
+import ru.mediasoft.unipolls.presentation.main.MainActivity;
 
 public class DetailPollFragment extends MvpAppCompatFragment implements DetailPollView {
     public static final String TAG = "DetailPollFragment";
@@ -51,7 +48,6 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         presenter.onCreate();
     }
 
