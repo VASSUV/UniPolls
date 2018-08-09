@@ -16,7 +16,6 @@
         android:inputType="text"
         android:hint="Введите название опроса"
         />
-
     <Button
         android:id="@+id/create_survey"
         android:layout_width="wrap_content"

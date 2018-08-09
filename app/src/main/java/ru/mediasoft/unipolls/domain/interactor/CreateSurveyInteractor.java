@@ -9,7 +9,7 @@ import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
 
 public class CreateSurveyInteractor {
 
-    public void createSurvey(String token,String name, SingleObserver<CreateSurveyModel> sub){
+    public void createSurvey(String token, String name, SingleObserver<CreateSurveyModel> sub){
         App.INSTANCE.networkService.smApi.createSurvey(token, new CreateSurveyRequestModel(name))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

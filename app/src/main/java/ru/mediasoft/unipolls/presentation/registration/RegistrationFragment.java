@@ -1,17 +1,15 @@
 package ru.mediasoft.unipolls.presentation.registration;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
-import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
 public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView {
@@ -20,6 +18,8 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
 	RegistrationPresenter mRegistrationPresenter;
 
     WebView webView;
+
+    EditText username, password, email, firstname, lastname;
 
     public static RegistrationFragment newInstance() {
         RegistrationFragment fragment = new RegistrationFragment();
@@ -31,13 +31,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context applicationContext = getActivity().getApplicationContext();
-        if(applicationContext == null){
-            showErrorMessage("getApplicationContext() вернула null!");
-        }
-        else {
-            mRegistrationPresenter.onCreate((App)applicationContext, this);
-        }
+        mRegistrationPresenter.onCreate();
     }
 
     @Override
@@ -49,18 +43,34 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews(view);
+        setTextListeners();
+        setButtonListeners(view);
+    }
+
+    private void setButtonListeners(View view) {
+        view.findViewById(R.id.reg_createAccButton).setOnClickListener(v -> mRegistrationPresenter.onCreateButtonClick(webView));
+    }
+
+    private void initViews(View view) {
         webView = view.findViewById(R.id.reg_webview);
-        mRegistrationPresenter.openUrl(webView);
+        username = view.findViewById(R.id.reg_username);
+        password = view.findViewById(R.id.reg_password);
+        email = view.findViewById(R.id.reg_email);
+        firstname = view.findViewById(R.id.reg_firstname);
+        lastname = view.findViewById(R.id.reg_lastname);
+    }
+
+    private void setTextListeners() {
+        username.addTextChangedListener(mRegistrationPresenter.getNameListener());
+        password.addTextChangedListener(mRegistrationPresenter.getPasswordListener());
+        email.addTextChangedListener(mRegistrationPresenter.getEmailListener());
+        firstname.addTextChangedListener(mRegistrationPresenter.getFirstNameListener());
+        lastname.addTextChangedListener(mRegistrationPresenter.getLastNameListener());
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    public void clearPasswordET() {
+        password.setText("");
     }
-
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-    }
-
 }

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 
 import ru.mediasoft.unipolls.presentation.login.LoginFragment;
-import ru.mediasoft.unipolls.presentation.mysurveys.MySurveysFragment;
-import ru.mediasoft.unipolls.presentation.newsurveyname.NewSurveyNameFragment;
 import ru.mediasoft.unipolls.presentation.registration.RegistrationFragment;
 import ru.mediasoft.unipolls.presentation.addpoll.AddingPollFragment;
 import ru.mediasoft.unipolls.presentation.detail.DetailPollFragment;
@@ -34,10 +32,6 @@ public enum Screen {
                 return UserInfoFragment.newInstance();
             case REGISTRATION:
                 return RegistrationFragment.newInstance();
-            case MYSURVEYS:
-                return MySurveysFragment.newInstance();
-            case NEWSURVEYNAME:
-                return NewSurveyNameFragment.newInstance();
             case SPLASH:
                 return SplashFragment.newInstance();
             case POLL_LIST:

@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/monkey1"
             android:visibility="visible" />
 
@@ -23,49 +23,61 @@
             android:id="@+id/login_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/monkey_logo"
             android:layout_centerVertical="true"
             android:text="Login"
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/login_edittext"
+            android:id="@+id/login_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_textview"
             android:hint="login"
+            android:inputType="text"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/pass_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/login_edittext"
+            android:layout_below="@+id/login_username"
             android:layout_marginTop="20dp"
             android:text="Password"
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/pass_edittext"
+            android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/pass_textview"
-            android:hint="password" />
+            android:hint="password"
+            android:textSize="24sp"
+            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/login_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pass_edittext"
-            android:text="@string/Login"
-            android:layout_centerHorizontal="true"/>
-
-        <Button
-            android:id="@+id/registration_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_below="@id/login_password"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/login_button"
+            android:text="@string/Login" />
+
+        <Button
+            android:id="@+id/login_registration_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_login_button"
+            android:layout_centerHorizontal="true"
             android:text="@string/Registration" />
 
     </RelativeLayout>
+
+    <WebView
+        android:id="@+id/auth_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </WebView>
+
 </FrameLayout>

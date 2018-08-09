@@ -1,6 +1,5 @@
 package ru.mediasoft.unipolls.presentation.userInfo;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
-import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
 public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoView {
@@ -29,17 +26,10 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
         return fragment;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context applicationContext = getActivity().getApplicationContext();
-        if(applicationContext == null){
-            showErrorMessage("getApplicationContext() вернула null!");
-        }
-        else{
-            presenter.onCreate((App)applicationContext);
-        }
+        presenter.onCreate();
     }
 
     @Nullable
@@ -69,11 +59,6 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     @Override
     public void setEmail(String eMail) {
         email.setText(eMail);
-    }
-
-    @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -49,7 +49,6 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         firstOperations(view);
 
         setHasOptionsMenu(true);

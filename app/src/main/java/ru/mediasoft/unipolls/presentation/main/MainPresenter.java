@@ -1,7 +1,5 @@
 package ru.mediasoft.unipolls.presentation.main;
 
-import android.widget.Toast;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -11,7 +9,6 @@ import org.greenrobot.eventbus.Subscribe;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowErrorMessage;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowMessage;
 
@@ -37,13 +34,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     @Subscribe
-    public void onShowErrorMessage(ShowErrorMessage event){
-        Toast.makeText(event.appContext , event.tr.toString(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Subscribe
     public void onShowMessage(ShowMessage event){
-        Toast.makeText(event.ctx, event.message, Toast.LENGTH_LONG).show();
+        getViewState().showMessage(event.message);
     }
 
     public void setRootScreen(App appContext) {

@@ -126,4 +126,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
     public void hideLoader() {
         loader.setVisibility(View.GONE);
     }
+    @Override
+    public void showMessage(String str) {
+        Toast.makeText(MainActivity.this, str, Toast.LENGTH_LONG).show();
+    }
 }
