@@ -9,10 +9,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
+import java.util.List;
 
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
+import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.presentation.main.MainActivity;
 import ru.mediasoft.unipolls.presentation.polls.adapter.PollsAdapter;
@@ -80,11 +85,17 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showErrorMessage(Throwable e) {
-        Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
-        presenter.onStop();
-    }
+//    @Override
+//    public void showErrorMessage(Throwable e) {
+//        Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+//        presenter.onStop();
+//    }
+//
+//    @Override
+//    public void showErrorMessage(String message) {
+//        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
+//        presenter.onStop();
+//    }
 
     @Override
     public void onResume() {

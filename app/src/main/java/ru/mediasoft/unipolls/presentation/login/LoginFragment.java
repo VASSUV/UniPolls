@@ -7,7 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.webkit.WebView;
+import android.widget.EditText;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -19,6 +20,9 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     @InjectPresenter
     LoginPresenter mLoginPresenter;
 
+    WebView webView;
+    EditText username, password;
+
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
@@ -26,16 +30,11 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
         return fragment;
     }
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context applicationContext = getActivity().getApplicationContext();
-        if(applicationContext == null){
-            showErrorMessage("getApplicationContext() вернула null!");
-        }
-        else{
-            mLoginPresenter.onCreate();
-        }
+        mLoginPresenter.onCreate();
     }
 
     @Override
@@ -46,14 +45,23 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     @Override
     public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        username = view.findViewById(R.id.login_username);
+        password = view.findViewById(R.id.login_password);
 
-        view.findViewById(R.id.login_button).setOnClickListener(mLoginPresenter::onLoginButtonClick);
-        view.findViewById(R.id.registration_button).setOnClickListener(mLoginPresenter::onRegistrationButtonClick);
+        username.addTextChangedListener(mLoginPresenter.getNameListener());
+        password.addTextChangedListener(mLoginPresenter.getPasswordListener());
+
+        webView = view.findViewById(R.id.auth_webview);
+
+        view.findViewById(R.id.login_login_button).setOnClickListener(v ->
+                mLoginPresenter.onLoginButtonClick(webView)
+        );
+        view.findViewById(R.id.login_registration_button).setOnClickListener(mLoginPresenter::onRegistrationButtonClick);
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-
+    public void clearPasswordET() {
+        password.setText("");
     }
 }
+
