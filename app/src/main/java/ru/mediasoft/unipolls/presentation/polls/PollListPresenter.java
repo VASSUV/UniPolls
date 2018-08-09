@@ -16,6 +16,7 @@ import ru.mediasoft.unipolls.domain.interactor.GetSurveysInteractor;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
+import ru.mediasoft.unipolls.other.events.ShowMessage;
 
 @InjectViewState
 public class PollListPresenter extends MvpPresenter<PollListView> {
@@ -52,7 +53,7 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
 
             @Override
             public void onError(Throwable e) {
-                getViewState().showErrorMessage(e);
+                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
         });

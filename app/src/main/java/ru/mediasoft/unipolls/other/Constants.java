@@ -18,9 +18,6 @@ public class Constants {
         public static final String AUTH_END_CODE = "/oauth/authorize?";
         public static final String CLIENT_SECRET = "327907589871769526989995616616281591565";
         public static final String GRANT_TYPE = "authorization_code";
-
-        public static String USER_CODE; // TODO: 02.08.2018 вынести в sharedPreference
-        public static String ACCESS_TOKEN; // TODO: 03.08.2018 вынести в sharedPreference
     }
 }
 

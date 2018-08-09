@@ -53,11 +53,11 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
         cookieManager.removeAllCookies(booleanValueCallback);
 
         String getTokenUrl = "https://ru.surveymonkey.com/user/sign-in/?ut_source="
-                + "papi_client_" + "5Rwe_g_nQMOZdnC80Riq0Q"
+                + "papi_client_" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
                 + "&ep=" + "%2Foauth%2Fauthorize"
                 + "%3Fresponse_type%3D" + "code"
-                + "%26redirect_uri%3D" + "https%3A%2F%2Fwww.surveymonkey.com"
-                + "%26client_id%3D" + "5Rwe_g_nQMOZdnC80Riq0Q"
+                + "%26redirect_uri%3D" + Constants.SurveyMonkeyAuthApi.REDIRECT_URI.replace(":","%3A").replace("/","%2F")
+                + "%26client_id%3D" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
                 + "&ut_source2=" + "papi_oauth";
 
         webView.loadUrl(getTokenUrl);
@@ -104,7 +104,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                             Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
                             if (!s.equals("null")) {
                                 EventBus.getDefault().post(new ShowMessage(s));
-                                getViewState().cleatPasswordET();
+                                getViewState().clearPasswordET();
                             }
                         });
 

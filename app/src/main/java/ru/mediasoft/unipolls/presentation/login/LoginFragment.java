@@ -57,7 +57,8 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     }
 
     @Override
-    public void cleatPasswordET() {
+    public void clearPasswordET() {
         password.setText("");
     }
 }
+

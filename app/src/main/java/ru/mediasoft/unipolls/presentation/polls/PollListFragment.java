@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -79,17 +78,17 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showErrorMessage(Throwable e) {
-        Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
-        presenter.onStop();
-    }
-
-    @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
-        presenter.onStop();
-    }
+//    @Override
+//    public void showErrorMessage(Throwable e) {
+//        Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+//        presenter.onStop();
+//    }
+//
+//    @Override
+//    public void showErrorMessage(String message) {
+//        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
+//        presenter.onStop();
+//    }
 
     @Override
     public void onResume() {

@@ -3,9 +3,11 @@ package ru.mediasoft.unipolls.presentation.registration;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
@@ -19,8 +21,14 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+import ru.mediasoft.unipolls.App;
+import ru.mediasoft.unipolls.domain.dataclass.GetAccessTokenModel;
 import ru.mediasoft.unipolls.domain.interactor.GetAccessTokenInteractor;
+import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.CustomTextWatcher;
+import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowMessage;
@@ -48,18 +56,23 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
         };
         cookieManager.removeAllCookies(booleanValueCallback);
 
-        String getTokenUrl;
-        getTokenUrl = "https://ru.surveymonkey.com/user/sign-up/?ut_source=megamenu";
+        String Url = "https://ru.surveymonkey.com/user/sign-up/?ut_source="
+                + "papi_client_" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
+                + "&ep=" + "%2Foauth%2Fauthorize"
+                + "%3Fresponse_type%3D" + "code"
+                + "%26redirect_uri%3D" + Constants.SurveyMonkeyAuthApi.REDIRECT_URI.replace(":", "%3A").replace("/", "%2F")
+                + "%26client_id%3D" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
+                + "&ut_source2=" + "papi_oauth";
 
-        webView.loadUrl(getTokenUrl);
-        //webView.setVisibility(View.VISIBLE);
+        webView.loadUrl(Url);
+        webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        Log.i("MyLogs", "Start current url: " + getTokenUrl);
+        Log.i("MyLogs", "Start current url: " + Url);
 
-        String fusername = "InternalStruggle";
+        String fusername = "excel1228";
         String fpassword = "inernalstruggle73";
-        String femail = "vovarazinov@gmail.com";
+        String femail = "vovarazinov@mail.ru";
         String ffirstname = "Vova";
         String flastname = "Razinov";
 
@@ -89,7 +102,15 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
                     Log.i("MyLogs", "Auth started");
                     flag = true;
                 }
+                if (url.contains("code")) {
+                    App.getSharPref().saveCode(Uri.parse(url).getQueryParameter("code"));
+                    Log.i("MyLogs", "Constants.USER_CODE = " + App.getSharPref().getCode());
 
+                    if (!(App.getSharPref().getCode().isEmpty())) {
+                        webView.destroy();
+                        getAccessToken();
+                    }
+                }
                 view.evaluateJavascript("(function() {return document.getElementsByClassName('ErrorMessage')[0].getElementsByTagName('li')[0].innerHTML;})();",
                         s -> {
                             Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
@@ -125,6 +146,36 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
                 Log.i("MyLogs", "method: onCreateButtonClick.ORE \nError message: " + errorResponse.getMimeType());
             }
         });
+    }
+
+    private void getAccessToken() {
+        getAccessTokenInteractor.getAccessToken(Constants.SurveyMonkeyAuthApi.CLIENT_SECRET,
+                App.getSharPref().getCode(),
+                Constants.SurveyMonkeyAuthApi.REDIRECT_URI,
+                Constants.SurveyMonkeyAuthApi.CLIENT_ID,
+                Constants.SurveyMonkeyAuthApi.GRANT_TYPE, new SingleObserver<GetAccessTokenModel>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(GetAccessTokenModel getAccessTokenModel) {
+                        App.getSharPref().saveToken(getAccessTokenModel.token_type.concat(" ").concat(getAccessTokenModel.access_token));
+                        Log.i("MyLogs", "access_token: " + App.getSharPref().getToken());
+                        EventBus.getDefault().post(new HideLoaderEvent());
+                        App.getRouter().newRootScreen(Screen.USERINFO.name());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        EventBus.getDefault().post(new ShowMessage(e.getMessage()));
+                        EventBus.getDefault().post(new HideLoaderEvent());
+                        App.getSharPref().removeCodeAndToken();
+                        App.getRouter().backTo(Screen.START.name());
+                    }
+                });
     }
 
     public TextWatcher getNameListener() {
