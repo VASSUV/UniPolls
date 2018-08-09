@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
@@ -65,7 +64,7 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
                 + "&ut_source2=" + "papi_oauth";
 
         webView.loadUrl(Url);
-        webView.setVisibility(View.VISIBLE);
+        //webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
 
         Log.i("MyLogs", "Start current url: " + Url);
