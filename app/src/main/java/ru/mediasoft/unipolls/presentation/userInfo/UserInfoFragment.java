@@ -1,5 +1,6 @@
 package ru.mediasoft.unipolls.presentation.userInfo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
 public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoView {
+
     @InjectPresenter
     UserInfoPresenter presenter;
 
@@ -66,4 +69,3 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
         name.setText("");
         email.setText("");
     }
-}
