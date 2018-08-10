@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
