@@ -1,4 +1,4 @@
-package ru.mediasoft.unipolls.data;
+package ru.mediasoft.unipolls.data.net;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
@@ -10,6 +10,9 @@ import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
 import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
+import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
+import ru.mediasoft.unipolls.domain.dataclass.pollquestiondetail.SearchResultQuestionDetails;
+import ru.mediasoft.unipolls.domain.dataclass.pollquestions.SearchResultQuestions;
 import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
 import ru.mediasoft.unipolls.other.Constants;
 
@@ -29,6 +32,22 @@ public interface SMApi {
     Single<SearchResultSurveys> getSurveys();
 
     @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
-    @GET("/v3/surveys/{id}/details")
+    @GET("surveys/{id}")
     Single<SearchResultDetails> getSurveyDetails(@Path("id") String id);
+
+    //---------------------------------------
+
+    @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
+    @GET("surveys/{survey_id}/pages")
+    Single<SearchResultPages> getSurveyPages(@Path("survey_id") String id);
+
+    @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
+    @GET("surveys/{survey_id}/pages/{page_id}/questions")
+    Single<SearchResultQuestions> getPageQuestions(@Path("survey_id") String id, @Path("page_id") String pageId);
+
+    @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
+    @GET("surveys/{survey_id}/pages/{page_id}/questions/{question_id}")
+    Single<SearchResultQuestionDetails> getQuestionDetails(@Path("survey_id") String surveyId, @Path("page_id") String pageId, @Path("question_id") String questionId);
+
+
 }

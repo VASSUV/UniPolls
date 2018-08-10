@@ -10,7 +10,7 @@
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Качество связи"
+        tools:text="Качество связи"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="26sp" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtTitle"
         android:layout_marginTop="8dp"
-        android:text="@string/date_created" />
+        tools:text="@string/date_created" />
 
     <TextView
         android:id="@+id/txtDateModified"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtDateCreated"
         android:layout_marginTop="8dp"
-        android:text="@string/date_modified" />
+        tools:text="@string/date_modified" />
 
     <TextView
         android:id="@+id/txtResponseCount"
@@ -40,32 +40,14 @@
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/txtQuestions"
-        android:text="@string/questions"
-        android:layout_below="@+id/txtResponseCount"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnQuestions"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        style="@style/SMButtonTheme"
+        android:text="@string/to_review_poll"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recViewQuestions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/txtQuestions"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/txtNoQuestions"
-        android:layout_below="@id/txtQuestions"
-        android:text="@string/no_questions"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <ProgressBar
         android:id="@+id/progBarDetails"

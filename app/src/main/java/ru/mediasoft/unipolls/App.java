@@ -1,19 +1,18 @@
 package ru.mediasoft.unipolls;
 
-import com.arellomobile.mvp.MvpApplication;
+import android.app.Application;
 
-import ru.mediasoft.unipolls.data.NetworkService;
-import java.util.ArrayList;
-import java.util.List;
+import ru.mediasoft.unipolls.data.net.NetworkService;
 
+import ru.mediasoft.unipolls.data.repositories.DBRepository;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
-public class App extends MvpApplication {
+public class App extends Application {
+    private static App INSTANCE;
 
     //----------cicerone----------------------------------
-    public static App INSTANCE;
     private Cicerone<Router> cicerone;
 
     @Override
@@ -23,8 +22,8 @@ public class App extends MvpApplication {
         cicerone = Cicerone.create();
     }
 
-    public NavigatorHolder getNavigatorHolder() {
-        return cicerone.getNavigatorHolder();
+    public static NavigatorHolder getNavigatorHolder() {
+        return INSTANCE.cicerone.getNavigatorHolder();
     }
 
     public static Router getRouter() {
@@ -32,5 +31,14 @@ public class App extends MvpApplication {
     }
     //-----------------------------------------------------
 
-    final public NetworkService networkService = new NetworkService();
+    public static NetworkService getNetworkService() {
+        return INSTANCE.networkService;
+    }
+
+    public static DBRepository getDBRepository() {
+        return INSTANCE.dbRepository;
+    }
+
+    final private NetworkService networkService = new NetworkService();
+    final private DBRepository dbRepository = new DBRepository(this);
 }

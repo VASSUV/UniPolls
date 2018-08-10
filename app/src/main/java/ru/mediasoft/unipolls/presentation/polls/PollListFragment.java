@@ -82,14 +82,14 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     @Override
     public void onButtonClick(int position) {
         Bundle args = new Bundle();
-        args.putString(Constants.BundleKeys.POLL_TITLE_KEY, pollList.get(position).getTitle());
-        args.putString(Constants.BundleKeys.POLL_ID_KEY, pollList.get(position).getId());
+        args.putString(Constants.BundleKeys.POLL_TITLE_KEY, pollList.get(position).title);
+        args.putString(Constants.BundleKeys.POLL_ID_KEY, pollList.get(position).id);
         presenter.goToDetailFragment(args);
     }
 
     @Override
     public void setSurveysData(SearchResultSurveys searchResultSurveys) {
-        pollList = searchResultSurveys.getData();
+        pollList = searchResultSurveys.pollList;
         adapter.setPollList(pollList);
         adapter.notifyDataSetChanged();
         progBar.setVisibility(View.GONE);

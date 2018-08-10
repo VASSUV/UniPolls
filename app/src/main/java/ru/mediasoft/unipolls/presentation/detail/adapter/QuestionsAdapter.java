@@ -1,3 +1,4 @@
+/*
 package ru.mediasoft.unipolls.presentation.detail.adapter;
 
 import android.content.Context;
@@ -62,3 +63,4 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         }
     }
 }
+*/

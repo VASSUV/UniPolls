@@ -8,38 +8,18 @@ import java.util.List;
 public class SearchResultDetails {
     @SerializedName("response_count")
     @Expose
-    private Integer responseCount;
+    public Integer responseCount;
     @SerializedName("date_created")
     @Expose
-    private String dateCreated;
+    public String dateCreated;
     @SerializedName("question_count")
     @Expose
-    private Integer questionCount;
+    public Integer questionCount;
     @SerializedName("date_modified")
     @Expose
-    private String dateModified;
+    public String dateModified;
     @SerializedName("pages")
     @Expose
-    private List<Page> pages = null;
-
-    public Integer getResponseCount() {
-        return responseCount;
-    }
-
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public Integer getQuestionCount() {
-        return questionCount;
-    }
-
-    public String getDateModified() {
-        return dateModified;
-    }
-
-    public List<Page> getPages() {
-        return pages;
-    }
+    public List<Page> pages = null;
 
 }

@@ -8,7 +8,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.data.SMApi;
+import ru.mediasoft.unipolls.data.net.SMApi;
 import ru.mediasoft.unipolls.domain.interactors.CreateSurveyInteractor;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.terrakok.cicerone.Router;
@@ -26,10 +26,8 @@ public class MySurveysPresenter extends MvpPresenter<MySurveysView> {
         router = App.getRouter();
     }
 
-    public void onCreate(App applicationContext, MySurveysView mySurveysView) {
-        mySurveysView.hideProgressBar();
-        smApi = App.INSTANCE.networkService.smApi;
-        this.mySurveysView = mySurveysView;
+    public void onCreate() {
+        smApi = App.getNetworkService().smApi;
         createSurveyInteractor = new CreateSurveyInteractor(smApi);
     }
 
@@ -57,7 +55,6 @@ public class MySurveysPresenter extends MvpPresenter<MySurveysView> {
 //    }
 
     public void onAddSurveyButtonClick(View view) {
-        mySurveysView.showProgressBar();
         App.getRouter().navigateTo(Screen.NEWSURVEYNAME.name());
     }
 
