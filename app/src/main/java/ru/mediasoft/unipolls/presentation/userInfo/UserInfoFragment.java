@@ -11,13 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
 
 public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoView {
 
-    UserInfoPresenter presenter = new UserInfoPresenter();
+    @InjectPresenter
+    UserInfoPresenter presenter;
 
     private TextView name, email;
 
@@ -37,7 +39,7 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
             showErrorMessage("getApplicationContext() вернула null!");
         }
         else{
-            presenter.onCreate((App) applicationContext, this);
+            presenter.onCreate();
         }
     }
 
@@ -79,27 +81,5 @@ public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoVi
     public void clearFields() {
         name.setText("");
         email.setText("");
-    }
-
-    @Override
-    public void showProgressBar() {
-        if(getActivity().findViewById(R.id.progressBar) == null)
-        {
-            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
-        }
-        else {
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void hideProgressBar() {
-        if(getActivity().findViewById(R.id.progressBar) == null)
-        {
-            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
-        }
-        else {
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
-        }
     }
 }

@@ -34,20 +34,11 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
 
     private List<Poll> pollList;
 
-    private ProgressBar progBar;
-
     public static PollListFragment newInstance() {
         PollListFragment fragment = new PollListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        presenter.onCreate();
     }
 
     @Override
@@ -62,7 +53,6 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
 
         firstOperations(view);
 
-        presenter.onRequest();
         setHasOptionsMenu(true);
     }
 
@@ -74,9 +64,6 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         adapter.setOnDetailButtonClickListener(PollListFragment.this);
 
         recView.setAdapter(adapter);
-
-        progBar = view.findViewById(R.id.progBar);
-        progBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -92,7 +79,6 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         pollList = searchResultSurveys.pollList;
         adapter.setPollList(pollList);
         adapter.notifyDataSetChanged();
-        progBar.setVisibility(View.GONE);
     }
 
     @Override

@@ -6,18 +6,20 @@ import android.view.View;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.other.Screen;
+import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<LoginView> {
-
     public void onCreate() {
 
     }
 
     public void onLoginButtonClick(View view) {
-        getViewState().showProgressBar();
+        EventBus.getDefault().post(new ShowLoaderEvent());
         App.getRouter().navigateTo(Screen.USERINFO.name());
     }
 

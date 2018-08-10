@@ -17,7 +17,7 @@ import ru.mediasoft.unipolls.R;
 public class MySurveysFragment extends MvpAppCompatFragment implements MySurveysView {
 
     @InjectPresenter
-    MySurveysPresenter mMySurveysPresenter = new MySurveysPresenter();
+    MySurveysPresenter mMySurveysPresenter;
 
     TextView newSurveyName;
 
@@ -31,13 +31,7 @@ public class MySurveysFragment extends MvpAppCompatFragment implements MySurveys
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context applicationContext = getActivity().getApplicationContext();
-        if(applicationContext == null){
-            showErrorMessage("getApplicationContext() вернула null!");
-        }
-        else {
-            mMySurveysPresenter.onCreate((App) applicationContext, this);
-        }
+        mMySurveysPresenter.onCreate();
     }
 
     @Override
@@ -51,25 +45,7 @@ public class MySurveysFragment extends MvpAppCompatFragment implements MySurveys
 
         newSurveyName = view.findViewById(R.id.New_Survey_Name);
         newSurveyName.addTextChangedListener(mMySurveysPresenter.getTextListener());
-       // view.findViewById(R.id.add_survey).setOnClickListener(mMySurveysPresenter::onAddSurveyButtonClick);
-    }
-
-    @Override
-    public void showProgressBar() {
-        if (getActivity().findViewById(R.id.progressBar) == null) {
-            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
-        } else {
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void hideProgressBar() {
-        if (getActivity().findViewById(R.id.progressBar) == null) {
-            showErrorMessage("getActivity().findViewById(R.id.progressBar) == null!");
-        } else {
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
-        }
+        // view.findViewById(R.id.add_survey).setOnClickListener(mMySurveysPresenter::onAddSurveyButtonClick);
     }
 
     @Override
