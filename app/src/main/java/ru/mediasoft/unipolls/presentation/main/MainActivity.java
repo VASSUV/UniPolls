@@ -2,6 +2,7 @@ package ru.mediasoft.unipolls.presentation.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.router.CustomNavigator;
 
@@ -30,14 +32,17 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
 
         loader = findViewById(R.id.pre_loader);
 
-        App.INSTANCE.getNavigatorHolder().setNavigator(navigator);
-        presenter.setRootScreen((App)this.getApplicationContext());
-
+        App.getNavigatorHolder().setNavigator(navigator);
+        App.getRouter().newRootScreen(Screen.START.name());
         listener = () -> {
             switch (screen) {
 
             }
         };
+        Log.i(Constants.LOG_TAG_DB, "info: ");
+        App.getDBRepository().getPagesToLogs();
+        App.getDBRepository().getPollsToLogs();
+        App.getDBRepository().getQuestionsToLogs();
     }
 
     private CustomNavigator navigator = new CustomNavigator(getSupportFragmentManager(), R.id.fragment_container, listener) {
@@ -50,10 +55,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
                 return null;
             }
 
-            if (screen == Screen.DETAIL) {
-                return screen.create((Bundle) data);
-            }
-            return screen.create();
+            return screen.create((Bundle) data);
         }
 
         @Override
@@ -98,7 +100,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        App.INSTANCE.getNavigatorHolder().removeNavigator();
+        App.getNavigatorHolder().removeNavigator();
     }
 
     public void setActionBarTitle(String title) {

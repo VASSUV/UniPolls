@@ -2,8 +2,9 @@ package ru.mediasoft.unipolls;
 
 import android.app.Application;
 
-import ru.mediasoft.unipolls.data.NetworkService;
-import ru.mediasoft.unipolls.data.repositories.SharedPrefRepository;
+import ru.mediasoft.unipolls.data.net.NetworkService;
+
+import ru.mediasoft.unipolls.data.repositories.DBRepository;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
@@ -32,8 +33,8 @@ public class App extends Application {
         cicerone = Cicerone.create();
     }
 
-    public NavigatorHolder getNavigatorHolder() {
-        return cicerone.getNavigatorHolder();
+    public static NavigatorHolder getNavigatorHolder() {
+        return INSTANCE.cicerone.getNavigatorHolder();
     }
 
     public static Router getRouter() {
@@ -41,6 +42,16 @@ public class App extends Application {
     }
     //---------------cicerone--------------------------------------
 
-    final public NetworkService networkService = new NetworkService();
+    //-----------------------------------------------------
 
+    public static NetworkService getNetworkService() {
+        return INSTANCE.networkService;
+    }
+
+    public static DBRepository getDBRepository() {
+        return INSTANCE.dbRepository;
+    }
+
+    final private NetworkService networkService = new NetworkService();
+    final private DBRepository dbRepository = new DBRepository(this);
 }

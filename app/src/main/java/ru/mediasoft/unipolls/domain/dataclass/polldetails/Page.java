@@ -8,16 +8,8 @@ import java.util.List;
 public class Page {
     @SerializedName("questions")
     @Expose
-    private List<Question> questions = null;
+    public List<Question> questions = null;
     @SerializedName("question_count")
     @Expose
-    private Integer questionCount;
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public Integer getQuestionCount() {
-        return questionCount;
-    }
+    public Integer questionCount;
 }

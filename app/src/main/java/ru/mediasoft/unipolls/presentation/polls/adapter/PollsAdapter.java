@@ -50,7 +50,7 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
     public void onBindViewHolder(@NonNull PollsViewHolder holder, int position) {
         Poll currentPoll = pollList.get(position);
 
-        holder.txtPollName.setText(currentPoll.getTitle());
+        holder.txtPollName.setText(currentPoll.title);
     }
 
     @Override

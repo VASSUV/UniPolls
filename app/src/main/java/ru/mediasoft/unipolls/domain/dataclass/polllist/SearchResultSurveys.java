@@ -8,10 +8,5 @@ import java.util.List;
 public class SearchResultSurveys {
     @SerializedName("data")
     @Expose
-    private List<Poll> pollList = null;
-
-    public List<Poll> getData() {
-        return pollList;
-    }
-
+    public List<Poll> pollList = null;
 }
