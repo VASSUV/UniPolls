@@ -40,7 +40,12 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter.onCreate();
+        Bundle arguments = getArguments();
+
+        pollTitle = arguments.getString(Constants.BundleKeys.POLL_TITLE_KEY);
+        pollId = arguments.getString(Constants.BundleKeys.POLL_ID_KEY);
+
+        presenter.onCreate(pollId);
     }
 
     @Override
@@ -67,9 +72,6 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
         btnQuestions = view.findViewById(R.id.btnQuestions);
 
         btnQuestions.setOnClickListener(onBtnReviewClickListener);
-
-        presenter.getPollDetails(pollId);
-        presenter.getPollPages(pollId);
     }
 
     @Override

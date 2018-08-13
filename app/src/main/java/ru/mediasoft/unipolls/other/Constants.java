@@ -46,12 +46,19 @@ public class Constants {
             public static class Columns implements BaseColumns {
                 public static final String COLUMN_ID = "poll_id";
                 public static final String COLUMN_NAME = "poll_name";
+
+                public static final String COLUMN_DATE_CREATED = "date_created";
+                public static final String COLUMN_DATE_MODIFIED = "date_modified";
+                public static final String COLUMN_RESPONSE_COUNT = "response_count";
             }
 
             public static class Queries {
                 public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
                         Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         Columns.COLUMN_NAME + " TEXT not null, " +
+                        Columns.COLUMN_DATE_CREATED + " TEXT, " +
+                        Columns.COLUMN_DATE_MODIFIED + " TEXT, " +
+                        Columns.COLUMN_RESPONSE_COUNT + " TEXT, " +
                         Columns.COLUMN_ID + " TEXT not null);";
                 public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;
                 public static final String SELECT_ALL = "SELECT * FROM " + TABLE_NAME;

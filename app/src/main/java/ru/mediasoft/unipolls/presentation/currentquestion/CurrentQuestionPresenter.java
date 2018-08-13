@@ -26,16 +26,27 @@ public class CurrentQuestionPresenter extends MvpPresenter<CurrentQuestionView> 
 
     private Disposable disposable = null;
 
-    public void onCreate(String pollId, int position){
+    public void onCreate(String pollId, int position) {
         loadQuestionDetailInteractor = new LoadQuestionDetailInteractor();
         getQuestionDetails(pollId, position);
     }
 
-    public void getQuestionDetails(String pollId, int position){
-        String questionId = App.getDBRepository().getQuestionId(position);
-        String pageId = App.getDBRepository().getPageId(position);
+    public void getQuestionDetails(String pollId, int position) {
+        /*String questionId = App.getDBRepository().getQuestionId(position);
+        String pageId = App.getDBRepository().getPageId(position);*/
 
-        loadQuestionDetailInteractor.getQuestionDetail(pollId, pageId, questionId, new SingleObserver<SearchResultQuestionDetails>() {
+        SearchResultQuestionDetails searchResultQuestionDetails = App.getDBRepository().getQuestionByPosition(String.valueOf(position), pollId);
+
+        String questionTitle = searchResultQuestionDetails.heading.get(0).heading;
+        List<Choice> answers = searchResultQuestionDetails.answers.choices;
+
+        getViewState().setResult(questionTitle, answers, String.valueOf(position));
+        /*getViewState().setQuestionPosition(String.valueOf(position));
+        getViewState().setQuestionTitle(questionTitle);
+        getViewState().setAnswersList(answers);*/
+
+
+        /*loadQuestionDetailInteractor.getQuestionDetail(pollId, pageId, questionId, new SingleObserver<SearchResultQuestionDetails>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;
@@ -57,18 +68,18 @@ public class CurrentQuestionPresenter extends MvpPresenter<CurrentQuestionView> 
             public void onError(Throwable e) {
                 getViewState().showErrorMessage(e.getMessage());
             }
-        });
+        });*/
     }
 
-    public void onStop(){
-        if(disposable != null && !disposable.isDisposed()){
+    public void onStop() {
+        if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
     }
 
-    public void onSelected() {
+    /*public void onSelected() {
         if(disposable != null && !disposable.isDisposed()){
             EventBus.getDefault().post(new ShowLoaderEvent());
         }
-    }
+    }*/
 }

@@ -92,6 +92,14 @@ public class CurrentQuestionFragment extends MvpAppCompatFragment implements Cur
     }
 
     @Override
+    public void setResult(String questionTitle, List<Choice> answersList, String position) {
+        txtQuestion.setText(questionTitle);
+        adapter.setAnswers(answersList);
+        adapter.notifyDataSetChanged();
+        txtQuestionPosition.setText(position);
+    }
+
+    /*@Override
     public void setQuestionTitle(String questionTitle) {
         txtQuestion.setText(questionTitle);
     }
@@ -105,11 +113,11 @@ public class CurrentQuestionFragment extends MvpAppCompatFragment implements Cur
     @Override
     public void setQuestionPosition(String position) {
         txtQuestionPosition.setText(position);
-    }
+    }*/
 
-    public void onSelectedQuestion() {
+    /*public void onSelectedQuestion() {
         if(presenter != null) {
             presenter.onSelected();
         }
-    }
+    }*/
 }

@@ -28,6 +28,7 @@ public class QuestionsFragment extends MvpAppCompatFragment implements Questions
     private QuestionsPagerAdapter pagerAdapter;
 
     private String pollId;
+    private int questionCount;
 
     public static QuestionsFragment newInstance(Bundle args) {
         QuestionsFragment fragment = new QuestionsFragment();
@@ -40,11 +41,11 @@ public class QuestionsFragment extends MvpAppCompatFragment implements Questions
         super.onCreate(savedInstanceState);
 
         Bundle arguments = getArguments();
-        Log.i(Constants.LOG_TAG_DB, arguments.getString(Constants.BundleKeys.POLL_ID_KEY));
 
         pollId = arguments.getString(Constants.BundleKeys.POLL_ID_KEY);
 
         presenter.onCreate(pollId);
+        questionCount = App.getDBRepository().getQuestionCount(pollId);
     }
 
     @Override
@@ -60,7 +61,8 @@ public class QuestionsFragment extends MvpAppCompatFragment implements Questions
         viewPager = view.findViewById(R.id.questionsViewPager);
         pagerAdapter = new QuestionsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setOffscreenPageLimit(questionCount);
+        /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -75,7 +77,7 @@ public class QuestionsFragment extends MvpAppCompatFragment implements Questions
             public void onPageScrollStateChanged(int state) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -95,7 +97,7 @@ public class QuestionsFragment extends MvpAppCompatFragment implements Questions
     public void setResult() {
         Bundle args = new Bundle();
         args.putString(Constants.BundleKeys.POLL_ID_KEY, pollId);
-        args.putInt(Constants.BundleKeys.PAGE_QUESTIONS_COUNT, App.getDBRepository().getQuestionCount(pollId));
+        args.putInt(Constants.BundleKeys.PAGE_QUESTIONS_COUNT, questionCount);
         pagerAdapter.setArgs(args);
         pagerAdapter.notifyDataSetChanged();
     }

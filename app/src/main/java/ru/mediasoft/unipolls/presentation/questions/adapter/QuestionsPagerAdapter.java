@@ -40,7 +40,7 @@ public class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
-    public void onSelectedQuestion(int position){
+    /*public void onSelectedQuestion(int position){
        new Handler().postDelayed(()->((CurrentQuestionFragment)getItem(position)).onSelectedQuestion(), 500);
-    }
+    }*/
 }

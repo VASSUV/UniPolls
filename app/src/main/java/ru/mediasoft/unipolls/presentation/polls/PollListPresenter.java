@@ -8,9 +8,12 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
+import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
@@ -28,7 +31,14 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         loadSurveysInteractor = new LoadSurveysInteractor();
-        onRequest();
+
+        //TODO переделать(?)
+        List<Poll> pollListFromDB = App.getDBRepository().getPollList();
+        if (pollListFromDB.isEmpty()) {
+            onRequest();
+        }else{
+            getViewState().setPollList(pollListFromDB);
+        }
     }
 
     @Override
@@ -46,7 +56,7 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
 
             @Override
             public void onSuccess(SearchResultSurveys searchResultSurveys) {
-                getViewState().setSurveysData(searchResultSurveys);
+                getViewState().setPollList(searchResultSurveys.pollList);
                 for (int i = 0; i < searchResultSurveys.pollList.size(); i++) {
                     App.getDBRepository().savePoll(searchResultSurveys.pollList.get(i));
                 }

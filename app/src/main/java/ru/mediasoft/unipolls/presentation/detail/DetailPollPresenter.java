@@ -6,6 +6,7 @@ import android.os.Bundle;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
+import ru.mediasoft.unipolls.domain.dataclass.pollpages.Page;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
 import ru.mediasoft.unipolls.domain.interactor.LoadSurveyPagesInteractor;
 import ru.mediasoft.unipolls.other.Screen;
@@ -19,6 +20,8 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 @InjectViewState
 public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
@@ -28,34 +31,54 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
     private Disposable disposableDetails = null;
     private Disposable disposablePages = null;
 
-    public void onCreate(){
+    public void onCreate(String pollId) {
         loadSurveyDetailsInteractor = new LoadSurveyDetailsInteractor();
         loadSurveyPagesInteractor = new LoadSurveyPagesInteractor();
+
+        String dateCreated = App.getDBRepository().getDateCreated(pollId);
+        String dateModified = App.getDBRepository().getDateModified(pollId);
+        String responseCount = App.getDBRepository().getResponseCount(pollId);
+
+        if (dateCreated == null || dateModified == null || responseCount == null) {
+            getPollDetails(pollId);
+        }else{
+            getViewState().setDateCreated(dateCreated);
+            getViewState().setDateModified(dateModified);
+            getViewState().setResponseCount(responseCount);
+        }
+
+        if (App.getDBRepository().getPageList(pollId).isEmpty()) {
+            getPollPages(pollId);
+        }
     }
 
-    public void getPollDetails(String id){
+    public void getPollDetails(String id) {
         EventBus.getDefault().post(new ShowLoaderEvent());
         loadSurveyDetailsInteractor.getSurveyDetails(id, new SingleObserver<SearchResultDetails>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposableDetails = d;
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposableDetails = d;
+            }
 
-                    @Override
-                    public void onSuccess(SearchResultDetails searchResultDetails) {
-                        getViewState().setDateCreated(getFormatedDateCreated(searchResultDetails));
-                        getViewState().setDateModified(getFormatedDateModified(searchResultDetails));
-                        getViewState().setResponseCount(getResponseCount(searchResultDetails));
-                        EventBus.getDefault().post(new HideLoaderEvent());
-                    }
+            @Override
+            public void onSuccess(SearchResultDetails searchResultDetails) {
+                App.getDBRepository().saveDateCreated(id, getFormatedDateCreated(searchResultDetails));
+                App.getDBRepository().saveDateModified(id, getFormatedDateModified(searchResultDetails));
+                App.getDBRepository().saveResponseCount(id, getResponseCount(searchResultDetails));
+                getViewState().setDateCreated(getFormatedDateCreated(searchResultDetails));
+                getViewState().setDateModified(getFormatedDateModified(searchResultDetails));
+                getViewState().setResponseCount(getResponseCount(searchResultDetails));
+                EventBus.getDefault().post(new HideLoaderEvent());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getViewState().showErrorMessage(e.getMessage());
-                        EventBus.getDefault().post(new HideLoaderEvent());
-                    }
-                });
+            @Override
+            public void onError(Throwable e) {
+                getViewState().showErrorMessage(e.getMessage());
+                EventBus.getDefault().post(new HideLoaderEvent());
+            }
+        });
     }
+
     public void getPollPages(String id) {
         EventBus.getDefault().post(new ShowLoaderEvent());
         loadSurveyPagesInteractor.getPages(id, new SingleObserver<SearchResultPages>() {
@@ -66,10 +89,9 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
             @Override
             public void onSuccess(SearchResultPages searchResultPages) {
-                for(int i = 0; i < searchResultPages.data.size(); i++){
+                for (int i = 0; i < searchResultPages.data.size(); i++) {
                     App.getDBRepository().savePage(searchResultPages.data.get(i), id);
                 }
-                App.getDBRepository().getPagesToLogs();
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
 
@@ -116,10 +138,10 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
         return sbCreated.toString();
     }
 
-    public void onStop(){
-        if(disposableDetails != null && !disposableDetails.isDisposed()){
+    public void onStop() {
+        if (disposableDetails != null && !disposableDetails.isDisposed()) {
             disposableDetails.dispose();
-        }else if(disposablePages != null && !disposablePages.isDisposed()){
+        } else if (disposablePages != null && !disposablePages.isDisposed()) {
             disposablePages.dispose();
         }
     }
