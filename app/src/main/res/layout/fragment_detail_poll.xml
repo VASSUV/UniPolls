@@ -39,6 +39,13 @@
         android:layout_below="@+id/txtDateModified"
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/buttonAnalytics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtResponseCount"
+        android:text="Аналитика"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/btnQuestions"

@@ -15,9 +15,11 @@ import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
 import ru.mediasoft.unipolls.domain.interactor.LoadSurveyDetailsInteractor;
 import ru.mediasoft.unipolls.domain.interactor.LoadSurveyPagesInteractor;
+import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
+import ru.mediasoft.unipolls.other.events.ShowMessage;
 
 @InjectViewState
 public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
@@ -51,7 +53,7 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        getViewState().showErrorMessage(e.getMessage());
+                        EventBus.getDefault().post(new ShowMessage(e.getMessage()));
                         EventBus.getDefault().post(new HideLoaderEvent());
                     }
                 });
@@ -75,7 +77,7 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
             @Override
             public void onError(Throwable e) {
-                getViewState().showErrorMessage(e.getMessage());
+                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
             }
         });
     }
@@ -96,7 +98,6 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
                 .append(dModifiedArr[1])
                 .append("-")
                 .append(dModifiedArr[0]);
-
 
         return sbModified.toString();
     }
@@ -128,4 +129,9 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
         App.getRouter().navigateTo(Screen.QUESTIONS.name(), args);
     }
 
+    public void onBtnAnalyticsClick(String pollId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BundleKeys.POLL_ID_KEY, pollId);
+        App.getRouter().navigateTo(Screen.ANALYTICS.name(), bundle);
+    }
 }

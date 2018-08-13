@@ -12,6 +12,7 @@ import retrofit2.http.Path;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
 import ru.mediasoft.unipolls.domain.dataclass.GetAccessTokenModel;
+import ru.mediasoft.unipolls.domain.dataclass.analytics.PollRollUps;
 import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
@@ -45,7 +46,9 @@ public interface SMApi {
                                                @Field("client_id") String client_id,
                                                @Field("grant_type") String grant_type);
 
-    
+	@GET("v3/surveys/{poll_id}/rollups")
+    Single<PollRollUps> getSurveyRollUps(@Header("Authorization") String token, @Path("poll_id") String id);
+
     //---------------------------------------
 
     @GET("v3/surveys/{survey_id}/pages")

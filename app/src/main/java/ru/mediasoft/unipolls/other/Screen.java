@@ -4,12 +4,13 @@ import android.os.Bundle;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 
-import ru.mediasoft.unipolls.presentation.questions.QuestionsFragment;
-import ru.mediasoft.unipolls.presentation.login.LoginFragment;
-import ru.mediasoft.unipolls.presentation.registration.RegistrationFragment;
 import ru.mediasoft.unipolls.presentation.addpoll.AddingPollFragment;
+import ru.mediasoft.unipolls.presentation.analytics.AnalyticsFragment;
 import ru.mediasoft.unipolls.presentation.detail.DetailPollFragment;
+import ru.mediasoft.unipolls.presentation.login.LoginFragment;
 import ru.mediasoft.unipolls.presentation.polls.PollListFragment;
+import ru.mediasoft.unipolls.presentation.questions.QuestionsFragment;
+import ru.mediasoft.unipolls.presentation.registration.RegistrationFragment;
 import ru.mediasoft.unipolls.presentation.splash.SplashFragment;
 import ru.mediasoft.unipolls.presentation.userInfo.UserInfoFragment;
 
@@ -18,12 +19,10 @@ public enum Screen {
     START,
     USERINFO,
     REGISTRATION,
-    MYSURVEYS,
-    NEWSURVEYNAME,
     POLL_LIST,
     ADDING_POLL,
     QUESTIONS,
-    DETAIL;
+    DETAIL, ANALYTICS;
 
 
     public MvpAppCompatFragment create(Bundle args) {
@@ -44,6 +43,8 @@ public enum Screen {
                 return DetailPollFragment.newInstance(args);
             case QUESTIONS:
                 return QuestionsFragment.newInstance(args);
+            case ANALYTICS :
+                return AnalyticsFragment.newInstance(args);
             default:
                 return null;
         }

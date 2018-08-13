@@ -36,6 +36,7 @@
             android:textSize="16sp"
             android:layout_marginTop="8dp"
             android:focusable="true" />
+
         <TextView
             android:id="@+id/poll_compl_count"
             android:layout_width="match_parent"
@@ -48,9 +49,6 @@
             android:paddingBottom="8dp"
             android:paddingStart="8dp"
             />
-
-
-
 
     </RelativeLayout>
 
