@@ -38,7 +38,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
         getViewState().showMessage(event.message);
     }
 
-    public void setRootScreen(App appContext) {
+    public void setRootScreen() {
         if(App.getSharPref().getToken().isEmpty()){
             App.getRouter().newRootScreen(Screen.START.name());
         }

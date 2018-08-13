@@ -7,9 +7,9 @@ import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.pollquestions.SearchResultQuestions;
 
 public class LoadPageQuestionsInteractor {
-    public void loadPageQuestions(String surveyId, String pageId, SingleObserver<SearchResultQuestions> sub) {
+    public void loadPageQuestions(String token, String surveyId, String pageId, SingleObserver<SearchResultQuestions> sub) {
         App.getNetworkService().smApi
-                .getPageQuestions(surveyId, pageId)
+                .getPageQuestions(token, surveyId, pageId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(sub);

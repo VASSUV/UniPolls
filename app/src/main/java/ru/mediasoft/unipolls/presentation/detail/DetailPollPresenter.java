@@ -3,21 +3,21 @@ package ru.mediasoft.unipolls.presentation.detail;
 
 import android.os.Bundle;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
-import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
-import ru.mediasoft.unipolls.domain.interactor.LoadSurveyPagesInteractor;
-import ru.mediasoft.unipolls.other.Screen;
-import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
-import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
-import ru.mediasoft.unipolls.domain.interactor.LoadSurveyDetailsInteractor;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import org.greenrobot.eventbus.EventBus;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+import ru.mediasoft.unipolls.App;
+import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
+import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
+import ru.mediasoft.unipolls.domain.interactor.LoadSurveyDetailsInteractor;
+import ru.mediasoft.unipolls.domain.interactor.LoadSurveyPagesInteractor;
+import ru.mediasoft.unipolls.other.Screen;
+import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
+import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 
 @InjectViewState
 public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
@@ -35,7 +35,7 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
     public void getPollDetails(String id){
         EventBus.getDefault().post(new ShowLoaderEvent());
-        loadSurveyDetailsInteractor.getSurveyDetails(id, new SingleObserver<SearchResultDetails>() {
+        loadSurveyDetailsInteractor.getSurveyDetails(App.getSharPref().getToken(), id, new SingleObserver<SearchResultDetails>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         disposableDetails = d;
@@ -58,7 +58,7 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
     }
     public void getPollPages(String id) {
         EventBus.getDefault().post(new ShowLoaderEvent());
-        loadSurveyPagesInteractor.getPages(id, new SingleObserver<SearchResultPages>() {
+        loadSurveyPagesInteractor.getPages(App.getSharPref().getToken(), id, new SingleObserver<SearchResultPages>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposablePages = d;

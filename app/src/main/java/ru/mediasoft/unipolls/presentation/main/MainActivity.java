@@ -33,7 +33,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
         loader = findViewById(R.id.pre_loader);
 
         App.getNavigatorHolder().setNavigator(navigator);
-        App.getRouter().newRootScreen(Screen.START.name());
+        presenter.setRootScreen();
         listener = () -> {
             switch (screen) {
 

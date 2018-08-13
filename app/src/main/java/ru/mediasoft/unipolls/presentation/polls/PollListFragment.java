@@ -74,6 +74,7 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     @Override
     public void setSurveysData(SearchResultSurveys searchResultSurveys) {
         pollList = searchResultSurveys.pollList;
+        adapter.setInteractor();
         adapter.setPollList(pollList);
         adapter.notifyDataSetChanged();
     }

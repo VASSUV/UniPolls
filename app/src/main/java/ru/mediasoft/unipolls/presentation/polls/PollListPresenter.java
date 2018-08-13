@@ -11,8 +11,6 @@ import org.greenrobot.eventbus.EventBus;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
-import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.domain.interactor.LoadSurveysInteractor;
 import ru.mediasoft.unipolls.other.Screen;
@@ -41,7 +39,7 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
 
     private void onRequest() {
         EventBus.getDefault().post(new ShowLoaderEvent());
-        loadSurveysInteractor.getSurveys(new SingleObserver<SearchResultSurveys>() {
+        loadSurveysInteractor.getSurveys(App.getSharPref().getToken(), new SingleObserver<SearchResultSurveys>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;
@@ -58,7 +56,7 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
 
             @Override
             public void onError(Throwable e) {
-                getViewState().showErrorMessage(e);
+                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
         });

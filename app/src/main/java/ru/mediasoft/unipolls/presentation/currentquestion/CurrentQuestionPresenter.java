@@ -1,6 +1,13 @@
 package ru.mediasoft.unipolls.presentation.currentquestion;
 
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
@@ -9,15 +16,6 @@ import ru.mediasoft.unipolls.domain.dataclass.pollquestiondetail.SearchResultQue
 import ru.mediasoft.unipolls.domain.interactor.LoadQuestionDetailInteractor;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
-
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 @InjectViewState
 public class CurrentQuestionPresenter extends MvpPresenter<CurrentQuestionView> {
@@ -35,7 +33,7 @@ public class CurrentQuestionPresenter extends MvpPresenter<CurrentQuestionView> 
         String questionId = App.getDBRepository().getQuestionId(position);
         String pageId = App.getDBRepository().getPageId(position);
 
-        loadQuestionDetailInteractor.getQuestionDetail(pollId, pageId, questionId, new SingleObserver<SearchResultQuestionDetails>() {
+        loadQuestionDetailInteractor.getQuestionDetail(App.getSharPref().getToken(), pollId, pageId, questionId, new SingleObserver<SearchResultQuestionDetails>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;

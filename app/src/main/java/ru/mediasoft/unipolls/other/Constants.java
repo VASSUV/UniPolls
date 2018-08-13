@@ -3,12 +3,11 @@ package ru.mediasoft.unipolls.other;
 import android.provider.BaseColumns;
 
 public class Constants {
-    public static class SurveyMonkeyApi {
-        public static final String BASE_URL = "https://api.surveymonkey.com";
+
     public static final String LOG_TAG_DB = "mDb";
 
     public static class SurveyMonkeyApi {
-        public static final String BASE_URL = "https://api.surveymonkey.com/v3/";
+        public static final String BASE_URL = "https://api.surveymonkey.com";
         public static final String AUTH_KEY = "Authorization:bearer LBiQHvyhTbN3YqEM1ItHOjefSF2SinkRVKaPaJcRG7wRtyt0E9rww1BSTLBnuN5zysaxkemzk.ydEqZNqiXlrzBLMBK-wNurxQpoagNoto6xFL.KRakvJePVtmB1SAHz";
         public static final String CONTENT_TYPE = "Content-Type: application/json";
     }
@@ -50,7 +49,7 @@ public class Constants {
             }
         }
 
-        public static class PollsTable{
+        public static class PollsTable {
             public static final String TABLE_NAME = "polls_table";
 
             public static class Columns implements BaseColumns {
@@ -92,6 +91,7 @@ public class Constants {
                 public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;
                 public static final String SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
             }
+        }
     }
 }
 

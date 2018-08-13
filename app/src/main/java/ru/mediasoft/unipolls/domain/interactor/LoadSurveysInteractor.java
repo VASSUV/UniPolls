@@ -8,9 +8,9 @@ import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 
 public class LoadSurveysInteractor {
 
-    public void getSurveys(SingleObserver<SearchResultSurveys> sub){
+    public void getSurveys(String token, SingleObserver<SearchResultSurveys> sub){
          App.getNetworkService().smApi
-                 .getSurveys()
+                 .getSurveys(token)
                  .subscribeOn(Schedulers.io())
                  .observeOn(AndroidSchedulers.mainThread())
                  .subscribe(sub);

@@ -13,7 +13,6 @@ import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.Page;
 import ru.mediasoft.unipolls.domain.interactor.LoadMultiPageQuestionsInteractor;
-import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 
 @InjectViewState
@@ -33,7 +32,7 @@ public class QuestionsPresenter extends MvpPresenter<QuestionsView> {
         EventBus.getDefault().post(new ShowLoaderEvent());
         List<Page> pageList = App.getDBRepository().getPageList(pollId);
 
-        loadMultiPageQuestionsInteractor.loadPageQuestions(pageList, pollId, new SingleObserver<Boolean>() {
+        loadMultiPageQuestionsInteractor.loadPageQuestions(App.getSharPref().getToken(), pageList, pollId, new SingleObserver<Boolean>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;

@@ -1,4 +1,4 @@
-package ru.mediasoft.unipolls.domain.interactors;
+package ru.mediasoft.unipolls.domain.interactor;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -16,8 +16,8 @@ public class CreateSurveyInteractor {
         this.smApi = smApi;
     }
 
-    public void createSurvey(String name, SingleObserver<CreateSurveyModel> sub){
-        App.getNetworkService().smApi.createSurvey(new CreateSurveyRequestModel(name))
+    public void createSurvey(String token, String name, SingleObserver<CreateSurveyModel> sub){
+        App.getNetworkService().smApi.createSurvey(token, new CreateSurveyRequestModel(name))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(sub);

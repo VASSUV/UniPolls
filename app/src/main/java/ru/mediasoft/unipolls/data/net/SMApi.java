@@ -48,17 +48,14 @@ public interface SMApi {
     
     //---------------------------------------
 
-    @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
-    @GET("surveys/{survey_id}/pages")
-    Single<SearchResultPages> getSurveyPages(@Path("survey_id") String id);
+    @GET("v3/surveys/{survey_id}/pages")
+    Single<SearchResultPages> getSurveyPages(@Header("Authorization") String token, @Path("survey_id") String id);
 
-    @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
-    @GET("surveys/{survey_id}/pages/{page_id}/questions")
-    Single<SearchResultQuestions> getPageQuestions(@Path("survey_id") String id, @Path("page_id") String pageId);
+    @GET("v3/surveys/{survey_id}/pages/{page_id}/questions")
+    Single<SearchResultQuestions> getPageQuestions(@Header("Authorization") String token, @Path("survey_id") String id, @Path("page_id") String pageId);
 
-    @Headers({Constants.SurveyMonkeyApi.AUTH_KEY})
-    @GET("surveys/{survey_id}/pages/{page_id}/questions/{question_id}")
-    Single<SearchResultQuestionDetails> getQuestionDetails(@Path("survey_id") String surveyId, @Path("page_id") String pageId, @Path("question_id") String questionId);
+    @GET("v3/surveys/{survey_id}/pages/{page_id}/questions/{question_id}")
+    Single<SearchResultQuestionDetails> getQuestionDetails(@Header("Authorization") String token, @Path("survey_id") String surveyId, @Path("page_id") String pageId, @Path("question_id") String questionId);
 
 
 }
