@@ -6,10 +6,10 @@ import io.reactivex.schedulers.Schedulers;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 
-public class GetSurveysInteractor {
+public class LoadSurveysInteractor {
 
     public void getSurveys(String token, SingleObserver<SearchResultSurveys> sub){
-         App.INSTANCE.networkService.smApi
+         App.getNetworkService().smApi
                  .getSurveys(token)
                  .subscribeOn(Schedulers.io())
                  .observeOn(AndroidSchedulers.mainThread())

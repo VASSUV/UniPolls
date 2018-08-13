@@ -16,18 +16,11 @@ import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowMessage;
-import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class UserInfoPresenter extends MvpPresenter<UserInfoView>{
 
     private UserInfoInteractor userInfoInteractor;
-    private Router router;
-
-    public UserInfoPresenter(){
-        router = App.getRouter();
-    }
-
 
     public void onCreate() {
         userInfoInteractor = new UserInfoInteractor();
@@ -35,7 +28,7 @@ public class UserInfoPresenter extends MvpPresenter<UserInfoView>{
 
     public void getUserInfo(View view) {
         EventBus.getDefault().post(new ShowLoaderEvent());
-        userInfoInteractor.getUserInfo(App.getSharPref().getToken() ,new SingleObserver<UserInfoModel>() {
+        userInfoInteractor.getUserInfo(App.getSharPref().getToken(), new SingleObserver<UserInfoModel>() {
             @Override
             public void onSubscribe(Disposable d) {
 

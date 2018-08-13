@@ -12,7 +12,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
-import ru.mediasoft.unipolls.domain.interactor.GetSurveysInteractor;
+import ru.mediasoft.unipolls.domain.interactor.LoadSurveysInteractor;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
@@ -21,15 +21,15 @@ import ru.mediasoft.unipolls.other.events.ShowMessage;
 @InjectViewState
 public class PollListPresenter extends MvpPresenter<PollListView> {
 
-    private GetSurveysInteractor getSurveysInteractor;
+    private LoadSurveysInteractor loadSurveysInteractor;
 
     private Disposable disposable = null;
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-            getSurveysInteractor = new GetSurveysInteractor();
-            onRequest();
+        loadSurveysInteractor = new LoadSurveysInteractor();
+        onRequest();
     }
 
     @Override
@@ -37,9 +37,9 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
         super.onDestroy();
     }
 
-    private void onRequest(){
+    private void onRequest() {
         EventBus.getDefault().post(new ShowLoaderEvent());
-        getSurveysInteractor.getSurveys(App.getSharPref().getToken() ,new SingleObserver<SearchResultSurveys>() {
+        loadSurveysInteractor.getSurveys(App.getSharPref().getToken(), new SingleObserver<SearchResultSurveys>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;
@@ -48,6 +48,9 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
             @Override
             public void onSuccess(SearchResultSurveys searchResultSurveys) {
                 getViewState().setSurveysData(searchResultSurveys);
+                for (int i = 0; i < searchResultSurveys.pollList.size(); i++) {
+                    App.getDBRepository().savePoll(searchResultSurveys.pollList.get(i));
+                }
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
 
@@ -59,16 +62,18 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
         });
     }
 
-    public void onStop(){
-        if(disposable!= null && !disposable.isDisposed()){
+    public void onStop() {
+        if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
     }
 
-    public void goToDetailFragment(Bundle args){
+    public void goToDetailFragment(Bundle args) {
         App.getRouter().navigateTo(Screen.DETAIL.name(), args);
     }
-    public void goToAddingPollFragment(){
-        App.getRouter().navigateTo(Screen.NEWSURVEYNAME.name());
+
+    public void goToAddingPollFragment() {
+        App.getRouter().navigateTo(Screen.ADDING_POLL.name());
     }
+
 }

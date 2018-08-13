@@ -1,16 +1,16 @@
-package ru.mediasoft.unipolls.domain.dataclass.polldetails;
+package ru.mediasoft.unipolls.domain.dataclass.pollquestions;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Question {
-    @SerializedName("headings")
-    @Expose
-    public List<Heading> headings = null;
     @SerializedName("position")
     @Expose
     public Integer position;
-
+    @SerializedName("heading")
+    @Expose
+    public String heading;
+    @SerializedName("id")
+    @Expose
+    public String id;
 }

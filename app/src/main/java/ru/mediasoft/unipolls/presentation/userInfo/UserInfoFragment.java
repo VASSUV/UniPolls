@@ -14,6 +14,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import ru.mediasoft.unipolls.R;
 
 public class UserInfoFragment extends MvpAppCompatFragment implements UserInfoView {
+
     @InjectPresenter
     UserInfoPresenter presenter;
 

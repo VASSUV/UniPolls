@@ -20,5 +20,6 @@
     <string name="no_questions">Не найдено ни одного вопроса</string>
     <string name="add_new_poll">Добавить опрос</string>
     <string name="new_poll">Новый опрос</string>
+    <string name="to_review_poll">Просмотр опроса</string>
 
 </resources>

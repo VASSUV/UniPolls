@@ -6,5 +6,7 @@ import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 
 public interface DetailPollView extends MvpView {
     void showErrorMessage(String errorMessage);
-    void setResult(SearchResultDetails searchResultDetails);
+    void setDateCreated(String dateCreated);
+    void setDateModified(String dateModified);
+    void setResponseCount(String responseCount);
 }

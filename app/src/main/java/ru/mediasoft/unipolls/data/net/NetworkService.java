@@ -1,4 +1,4 @@
-package ru.mediasoft.unipolls.data;
+package ru.mediasoft.unipolls.data.net;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

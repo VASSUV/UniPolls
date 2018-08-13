@@ -13,7 +13,7 @@ public class GetAccessTokenInteractor {
                                String client_id,
                                String grant_type,
                                SingleObserver<GetAccessTokenModel> sub) {
-        App.INSTANCE.networkService.smApi.getAccessToken(client_secret, code, redirect_uri, client_id, grant_type)
+        App.getNetworkService().smApi.getAccessToken(client_secret, code, redirect_uri, client_id, grant_type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(sub);

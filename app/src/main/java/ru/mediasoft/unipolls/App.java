@@ -2,13 +2,18 @@ package ru.mediasoft.unipolls;
 
 import android.app.Application;
 
-import ru.mediasoft.unipolls.data.NetworkService;
+import ru.mediasoft.unipolls.data.net.NetworkService;
+import ru.mediasoft.unipolls.data.repositories.DBRepository;
 import ru.mediasoft.unipolls.data.repositories.SharedPrefRepository;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
 public class App extends Application {
+
+    public static App INSTANCE;
+
+    private Cicerone<Router> cicerone;
 
 
     //----------------SharedPrefRep--------------------------------
@@ -20,10 +25,6 @@ public class App extends Application {
     //----------------SharedPrefRep--------------------------------
 
     //----------------cicerone-------------------------------------
-    public static App INSTANCE;
-
-    private Cicerone<Router> cicerone;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,8 +33,8 @@ public class App extends Application {
         cicerone = Cicerone.create();
     }
 
-    public NavigatorHolder getNavigatorHolder() {
-        return cicerone.getNavigatorHolder();
+    public static NavigatorHolder getNavigatorHolder() {
+        return INSTANCE.cicerone.getNavigatorHolder();
     }
 
     public static Router getRouter() {
@@ -41,6 +42,16 @@ public class App extends Application {
     }
     //---------------cicerone--------------------------------------
 
-    final public NetworkService networkService = new NetworkService();
+    //-----------------------------------------------------
+
+    final private NetworkService networkService = new NetworkService();
+    public static NetworkService getNetworkService() {
+        return INSTANCE.networkService;
+    }
+
+    final private DBRepository dbRepository = new DBRepository(this);
+    public static DBRepository getDBRepository() {
+        return INSTANCE.dbRepository;
+    }
 
 }
