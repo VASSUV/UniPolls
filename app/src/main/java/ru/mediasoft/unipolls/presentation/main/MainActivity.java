@@ -15,7 +15,7 @@ import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.router.CustomNavigator;
 
-public class MainActivity extends MvpAppCompatActivity implements MainView{
+public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @InjectPresenter
     MainPresenter presenter;
@@ -124,10 +124,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView{
     public void showLoader() {
         loader.setVisibility(View.VISIBLE);
     }
+
     @Override
     public void hideLoader() {
         loader.setVisibility(View.GONE);
     }
+
     @Override
     public void showMessage(String str) {
         Toast.makeText(MainActivity.this, str, Toast.LENGTH_LONG).show();

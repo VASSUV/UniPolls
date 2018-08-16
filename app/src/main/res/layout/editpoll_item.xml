@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editPollItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/editPollItem_questName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Вопрос: "
+            android:padding="8dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/editPollItem_questCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editPollItem_questName"
+            android:paddingBottom="8dp"
+            android:paddingStart="8dp"
+            android:text="Количество вопросов: "
+            android:textSize="16sp" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

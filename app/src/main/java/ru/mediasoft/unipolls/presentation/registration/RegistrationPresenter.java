@@ -11,7 +11,6 @@ import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -133,16 +132,6 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 Log.i("MyLogs", "omethod: onCreateButtonClick.ORE \nError message: " + error.getDescription());
-            }
-
-            @Override
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                super.onReceivedHttpError(view, request, errorResponse);
-                Log.i("MyLogs", "method: onCreateButtonClick.ORE \nError message: " + errorResponse.getData());
-                Log.i("MyLogs", "method: onCreateButtonClick.ORE \nError message: " + errorResponse.getReasonPhrase());
-                Log.i("MyLogs", "method: onCreateButtonClick.ORE \nError message: " + errorResponse.getStatusCode());
-                Log.i("MyLogs", "method: onCreateButtonClick.ORE \nError message: " + errorResponse.getEncoding());
-                Log.i("MyLogs", "method: onCreateButtonClick.ORE \nError message: " + errorResponse.getMimeType());
             }
         });
     }

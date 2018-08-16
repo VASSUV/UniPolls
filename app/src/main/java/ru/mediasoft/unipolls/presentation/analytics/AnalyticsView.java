@@ -2,6 +2,8 @@ package ru.mediasoft.unipolls.presentation.analytics;
 
 import com.arellomobile.mvp.MvpView;
 
-public interface AnalyticsView extends MvpView {
+import ru.mediasoft.unipolls.domain.dataclass.analytics.PollRollUps;
 
+public interface AnalyticsView extends MvpView {
+    void setAnQuestionsData(PollRollUps pollRollUps);
 }

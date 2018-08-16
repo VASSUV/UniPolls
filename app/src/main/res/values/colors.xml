@@ -2,12 +2,12 @@
 <resources>
     <color name="colorPrimary">#00bf6f</color>
     <color name="colorPrimaryDark">#272727</color>
-    <color name="colorAccent">#272727</color>
+    <color name="colorAccent">#00bf6f</color>
 
     <color name="colourSMGreen">#00bf6f</color>
     <color name="colourSMOrange">#ff6410</color>
-    <color name="colourSMWhite">#ffffff</color>
-    <color name="colourSMLightGreen">#88e5be</color>
+    <color name="colourSMWhite">#bdf9c7</color>
+    <color name="colourSMLightGreen">#20c13b</color>
     <color name="colourSMGrey">#272727</color>
     <color name="legacy_primary">#106200</color>
 

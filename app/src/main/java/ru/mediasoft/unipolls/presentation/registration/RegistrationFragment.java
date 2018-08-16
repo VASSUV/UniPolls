@@ -10,7 +10,10 @@ import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import java.util.Objects;
+
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.presentation.main.MainActivity;
 
 public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView {
 
@@ -72,5 +75,11 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @Override
     public void clearPasswordET() {
         password.setText("");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Регистрация");
     }
 }

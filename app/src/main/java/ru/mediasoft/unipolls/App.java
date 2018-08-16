@@ -53,5 +53,4 @@ public class App extends Application {
     public static DBRepository getDBRepository() {
         return INSTANCE.dbRepository;
     }
-
 }

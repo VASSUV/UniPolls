@@ -74,27 +74,13 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     @Override
     public void setSurveysData(SearchResultSurveys searchResultSurveys) {
         pollList = searchResultSurveys.pollList;
-        adapter.setInteractor();
         adapter.setPollList(pollList);
         adapter.notifyDataSetChanged();
     }
 
-//    @Override
-//    public void showErrorMessage(Throwable e) {
-//        Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
-//        presenter.onStop();
-//    }
-//
-//    @Override
-//    public void showErrorMessage(String message) {
-//        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
-//        presenter.onStop();
-//    }
-
     @Override
     public void onResume() {
         super.onResume();
-
         ((MainActivity)getActivity()).setActionBarTitle(getActivity().getResources().getString(R.string.questions_fragment_title));
     }
 

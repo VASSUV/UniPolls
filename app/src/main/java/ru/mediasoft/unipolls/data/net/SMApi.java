@@ -59,6 +59,4 @@ public interface SMApi {
 
     @GET("v3/surveys/{survey_id}/pages/{page_id}/questions/{question_id}")
     Single<SearchResultQuestionDetails> getQuestionDetails(@Header("Authorization") String token, @Path("survey_id") String surveyId, @Path("page_id") String pageId, @Path("question_id") String questionId);
-
-
 }

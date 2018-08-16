@@ -7,10 +7,7 @@ import java.util.List;
 
 
 public class PollRollUps {
-    @SerializedName("total")
-    @Expose
-    public Integer total;
     @SerializedName("data")
     @Expose
-    public List<Data> data = null;
+    public List<AnData> data = null;
 }

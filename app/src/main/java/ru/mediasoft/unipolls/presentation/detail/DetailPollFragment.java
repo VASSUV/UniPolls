@@ -61,7 +61,8 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
 
         btnQuestions = view.findViewById(R.id.btnQuestions);
         btnQuestions.setOnClickListener(onBtnReviewClickListener);
-        view.findViewById(R.id.buttonAnalytics).setOnClickListener(v -> presenter.onBtnAnalyticsClick(pollId));
+        view.findViewById(R.id.buttonAnalytics).setOnClickListener(v -> presenter.onBtnAnalyticsClick(pollId, pollTitle));
+        view.findViewById(R.id.detail_editPoll).setOnClickListener(v -> presenter.onEditButtonClick(pollId, pollTitle));
 
         presenter.getPollDetails(pollId);
         presenter.getPollPages(pollId);

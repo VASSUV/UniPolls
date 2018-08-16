@@ -56,7 +56,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                 + "papi_client_" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
                 + "&ep=" + "%2Foauth%2Fauthorize"
                 + "%3Fresponse_type%3D" + "code"
-                + "%26redirect_uri%3D" + Constants.SurveyMonkeyAuthApi.REDIRECT_URI.replace(":","%3A").replace("/","%2F")
+                + "%26redirect_uri%3D" + Constants.SurveyMonkeyAuthApi.REDIRECT_URI.replace(":", "%3A").replace("/", "%2F")
                 + "%26client_id%3D" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
                 + "&ut_source2=" + "papi_oauth";
 
@@ -67,10 +67,10 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
 
         String fusername = "AlexUnder";
         String fpassword = "formediasoft312";
-
         webView.setWebViewClient(new WebViewClient() {
 
             Boolean flag = false;
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -107,7 +107,6 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                                 getViewState().clearPasswordET();
                             }
                         });
-
             }
 
             @Override
@@ -121,7 +120,9 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
+                EventBus.getDefault().post(new ShowMessage(error.getDescription().toString()));
                 Log.i("MyLogs", "ORE Error message: " + error.getDescription());
+                Log.i("MyLogs", "ORE Error code: " + error.getErrorCode());
             }
         });
     }

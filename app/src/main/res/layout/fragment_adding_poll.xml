@@ -1,7 +1,103 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.addpoll.AddingPollFragment">
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/add_pollNameWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/add_poll_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Название опроса"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/add_createPollButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Создать"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_questionCreate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/add_poll_nameFin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Название опроса"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/add_questionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Название вопроса"
+            android:inputType="text"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/add_ans1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Ответ 1"
+            android:inputType="text"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/add_ans2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Ответ 2"
+            android:inputType="text"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/add_ans3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Ответ 3"
+            android:inputType="text"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/add_ans4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Ответ 4"
+            android:inputType="text"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/add_createQuestionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Создать"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</RelativeLayout>

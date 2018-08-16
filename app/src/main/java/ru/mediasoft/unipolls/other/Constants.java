@@ -7,9 +7,7 @@ public class Constants {
     public static final String LOG_TAG_DB = "mDb";
 
     public static class SurveyMonkeyApi {
-        public static final String BASE_URL = "https://api.surveymonkey.com";
-        public static final String AUTH_KEY = "Authorization:bearer LBiQHvyhTbN3YqEM1ItHOjefSF2SinkRVKaPaJcRG7wRtyt0E9rww1BSTLBnuN5zysaxkemzk.ydEqZNqiXlrzBLMBK-wNurxQpoagNoto6xFL.KRakvJePVtmB1SAHz";
-        public static final String CONTENT_TYPE = "Content-Type: application/json";
+        public static final String BASE_URL = "https://api.surveymonkey.com";public static final String CONTENT_TYPE = "Content-Type: application/json";
     }
 
     public static class BundleKeys {
@@ -19,13 +17,13 @@ public class Constants {
         public static final String PAGE_QUESTIONS_COUNT = "questions_count";
         public static final String PAGE_ID_KEY = "page_id";
         public static final String QUESTION_POSITION = "question_pos";
+        public static final String QUESTION_TITLE_KEY = "qusetion_title";
     }
 
     public static class SurveyMonkeyAuthApi {
-        public static final String CLIENT_ID = "5Rwe_g_nQMOZdnC80Riq0Q";
+        public static final String CLIENT_ID = "k0i_9kOwRkqCRlr31oWTNg";
         public static final String REDIRECT_URI = "https://www.surveymonkey.com";
-        public static final String AUTH_END_CODE = "/oauth/authorize?";
-        public static final String CLIENT_SECRET = "327907589871769526989995616616281591565";
+        public static final String CLIENT_SECRET = "122160349797041951548922518374682087147";
         public static final String GRANT_TYPE = "authorization_code";
     }
 

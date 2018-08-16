@@ -14,7 +14,9 @@ import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.Page;
 import ru.mediasoft.unipolls.domain.dataclass.pollquestions.Question;
 import ru.mediasoft.unipolls.other.Constants;
-import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.*;
+import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.PagesTable;
+import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.PollsTable;
+import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.QuestionsTable;
 
 public class DBRepository {
 
@@ -177,6 +179,16 @@ public class DBRepository {
         db.close();
 
         return count;
+    }
+
+    public String getPollNameViaId(String id){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("polls_table", new String[]{"poll_name"}, "poll_id = ?", new String[]{id}, null,null,null);
+        cursor.moveToFirst();
+        String name = cursor.getString(cursor.getColumnIndex("poll_name"));
+        cursor.close();
+        db.close();
+        return name;
     }
 
     public void getPagesToLogs() {

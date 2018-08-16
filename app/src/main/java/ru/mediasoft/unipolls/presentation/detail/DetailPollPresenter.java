@@ -129,9 +129,17 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
         App.getRouter().navigateTo(Screen.QUESTIONS.name(), args);
     }
 
-    public void onBtnAnalyticsClick(String pollId) {
+    public void onBtnAnalyticsClick(String pollId, String pollTitle) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BundleKeys.POLL_ID_KEY, pollId);
+        bundle.putString(Constants.BundleKeys.POLL_TITLE_KEY, pollTitle);
         App.getRouter().navigateTo(Screen.ANALYTICS.name(), bundle);
+    }
+
+    public void onEditButtonClick(String pollId, String pollTitle) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BundleKeys.POLL_ID_KEY, pollId);
+        bundle.putString(Constants.BundleKeys.POLL_TITLE_KEY, pollTitle);
+        App.getRouter().navigateTo(Screen.EDITPOLL.name(), bundle);
     }
 }
