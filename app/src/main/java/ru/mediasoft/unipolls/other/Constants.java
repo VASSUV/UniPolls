@@ -8,7 +8,6 @@ public class Constants {
 
     public static class SurveyMonkeyApi {
         public static final String BASE_URL = "https://api.surveymonkey.com";
-        public static final String AUTH_KEY = "Authorization:bearer LBiQHvyhTbN3YqEM1ItHOjefSF2SinkRVKaPaJcRG7wRtyt0E9rww1BSTLBnuN5zysaxkemzk.ydEqZNqiXlrzBLMBK-wNurxQpoagNoto6xFL.KRakvJePVtmB1SAHz";
         public static final String CONTENT_TYPE = "Content-Type: application/json";
     }
 
@@ -22,10 +21,10 @@ public class Constants {
     }
 
     public static class SurveyMonkeyAuthApi {
-        public static final String CLIENT_ID = "5Rwe_g_nQMOZdnC80Riq0Q";
+        public static final String CLIENT_ID = "BXJVg4Q9RMKv0upgajVZiQ";
         public static final String REDIRECT_URI = "https://www.surveymonkey.com";
         public static final String AUTH_END_CODE = "/oauth/authorize?";
-        public static final String CLIENT_SECRET = "327907589871769526989995616616281591565";
+        public static final String CLIENT_SECRET = "52722629136804782655793824783627907164";
         public static final String GRANT_TYPE = "authorization_code";
     }
 
@@ -52,18 +51,25 @@ public class Constants {
         public static class PollsTable {
             public static final String TABLE_NAME = "polls_table";
 
-            public static class Columns implements BaseColumns {
+            public static class Columns {
                 public static final String COLUMN_ID = "poll_id";
                 public static final String COLUMN_NAME = "poll_name";
+
+                public static final String COLUMN_DATE_CREATED = "date_created";
+                public static final String COLUMN_DATE_MODIFIED = "date_modified";
+                public static final String COLUMN_RESPONSE_COUNT = "response_count";
             }
 
             public static class Queries {
                 public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
-                        Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         Columns.COLUMN_NAME + " TEXT not null, " +
-                        Columns.COLUMN_ID + " TEXT not null);";
+                        Columns.COLUMN_DATE_CREATED + " TEXT, " +
+                        Columns.COLUMN_DATE_MODIFIED + " TEXT, " +
+                        Columns.COLUMN_RESPONSE_COUNT + " TEXT, " +
+                        Columns.COLUMN_ID + " TEXT PRIMARY KEY not null);";
                 public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;
                 public static final String SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
+                public static final String DELETE_OLD_POLLS = "DELETE FROM " + TABLE_NAME + " WHERE " + Columns.COLUMN_ID + " NOT IN (%s)";
             }
         }
 

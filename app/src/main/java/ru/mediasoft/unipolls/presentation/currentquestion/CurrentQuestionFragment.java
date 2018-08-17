@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -62,6 +65,8 @@ public class CurrentQuestionFragment extends MvpAppCompatFragment implements Cur
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        adapter = new AnswersAdapter();
+
         presenter.onCreate(pollId, position);
     }
 
@@ -78,38 +83,16 @@ public class CurrentQuestionFragment extends MvpAppCompatFragment implements Cur
         txtQuestion = view.findViewById(R.id.txtQuestionName);
         txtQuestionPosition = view.findViewById(R.id.txtQuestionPos);
 
-        adapter = new AnswersAdapter();
-
         recView = view.findViewById(R.id.recViewAnswers);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recView.setAdapter(adapter);
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_SHORT).show();
-        presenter.onStop();
-    }
-
-    @Override
-    public void setQuestionTitle(String questionTitle) {
+    public void setResult(String questionTitle, List<Choice> answersList, String position) {
         txtQuestion.setText(questionTitle);
-    }
-
-    @Override
-    public void setAnswersList(List<Choice> answersList) {
         adapter.setAnswers(answersList);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setQuestionPosition(String position) {
         txtQuestionPosition.setText(position);
-    }
-
-    public void onSelectedQuestion() {
-        if(presenter != null) {
-            presenter.onSelected();
-        }
     }
 }

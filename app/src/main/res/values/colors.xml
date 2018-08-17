@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#272727</color>
     <color name="colorAccent">#272727</color>
 
-    <color name="colourSMGreen">#00bf6f</color>
-    <color name="colourSMOrange">#ff6410</color>
-    <color name="colourSMWhite">#ffffff</color>
-    <color name="colourSMLightGreen">#88e5be</color>
-    <color name="colourSMGrey">#272727</color>
+    <color name="colorSMGreen">#00bf6f</color>
+    <color name="colorSMOrange">#ff6410</color>
+    <color name="colorSMWhite">#ffffff</color>
+    <color name="colorSMLightGreen">#88e5be</color>
+    <color name="colorSMGrey">#272727</color>
     <color name="legacy_primary">#106200</color>
 
 </resources>

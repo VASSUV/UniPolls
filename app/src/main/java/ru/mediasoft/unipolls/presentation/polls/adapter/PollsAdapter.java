@@ -9,19 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
-import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
-import ru.mediasoft.unipolls.domain.interactor.LoadSurveyDetailsInteractor;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
 
 public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHolder> {
 
@@ -30,7 +22,6 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
     private Context ctx;
     private List<Poll> pollList;
 
-    private LoadSurveyDetailsInteractor loadSurveyDetailsInteractor;
     public interface OnDetailButtonClickListener{
         void onButtonClick(int position);
     }
@@ -39,9 +30,6 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
         this.onDetailButtonClickListener = onDetailButtonClickListener;
     }
 
-    public void setInteractor(){
-        loadSurveyDetailsInteractor = new LoadSurveyDetailsInteractor();
-    }
 
     public PollsAdapter(Context ctx) {
         this.ctx = ctx;
@@ -64,24 +52,6 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
         Poll currentPoll = pollList.get(position);
 
         holder.txtPollName.setText(currentPoll.title);
-        loadSurveyDetailsInteractor.getSurveyDetails(App.getSharPref().getToken(), currentPoll.id, new SingleObserver<SearchResultDetails>(){
-
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onSuccess(SearchResultDetails searchResultDetails) {
-                holder.poll_quest_count.setText(holder.poll_quest_count.getText().toString().concat(String.valueOf(searchResultDetails.questionCount)));
-                holder.poll_compl_count.setText(holder.poll_compl_count.getText().toString().concat(String.valueOf(searchResultDetails.responseCount)));
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
-            }
-        });
     }
 
     @Override
@@ -91,14 +61,12 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
 
     public class PollsViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView txtPollName, poll_quest_count, poll_compl_count, btnDetails;
+        private TextView txtPollName;
         private CardView poll_item;
 
         public PollsViewHolder(View itemView) {
             super(itemView);
 
-            poll_quest_count = itemView.findViewById(R.id.poll_quest_count);
-            poll_compl_count = itemView.findViewById(R.id.poll_compl_count);
             txtPollName = itemView.findViewById(R.id.txtPollName);
             poll_item = itemView.findViewById(R.id.poll_item);
             poll_item.setOnClickListener(v -> {

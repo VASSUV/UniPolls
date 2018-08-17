@@ -1,8 +1,8 @@
 package ru.mediasoft.unipolls.other.events;
 
-public class ShowMessage {
+public class ShowMessageEvent {
     public String message;
-    public ShowMessage(String message){
+    public ShowMessageEvent(String message){
         this.message = message;
     }
 }

@@ -15,7 +15,7 @@ import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.analytics.Data;
 import ru.mediasoft.unipolls.domain.dataclass.analytics.PollRollUps;
 import ru.mediasoft.unipolls.domain.interactor.LoadSurveyRollUpsInteractor;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 @InjectViewState
 public class AnalyticsPresenter extends MvpPresenter<AnalyticsView> {
@@ -44,7 +44,7 @@ public class AnalyticsPresenter extends MvpPresenter<AnalyticsView> {
 
             @Override
             public void onError(Throwable e) {
-                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
+                EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
             }
         });
     }

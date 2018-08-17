@@ -3,11 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colourSMLightGreen</item>
+        <item name="colorPrimary">@color/colorSMLightGreen</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colourSMOrange</item>
+        <item name="colorAccent">@color/colorSMOrange</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="android:colorBackground">@color/colourSMWhite</item>
+        <item name="android:colorBackground">@color/colorSMWhite</item>
 
     </style>
 
@@ -16,36 +16,36 @@
     <style name="SMTitleTheme" parent="@android:style/TextAppearance.Medium">
             <item name="android:layout_width">match_parent</item>
             <item name="android:layout_height">wrap_content</item>
-            <item name="android:textColor">@color/colourSMWhite</item>
+            <item name="android:textColor">@color/colorSMWhite</item>
             <item name="android:typeface">monospace</item>
-            <item name="android:background">@color/colourSMGreen</item>
+            <item name="android:background">@color/colorSMGreen</item>
             <item name="android:textSize">22dp</item>
             <item name="android:gravity">left</item>
         </style>
     <style name="SMTextTheme" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colourSMGreen</item>
+        <item name="android:textColor">@color/colorSMGreen</item>
         <item name="android:typeface">monospace</item>
-        <item name="android:background">@color/colourSMWhite</item>
+        <item name="android:background">@color/colorSMWhite</item>
         <item name="android:textSize">18dp</item>
         <item name="android:gravity">left</item>
     </style>
     <style name="SMButtonTheme" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colourSMWhite</item>
+        <item name="android:textColor">@color/colorSMWhite</item>
         <item name="android:typeface">monospace</item>
-        <item name="android:background">@color/colourSMGreen</item>
+        <item name="android:background">@color/colorSMGreen</item>
         <item name="android:textSize">26dp</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="SMButtonContrastTheme" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colourSMWhite</item>
+        <item name="android:textColor">@color/colorSMWhite</item>
         <item name="android:typeface">monospace</item>
-        <item name="android:background">@color/colourSMOrange</item>
+        <item name="android:background">@color/colorSMOrange</item>
         <item name="android:textSize">26dp</item>
         <item name="android:gravity">center</item>
     </style>

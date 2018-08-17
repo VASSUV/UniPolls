@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.other.Constants;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 public class AnalyticsFragment extends MvpAppCompatFragment implements AnalyticsView {
     public static final String TAG = "AnalyticsFragment";
@@ -42,6 +42,6 @@ public class AnalyticsFragment extends MvpAppCompatFragment implements Analytics
             pollId = getArguments().getString(Constants.BundleKeys.POLL_ID_KEY);
             mAnalyticsPresenter.loadRollUps(pollId);
         }
-        else EventBus.getDefault().post(new ShowMessage("getArguments() == null!"));
+        else EventBus.getDefault().post(new ShowMessageEvent("getArguments() == null!"));
     }
 }

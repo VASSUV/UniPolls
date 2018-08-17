@@ -8,7 +8,7 @@ import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
 
 public class LoadSurveyPagesInteractor {
 
-    public void getPages(String token, String id, SingleObserver<SearchResultPages> sub){
+    public void loadPages(String token, String id, SingleObserver<SearchResultPages> sub){
         App.getNetworkService().smApi
                 .getSurveyPages(token, id)
                 .subscribeOn(Schedulers.io())

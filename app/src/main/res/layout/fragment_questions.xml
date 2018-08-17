@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.questions.QuestionsFragment">
-    
+
+    <!--<include layout="@layout/questions_toolbar" />-->
+
     <android.support.v4.view.ViewPager
         android:id="@+id/questionsViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 </FrameLayout>

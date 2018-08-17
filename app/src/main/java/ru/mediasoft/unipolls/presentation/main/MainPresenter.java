@@ -10,7 +10,7 @@ import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
@@ -34,7 +34,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     @Subscribe
-    public void onShowMessage(ShowMessage event){
+    public void onShowMessage(ShowMessageEvent event){
         getViewState().showMessage(event.message);
     }
 

@@ -11,8 +11,5 @@ import ru.mediasoft.unipolls.domain.dataclass.pollquestiondetail.Choice;
 
 @StateStrategyType(SingleStateStrategy.class)
 public interface CurrentQuestionView extends MvpView {
-    void showErrorMessage(String message);
-    void setQuestionTitle(String questionTitle);
-    void setAnswersList(List<Choice> answersList);
-    void setQuestionPosition(String position);
+    void setResult(String questionTitle, List<Choice> answersList, String position);
 }

@@ -11,24 +11,24 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
-import ru.mediasoft.unipolls.domain.interactor.UserInfoInteractor;
+import ru.mediasoft.unipolls.domain.interactor.LoadUserInfoInteractor;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 @InjectViewState
 public class UserInfoPresenter extends MvpPresenter<UserInfoView>{
 
-    private UserInfoInteractor userInfoInteractor;
+    private LoadUserInfoInteractor loadUserInfoInteractor;
 
     public void onCreate() {
-        userInfoInteractor = new UserInfoInteractor();
+        loadUserInfoInteractor = new LoadUserInfoInteractor();
     }
 
     public void getUserInfo(View view) {
         EventBus.getDefault().post(new ShowLoaderEvent());
-        userInfoInteractor.getUserInfo(App.getSharPref().getToken(), new SingleObserver<UserInfoModel>() {
+        loadUserInfoInteractor.loadUserInfo(App.getSharPref().getToken(), new SingleObserver<UserInfoModel>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -41,7 +41,7 @@ public class UserInfoPresenter extends MvpPresenter<UserInfoView>{
             }
             @Override
             public void onError(Throwable e) {
-                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
+                EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
         });

@@ -2,6 +2,7 @@ package ru.mediasoft.unipolls.presentation.detail;
 
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -19,7 +20,7 @@ import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 @InjectViewState
 public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
@@ -30,37 +31,67 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
     private Disposable disposableDetails = null;
     private Disposable disposablePages = null;
 
-    public void onCreate(){
+    private String dateCreated;
+    private String dateModified;
+    private String responseCount;
+
+    public void onCreate(String pollId) {
         loadSurveyDetailsInteractor = new LoadSurveyDetailsInteractor();
         loadSurveyPagesInteractor = new LoadSurveyPagesInteractor();
+
+        dateCreated = App.getDBRepository().getDateCreated(pollId);
+        dateModified = App.getDBRepository().getDateModified(pollId);
+        responseCount = App.getDBRepository().getResponseCount(pollId);
+
+        if (dateCreated != null && dateModified != null && responseCount != null) {
+            getViewState().setDateCreated(dateCreated);
+            getViewState().setDateModified(dateModified);
+            getViewState().setResponseCount(responseCount);
+        }else{
+            getPollPages(pollId);
+            getPollDetails(pollId);
+        }
+
     }
 
-    public void getPollDetails(String id){
-        EventBus.getDefault().post(new ShowLoaderEvent());
-        loadSurveyDetailsInteractor.getSurveyDetails(App.getSharPref().getToken(), id, new SingleObserver<SearchResultDetails>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposableDetails = d;
-                    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-                    @Override
-                    public void onSuccess(SearchResultDetails searchResultDetails) {
-                        getViewState().setDateCreated(getFormatedDateCreated(searchResultDetails));
-                        getViewState().setDateModified(getFormatedDateModified(searchResultDetails));
-                        getViewState().setResponseCount(getResponseCount(searchResultDetails));
-                        EventBus.getDefault().post(new HideLoaderEvent());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        EventBus.getDefault().post(new ShowMessage(e.getMessage()));
-                        EventBus.getDefault().post(new HideLoaderEvent());
-                    }
-                });
+        onStop();
     }
+
+    public void getPollDetails(String pollId) {
+        if (App.getDBRepository().getDateCreated(pollId) == null || App.getDBRepository().getDateModified(pollId) == null || App.getDBRepository().getResponseCount(pollId) == null) {
+            EventBus.getDefault().post(new ShowLoaderEvent());
+        }
+        loadSurveyDetailsInteractor.loadSurveyDetails(App.getSharPref().getToken(), pollId, new SingleObserver<SearchResultDetails>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposableDetails = d;
+            }
+
+            @Override
+            public void onSuccess(SearchResultDetails searchResultDetails) {
+                App.getDBRepository().saveDateCreated(pollId, getFormatedDateCreated(searchResultDetails));
+                App.getDBRepository().saveDateModified(pollId, getFormatedDateModified(searchResultDetails));
+                App.getDBRepository().saveResponseCount(pollId, getResponseCount(searchResultDetails));
+                getViewState().setDateCreated(getFormatedDateCreated(searchResultDetails));
+                getViewState().setDateModified(getFormatedDateModified(searchResultDetails));
+                getViewState().setResponseCount(getResponseCount(searchResultDetails));
+                EventBus.getDefault().post(new HideLoaderEvent());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
+                EventBus.getDefault().post(new HideLoaderEvent());
+            }
+        });
+    }
+
     public void getPollPages(String id) {
-        EventBus.getDefault().post(new ShowLoaderEvent());
-        loadSurveyPagesInteractor.getPages(App.getSharPref().getToken(), id, new SingleObserver<SearchResultPages>() {
+        loadSurveyPagesInteractor.loadPages(App.getSharPref().getToken(), id, new SingleObserver<SearchResultPages>() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposablePages = d;
@@ -68,16 +99,15 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
 
             @Override
             public void onSuccess(SearchResultPages searchResultPages) {
-                for(int i = 0; i < searchResultPages.data.size(); i++){
+                App.getDBRepository().deletePagesFromTable(id);
+                for (int i = 0; i < searchResultPages.data.size(); i++) {
                     App.getDBRepository().savePage(searchResultPages.data.get(i), id);
                 }
-                App.getDBRepository().getPagesToLogs();
-                EventBus.getDefault().post(new HideLoaderEvent());
             }
 
             @Override
             public void onError(Throwable e) {
-                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
+                EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
             }
         });
     }
@@ -117,10 +147,10 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
         return sbCreated.toString();
     }
 
-    public void onStop(){
-        if(disposableDetails != null && !disposableDetails.isDisposed()){
+    public void onStop() {
+        if (disposableDetails != null && !disposableDetails.isDisposed()) {
             disposableDetails.dispose();
-        }else if(disposablePages != null && !disposablePages.isDisposed()){
+        } else if (disposablePages != null && !disposablePages.isDisposed()) {
             disposablePages.dispose();
         }
     }
