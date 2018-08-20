@@ -2,18 +2,18 @@
 <resources>
     <style name="SurveyMonkeyTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="android:windowBackground">@color/colourSMWhite</item>
+        <item name="android:windowBackground">@color/colorSMWhite</item>
 
         <item name="android:textColor">#3538bf</item>
         <item name="android:colorPrimary">@color/colorPrimaryDark</item>
-        <item name="android:textColorPrimary">@color/colourSMGreen</item>
-        <item name="android:statusBarColor">@color/colourSMGreen</item>
-        <item name="colorAccent">@color/colourSMLightGreen</item>
-        <item name="android:colorBackground">@color/colourSMWhite</item>
-        <item name="colorPrimary">@color/colourSMGreen</item>
+        <item name="android:textColorPrimary">@color/colorSMGreen</item>
+        <item name="android:statusBarColor">@color/colorSMGreen</item>
+        <item name="colorAccent">@color/colorSMLightGreen</item>
+        <item name="android:colorBackground">@color/colorSMWhite</item>
+        <item name="colorPrimary">@color/colorSMGreen</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimaryInverse">@color/colorPrimaryDark</item>
-        <item name="android:colorForeground">@color/colourSMWhite</item>
-        <item name="android:navigationBarColor">@color/colourSMGreen</item>
+        <item name="android:colorForeground">@color/colorSMWhite</item>
+        <item name="android:navigationBarColor">@color/colorSMGreen</item>
     </style>
 </resources>

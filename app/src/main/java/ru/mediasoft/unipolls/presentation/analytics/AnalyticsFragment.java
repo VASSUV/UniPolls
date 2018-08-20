@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.domain.dataclass.analytics.PollRollUps;
 import ru.mediasoft.unipolls.other.Constants;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 public class AnalyticsFragment extends MvpAppCompatFragment implements AnalyticsView {
     public static final String TAG = "AnalyticsFragment";

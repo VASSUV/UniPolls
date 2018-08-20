@@ -1,6 +1,7 @@
 package ru.mediasoft.unipolls.presentation.detail;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     private TextView txtTitle, txtDateCreated, txtDateModified, txtResponseCount;
     private Button btnQuestions, buttonAnalytics;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     public static DetailPollFragment newInstance(Bundle args) {
         DetailPollFragment fragment = new DetailPollFragment();
         fragment.setArguments(args);
@@ -35,7 +38,12 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter.onCreate();
+        Bundle arguments = getArguments();
+
+        pollTitle = arguments.getString(Constants.BundleKeys.POLL_TITLE_KEY);
+        pollId = arguments.getString(Constants.BundleKeys.POLL_ID_KEY);
+
+        presenter.onCreate(pollId);
     }
 
     @Override
@@ -58,6 +66,13 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
         txtDateCreated = view.findViewById(R.id.txtDateCreated);
         txtDateModified = view.findViewById(R.id.txtDateModified);
         txtResponseCount = view.findViewById(R.id.txtResponseCount);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeToRefreshDetails);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorSMGreen, R.color.colorSMOrange, R.color.legacy_primary);
+        swipeRefreshLayout.setOnRefreshListener(()->{
+            presenter.getPollDetails(pollId);
+            presenter.getPollPages(pollId);
+        });
 
         btnQuestions = view.findViewById(R.id.btnQuestions);
         btnQuestions.setOnClickListener(onBtnReviewClickListener);
@@ -86,6 +101,7 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
         sbResponseCount.append("   ")
                 .append(responseCount);
         txtResponseCount.setText(sbResponseCount);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

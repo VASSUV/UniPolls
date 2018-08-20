@@ -13,14 +13,13 @@ import ru.mediasoft.unipolls.domain.dataclass.pollquestions.SearchResultQuestion
 public class LoadMultiPageQuestionsInteractor {
 
     public void loadPageQuestions(String token, List<Page> pageList, String surveyId, SingleObserver<Boolean> sub) {
+        App.getDBRepository().deleteQuestionsFromTable(surveyId);
         Single.<Boolean>create(emitter -> {
             for (Page page : pageList) {
                 SearchResultQuestions searchResultQuestions = App.getNetworkService().smApi
                         .getPageQuestions(token, surveyId, page.id)
                         .blockingGet();
-                for (int i = 0; i < searchResultQuestions.total; i++) {
-                    App.getDBRepository().saveQuestion(searchResultQuestions.questionList.get(i), page.id, surveyId);
-                }
+                App.getDBRepository().saveQuestionList(searchResultQuestions.questionList, page.id, surveyId);
             }
             emitter.onSuccess(true);
         }).subscribeOn(Schedulers.io())

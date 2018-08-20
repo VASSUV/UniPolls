@@ -39,10 +39,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
             }
         };
-        Log.i(Constants.LOG_TAG_DB, "info: ");
-        App.getDBRepository().getPagesToLogs();
-        App.getDBRepository().getPollsToLogs();
-        App.getDBRepository().getQuestionsToLogs();
     }
 
     private CustomNavigator navigator = new CustomNavigator(getSupportFragmentManager(), R.id.fragment_container, listener) {

@@ -2,6 +2,7 @@ package ru.mediasoft.unipolls.presentation.questions.adapter;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -39,8 +40,8 @@ public class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
         return args == null ? 0 : args.getInt(Constants.BundleKeys.PAGE_QUESTIONS_COUNT);
     }
 
-
-    public void onSelectedQuestion(int position){
-       new Handler().postDelayed(()->((CurrentQuestionFragment)getItem(position)).onSelectedQuestion(), 500);
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 }

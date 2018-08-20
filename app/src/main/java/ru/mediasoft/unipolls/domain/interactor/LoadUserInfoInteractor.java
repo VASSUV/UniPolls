@@ -6,9 +6,9 @@ import io.reactivex.schedulers.Schedulers;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.userinfo.UserInfoModel;
 
-public class UserInfoInteractor {
+public class LoadUserInfoInteractor {
 
-    public void getUserInfo(String token, SingleObserver<UserInfoModel> sub){
+    public void loadUserInfo(String token, SingleObserver<UserInfoModel> sub){
         App.getNetworkService().smApi.getUserInfo(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

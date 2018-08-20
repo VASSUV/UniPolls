@@ -7,7 +7,8 @@ public class Constants {
     public static final String LOG_TAG_DB = "mDb";
 
     public static class SurveyMonkeyApi {
-        public static final String BASE_URL = "https://api.surveymonkey.com";public static final String CONTENT_TYPE = "Content-Type: application/json";
+        public static final String BASE_URL = "https://api.surveymonkey.com";
+        public static final String CONTENT_TYPE = "Content-Type: application/json";
     }
 
     public static class BundleKeys {
@@ -50,18 +51,25 @@ public class Constants {
         public static class PollsTable {
             public static final String TABLE_NAME = "polls_table";
 
-            public static class Columns implements BaseColumns {
+            public static class Columns {
                 public static final String COLUMN_ID = "poll_id";
                 public static final String COLUMN_NAME = "poll_name";
+
+                public static final String COLUMN_DATE_CREATED = "date_created";
+                public static final String COLUMN_DATE_MODIFIED = "date_modified";
+                public static final String COLUMN_RESPONSE_COUNT = "response_count";
             }
 
             public static class Queries {
                 public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
-                        Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         Columns.COLUMN_NAME + " TEXT not null, " +
-                        Columns.COLUMN_ID + " TEXT not null);";
+                        Columns.COLUMN_DATE_CREATED + " TEXT, " +
+                        Columns.COLUMN_DATE_MODIFIED + " TEXT, " +
+                        Columns.COLUMN_RESPONSE_COUNT + " TEXT, " +
+                        Columns.COLUMN_ID + " TEXT PRIMARY KEY not null);";
                 public static final String TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;
                 public static final String SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
+                public static final String DELETE_OLD_POLLS = "DELETE FROM " + TABLE_NAME + " WHERE " + Columns.COLUMN_ID + " NOT IN (%s)";
             }
         }
 

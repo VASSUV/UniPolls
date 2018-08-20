@@ -24,22 +24,22 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.GetAccessTokenModel;
-import ru.mediasoft.unipolls.domain.interactor.GetAccessTokenInteractor;
+import ru.mediasoft.unipolls.domain.interactor.LoadAccessTokenInteractor;
 import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.CustomTextWatcher;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowMessage;
+import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<LoginView> {
 
-    private GetAccessTokenInteractor getAccessTokenInteractor;
+    private LoadAccessTokenInteractor loadAccessTokenInteractor;
     private String username, password;
 
     public void onCreate() {
-        getAccessTokenInteractor = new GetAccessTokenInteractor();
+        loadAccessTokenInteractor = new LoadAccessTokenInteractor();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -103,7 +103,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                         s -> {
                             Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
                             if (!s.equals("null")) {
-                                EventBus.getDefault().post(new ShowMessage(s));
+                                EventBus.getDefault().post(new ShowMessageEvent(s));
                                 getViewState().clearPasswordET();
                             }
                         });
@@ -132,7 +132,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     }
 
     private void getAccessToken() {
-        getAccessTokenInteractor.getAccessToken(Constants.SurveyMonkeyAuthApi.CLIENT_SECRET,
+        loadAccessTokenInteractor.loadAccessToken(Constants.SurveyMonkeyAuthApi.CLIENT_SECRET,
                 App.getSharPref().getCode(),
                 Constants.SurveyMonkeyAuthApi.REDIRECT_URI,
                 Constants.SurveyMonkeyAuthApi.CLIENT_ID,
@@ -153,7 +153,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        EventBus.getDefault().post(new ShowMessage(e.getMessage()));
+                        EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
                         EventBus.getDefault().post(new HideLoaderEvent());
                         App.getSharPref().removeCodeAndToken();
                         App.getRouter().backTo(Screen.START.name());

@@ -22,7 +22,9 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswersV
     }
 
     public void setAnswers(List<Choice> answers) {
-        this.answers = answers;
+        if(answers == null) return;
+        this.answers.clear();
+        this.answers.addAll(answers);
     }
 
     @NonNull

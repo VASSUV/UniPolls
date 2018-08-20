@@ -1,68 +1,66 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeToRefreshDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:style="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
     tools:context=".presentation.detail.DetailPollFragment">
 
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Качество связи"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="26sp" />
-
-    <TextView
-        android:id="@+id/txtDateCreated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtTitle"
-        android:layout_marginTop="8dp"
-        tools:text="@string/date_created" />
-
-    <TextView
-        android:id="@+id/txtDateModified"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtDateCreated"
-        android:layout_marginTop="8dp"
-        tools:text="@string/date_modified" />
-
-    <TextView
-        android:id="@+id/txtResponseCount"
-        android:layout_width="wrap_content"
-        tools:text="Количество ответов:"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_below="@+id/txtDateModified"
-        android:layout_marginTop="8dp"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/buttonAnalytics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtResponseCount"
-        android:text="Аналитика"
-        android:textSize="16sp"/>
-
-    <Button
-        android:id="@+id/btnQuestions"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"
-        style="@style/SMButtonTheme"
-        android:text="@string/to_review_poll"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:padding="16dp"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/detail_editPoll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonAnalytics"
-        android:text="Редактировать"
-        android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Качество связи"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="26sp" />
 
+        <TextView
+            android:id="@+id/txtDateCreated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTitle"
+            android:layout_marginTop="8dp"
+            tools:text="@string/date_created" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/txtDateModified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtDateCreated"
+            android:layout_marginTop="8dp"
+            tools:text="@string/date_modified" />
+
+        <TextView
+            android:id="@+id/txtResponseCount"
+            android:layout_width="wrap_content"
+            tools:text="Количество ответов:"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_below="@+id/txtDateModified"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/buttonAnalytics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtResponseCount"
+            android:text="Аналитика"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btnQuestions"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp"
+            style="@style/SMButtonTheme"
+            android:text="@string/to_review_poll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

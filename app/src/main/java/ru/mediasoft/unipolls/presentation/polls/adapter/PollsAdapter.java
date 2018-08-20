@@ -30,6 +30,7 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
         this.onDetailButtonClickListener = onDetailButtonClickListener;
     }
 
+
     public PollsAdapter(Context ctx) {
         this.ctx = ctx;
         this.pollList = new ArrayList<>();
@@ -60,14 +61,12 @@ public class PollsAdapter extends RecyclerView.Adapter<PollsAdapter.PollsViewHol
 
     public class PollsViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView txtPollName, poll_quest_count, poll_compl_count, btnDetails;
+        private TextView txtPollName;
         private CardView poll_item;
 
         public PollsViewHolder(View itemView) {
             super(itemView);
 
-            poll_quest_count = itemView.findViewById(R.id.poll_quest_count);
-            poll_compl_count = itemView.findViewById(R.id.poll_compl_count);
             txtPollName = itemView.findViewById(R.id.txtPollName);
             poll_item = itemView.findViewById(R.id.poll_item);
             poll_item.setOnClickListener(v -> {

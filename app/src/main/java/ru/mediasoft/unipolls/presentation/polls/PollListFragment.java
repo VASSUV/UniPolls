@@ -1,6 +1,7 @@
 package ru.mediasoft.unipolls.presentation.polls;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,8 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     private RecyclerView recView;
     private PollsAdapter adapter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private List<Poll> pollList;
 
     public static PollListFragment newInstance() {
@@ -57,6 +60,12 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
         recView = view.findViewById(R.id.recView);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeToRefreshPollList);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorSMGreen, R.color.colorSMOrange, R.color.legacy_primary);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            presenter.onRequest();
+        });
+
         adapter = new PollsAdapter(getActivity());
         adapter.setOnDetailButtonClickListener(PollListFragment.this);
 
@@ -72,10 +81,11 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     }
 
     @Override
-    public void setSurveysData(SearchResultSurveys searchResultSurveys) {
-        pollList = searchResultSurveys.pollList;
+    public void setPollList(List<Poll> pollList) {
+        this.pollList = pollList;
         adapter.setPollList(pollList);
         adapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
