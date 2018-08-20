@@ -1,70 +1,87 @@
 package ru.mediasoft.unipolls.presentation.analytics;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ru.mediasoft.unipolls.R;
 
-public class AnAdapter extends RecyclerView.Adapter<AnAdapter.AnViewHolder> {
-    private List<String> questionsData;
-    private List<String> ansData = new ArrayList<>();
+public class AnAdapter extends BaseExpandableListAdapter {
+    private ArrayList<String> questList;
+    private ArrayList<ArrayList<String>> ansList;
+    private Context context;
 
-    public void setAnList(List<String> questionsData) {
-        this.questionsData = questionsData;
-    }
-
-    @NonNull
-    @Override
-    public AnViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context ctx = parent.getContext();
-        View view = LayoutInflater.from(ctx).inflate(R.layout.analytics_item, parent, false);
-        return new AnViewHolder(view, ctx);
+    AnAdapter(Context context, ArrayList<String> questList, ArrayList<ArrayList<String>> groups){
+        this.context = context;
+        this.questList = questList;
+        this.ansList = groups;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AnViewHolder holder, int position) {
-        holder.an_question_name.setText(questionsData.get(position));
+    public int getGroupCount() {
+        return ansList.size();
     }
 
     @Override
-    public int getItemCount() {
-        return questionsData.size();
+    public int getChildrenCount(int groupPosition) {
+        return ansList.get(groupPosition).size();
     }
 
-    public class AnViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Object getGroup(int groupPosition) {
+        return ansList.get(groupPosition);
+    }
 
-        TextView an_question_name;
-        RecyclerView itemRecView;
-        AnItemAdapter itemAdapter;
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return ansList.get(groupPosition).get(childPosition);
+    }
 
-        public AnViewHolder(View itemView, Context ctx) {
-            super(itemView);
-            an_question_name = itemView.findViewById(R.id.an_question_name);
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
 
-            itemView.findViewById(R.id.analytics_item).setOnClickListener(v -> {
-                itemRecView = itemView.findViewById(R.id.an_item_recView);
-                itemRecView.setLayoutManager(new LinearLayoutManager(ctx));
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
 
-                itemAdapter = new AnItemAdapter();
-                itemRecView.setAdapter(itemAdapter);
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
 
-                if (ansData.size() < 1) {
-                    ansData.add("answer 1");
-                    ansData.add("answer 2");
-                    ansData.add("answer 3");
-                    ansData.add("answer 4");
-                }
-                itemAdapter.setList(ansData);
-            });
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.analytics_group, null);
         }
+
+        TextView questName = convertView.findViewById(R.id.an_question_name);
+        questName.setText(questList.get(groupPosition));
+        return convertView;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.analytics_child, null);
+        }
+        TextView ansName = convertView.findViewById(R.id.an_child);
+        ansName.setText(ansList.get(groupPosition).get(childPosition));
+        return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
     }
 }

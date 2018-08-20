@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ru.mediasoft.unipolls.presentation.analytics.AnalyticsFragment"
-    android:id="@+id/fragment_sub_container">
+    android:id="@+id/fragment_sub_container"
+    android:layout_margin="8dp">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/an_recView"
+    <ExpandableListView
+        android:id="@+id/an_exListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:groupIndicator="@null">
+    </ExpandableListView>
 
 </FrameLayout>
