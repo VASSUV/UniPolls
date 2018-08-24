@@ -2,7 +2,6 @@ package ru.mediasoft.unipolls.presentation.detail;
 
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -51,7 +50,6 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
             getPollPages(pollId);
             getPollDetails(pollId);
         }
-
     }
 
     @Override
@@ -62,6 +60,7 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
     }
 
     public void getPollDetails(String pollId) {
+        EventBus.getDefault().post(new ShowMessageEvent("Грузим детали"));
         if (App.getDBRepository().getDateCreated(pollId) == null || App.getDBRepository().getDateModified(pollId) == null || App.getDBRepository().getResponseCount(pollId) == null) {
             EventBus.getDefault().post(new ShowLoaderEvent());
         }
@@ -79,6 +78,7 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
                 getViewState().setDateCreated(getFormatedDateCreated(searchResultDetails));
                 getViewState().setDateModified(getFormatedDateModified(searchResultDetails));
                 getViewState().setResponseCount(getResponseCount(searchResultDetails));
+                EventBus.getDefault().post(new ShowMessageEvent("Загрузили"));
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
 
@@ -86,11 +86,14 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
             public void onError(Throwable e) {
                 EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
                 EventBus.getDefault().post(new HideLoaderEvent());
+                EventBus.getDefault().post(new ShowMessageEvent("Неудача"));
             }
         });
     }
 
     public void getPollPages(String id) {
+
+        EventBus.getDefault().post(new ShowMessageEvent("Грузим PollPages"));
         loadSurveyPagesInteractor.loadPages(App.getSharPref().getToken(), id, new SingleObserver<SearchResultPages>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -103,11 +106,13 @@ public class DetailPollPresenter extends MvpPresenter<DetailPollView> {
                 for (int i = 0; i < searchResultPages.data.size(); i++) {
                     App.getDBRepository().savePage(searchResultPages.data.get(i), id);
                 }
+                EventBus.getDefault().post(new ShowMessageEvent("Загрузили"));
             }
 
             @Override
             public void onError(Throwable e) {
                 EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
+                EventBus.getDefault().post(new ShowMessageEvent("Неудача"));
             }
         });
     }

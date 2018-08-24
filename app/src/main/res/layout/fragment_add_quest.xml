@@ -1,32 +1,38 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="8dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/add_quest_questname"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Название вопроса"
-        android:inputType="text"
-        android:textSize="22sp" />
+        android:layout_margin="8dp"
+        android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/add_quest_recView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_quest_questname">
+        <EditText
+            android:id="@+id/add_quest_questname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Название вопроса"
+            android:inputType="text"
+            android:textSize="22sp" />
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/add_quest_recView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_quest_questname">
 
-    <Button
-        android:id="@+id/add_quest_saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Save"
-        android:textSize="18sp" />
+        </android.support.v7.widget.RecyclerView>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/add_quest_saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/add_quest_recView"
+            android:text="Save"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+</ScrollView>

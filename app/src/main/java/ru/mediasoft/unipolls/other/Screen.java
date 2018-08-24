@@ -53,7 +53,7 @@ public enum Screen {
             case EDITQUEST:
                 return EditQuestFragment.newInstance(args);
             case ADDQUEST:
-                return AddQuestFragment.newInstance();
+                return AddQuestFragment.newInstance(args);
             default:
                 return null;
         }

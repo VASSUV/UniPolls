@@ -10,4 +10,7 @@ public class Choice {
     @SerializedName("position")
     @Expose
     public Integer position;
+    @SerializedName("id")
+    @Expose
+    public String id;
 }

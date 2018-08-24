@@ -1,36 +1,37 @@
 package ru.mediasoft.unipolls.presentation.editpoll;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.other.Constants;
+import ru.mediasoft.unipolls.other.Screen;
 
 public class EditPollAdapter extends RecyclerView.Adapter {
 
     private static final int POLLITEMTYPE = 0;
     private static final int BUTTONTYPE = 1;
-    private onQuestButtonClickListener questButtonClickListener;
-    private List<String> questList;
+    private final String pollId;
+    private final String pageId;
+    private List<QuestionListWithIdModel> questList = new ArrayList<>();
 
-    public void setQuestList(List<String> questList) {
+    EditPollAdapter(String pollId, String pageId){
+        this.pollId = pollId;
+        this.pageId = pageId;
+    }
+
+    public void setQuestList(List<QuestionListWithIdModel> questList) {
         this.questList = questList;
-    }
-
-    public interface onQuestButtonClickListener {
-        void onQuestClick(int position);
-        void onAddClick();
-    }
-
-    public void setOnQuestButtonClickListener(onQuestButtonClickListener questButtonClickListener) {
-        this.questButtonClickListener = questButtonClickListener;
     }
 
     @NonNull
@@ -52,11 +53,9 @@ public class EditPollAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.i("MyLogs", String.valueOf(position));
         if (getItemViewType(position) == POLLITEMTYPE) {
-            String quest = questList.get(position);
             EditPollViewHolder editholder = (EditPollViewHolder) holder;
-            editholder.editPollItem_questName.setText(quest);
+            editholder.editPollItem_questName.setText(questList.get(position).questionName);
         }
     }
 
@@ -71,21 +70,20 @@ public class EditPollAdapter extends RecyclerView.Adapter {
     }
 
     public class EditPollViewHolder extends RecyclerView.ViewHolder {
-        TextView editPollItem_questName, editPollItemQuestCount;
+        TextView editPollItem_questName;
 
         public EditPollViewHolder(View itemView) {
             super(itemView);
 
             editPollItem_questName = itemView.findViewById(R.id.editPollItem_questName);
-            editPollItemQuestCount = itemView.findViewById(R.id.editPollItem_questCount);
 
             itemView.findViewById(R.id.editPollItem).setOnClickListener(v -> {
-                if (questButtonClickListener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        questButtonClickListener.onQuestClick(position);
-                    }
-                }
+                Bundle args = new Bundle();
+                args.putString(Constants.BundleKeys.POLL_ID_KEY, pollId);
+                args.putString(Constants.BundleKeys.PAGE_ID_KEY, pageId);
+                args.putString(Constants.BundleKeys.QUESTION_ID_KEY , questList.get(getAdapterPosition()).questionId);
+                args.putString(Constants.BundleKeys.QUESTION_TITLE_KEY, questList.get(getAdapterPosition()).questionName);
+                App.getRouter().navigateTo(Screen.EDITQUEST.name(), args);
             });
         }
     }
@@ -96,12 +94,10 @@ public class EditPollAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             itemView.findViewById(R.id.editPollButtonItem).setOnClickListener(v -> {
-                if (questButtonClickListener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        questButtonClickListener.onAddClick();
-                    }
-                }
+                Bundle args = new Bundle();
+                args.putString(Constants.BundleKeys.POLL_ID_KEY, pollId);
+                args.putString(Constants.BundleKeys.PAGE_ID_KEY, pageId);
+                App.getRouter().navigateTo(Screen.ADDQUEST.name(), args);
             });
         }
     }

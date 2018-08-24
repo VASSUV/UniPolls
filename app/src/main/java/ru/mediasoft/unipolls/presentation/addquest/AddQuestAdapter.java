@@ -1,6 +1,5 @@
 package ru.mediasoft.unipolls.presentation.addquest;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,37 +12,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.domain.dataclass.createquestion.ChoicesCQ;
 import ru.mediasoft.unipolls.other.CustomTextWatcher;
 
 public class AddQuestAdapter extends RecyclerView.Adapter {
 
-    private List<String> answerList = new ArrayList<>();
+    private List<ChoicesCQ> choices = new ArrayList<>();
 
-    public void setAnswerList(List<String> answerList) {
-        this.answerList = answerList;
+    public void setAnswerList(List<ChoicesCQ> answerList) {
+        this.choices = answerList;
     }
 
-    public List<String> getAnswerList() {
-        return answerList;
+    public List<ChoicesCQ> getAnswerList() {
+        for(int i = (choices.size() - 1); i >= 0; i--){
+            if(choices.get(i).text.isEmpty() || choices.get(i).text == null){
+                choices.remove(i);
+            }
+        }
+        return choices;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.addquest_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.addquest_item, parent, false);
         return new AddQuestAdapter.AddQuestViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         AddQuestViewHolder fholder = (AddQuestViewHolder) holder;
-        fholder.answerName.setText(answerList.get(position));
+        fholder.answerName.setText(choices.get(position).text);
     }
 
     @Override
     public int getItemCount() {
-        return answerList.size();
+        return choices.size();
     }
 
     public class AddQuestViewHolder extends RecyclerView.ViewHolder {
@@ -62,7 +66,7 @@ public class AddQuestAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     super.onTextChanged(s, start, before, count);
-                    answerList.set(getAdapterPosition(), s.toString());
+                    choices.get(getAdapterPosition()).text = s.toString();
                 }
             });
 
@@ -70,7 +74,11 @@ public class AddQuestAdapter extends RecyclerView.Adapter {
                 if (v != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        answerList.add(position + 1, "");
+                        ChoicesCQ choice = new ChoicesCQ();
+                        choice.text = answerName.getText().toString();
+                        choice.position = position + 1;
+                        choices.add(position + 1, choice);
+                        choices.get(position + 1).text = "";
                         notifyDataSetChanged();
                         itemView.clearFocus();
                     }
@@ -81,12 +89,12 @@ public class AddQuestAdapter extends RecyclerView.Adapter {
                 if (v != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        if (answerList.size() == 1) {
+                        if (choices.size() == 1) {
                             answerName.setText("");
-                            answerList.set(position, "");
+                            choices.get(position).text = "";
                             notifyDataSetChanged();
                         } else {
-                            answerList.remove(position);
+                            choices.remove(position);
                             notifyDataSetChanged();
                         }
                     }

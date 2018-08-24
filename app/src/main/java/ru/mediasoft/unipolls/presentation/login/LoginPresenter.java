@@ -36,7 +36,7 @@ import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 public class LoginPresenter extends MvpPresenter<LoginView> {
 
     private LoadAccessTokenInteractor loadAccessTokenInteractor;
-    private String username, password;
+    private String username = "", password = "";
 
     public void onCreate() {
         loadAccessTokenInteractor = new LoadAccessTokenInteractor();
@@ -45,86 +45,94 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
     @SuppressLint("SetJavaScriptEnabled")
     public void onLoginButtonClick(WebView webView) {
 
-        EventBus.getDefault().post(new ShowLoaderEvent());
+        if (username.isEmpty() || password.isEmpty()) {
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        ValueCallback<Boolean> booleanValueCallback = value -> {
-        };
-        cookieManager.removeAllCookies(booleanValueCallback);
+            EventBus.getDefault().post(new ShowMessageEvent("Поля не могут быть пустыми!"));
 
-        String getTokenUrl = "https://ru.surveymonkey.com/user/sign-in/?ut_source="
-                + "papi_client_" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
-                + "&ep=" + "%2Foauth%2Fauthorize"
-                + "%3Fresponse_type%3D" + "code"
-                + "%26redirect_uri%3D" + Constants.SurveyMonkeyAuthApi.REDIRECT_URI.replace(":", "%3A").replace("/", "%2F")
-                + "%26client_id%3D" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
-                + "&ut_source2=" + "papi_oauth";
+        } else {
+            EventBus.getDefault().post(new ShowLoaderEvent());
 
-        webView.loadUrl(getTokenUrl);
+            CookieManager cookieManager = CookieManager.getInstance();
+            ValueCallback<Boolean> booleanValueCallback = value -> {
+            };
+            cookieManager.removeAllCookies(booleanValueCallback);
 
-        webView.getSettings().setJavaScriptEnabled(true);
-        Log.i("MyLogs", "Start current url: " + getTokenUrl);
+            String getTokenUrl = "https://ru.surveymonkey.com/user/sign-in/?ut_source="
+                    + "papi_client_" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
+                    + "&ep=" + "%2Foauth%2Fauthorize"
+                    + "%3Fresponse_type%3D" + "code"
+                    + "%26redirect_uri%3D" + Constants.SurveyMonkeyAuthApi.REDIRECT_URI.replace(":", "%3A").replace("/", "%2F")
+                    + "%26client_id%3D" + Constants.SurveyMonkeyAuthApi.CLIENT_ID
+                    + "&ut_source2=" + "papi_oauth";
 
-        String fusername = "AlexUnder";
-        String fpassword = "formediasoft312";
-        webView.setWebViewClient(new WebViewClient() {
+            webView.loadUrl(getTokenUrl);
 
-            Boolean flag = false;
+            webView.getSettings().setJavaScriptEnabled(true);
+//            Log.i("MyLogs", "Start current url: " + getTokenUrl);
 
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                Log.i("MyLogs", "method: oPS current url: " + url);
-            }
+            String fusername = "AlexUnder";
+            String fpassword = "formediasoft312";
+            webView.setWebViewClient(new WebViewClient() {
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                Log.i("MyLogs", "method: oPF current url: " + url);
-                if (!flag) {
-                    view.loadUrl("javascript: (function() {document.getElementById('username').value='" + fusername + "';"
-                            + "document.getElementById('password').value='" + fpassword + "';"
-                            + "document.getElementsByTagName('form')[0].submit();}) ();");
+                Boolean flag = false;
 
-                    Log.i("MyLogs", "Auth started");
-                    flag = true;
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+//                    Log.i("MyLogs", "method: oPS current url: " + url);
                 }
-                if (url.contains("code")) {
-                    App.getSharPref().saveCode(Uri.parse(url).getQueryParameter("code"));
-                    Log.i("MyLogs", "Constants.USER_CODE = " + App.getSharPref().getCode());
 
-                    if (!(App.getSharPref().getCode().isEmpty())) {
-                        webView.destroy();
-                        getAccessToken();
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+//                    Log.i("MyLogs", "method: oPF current url: " + url);
+                    if (!flag) {
+                        view.loadUrl("javascript: (function() {document.getElementById('username').value='" + fusername + "';"
+                                + "document.getElementById('password').value='" + fpassword + "';"
+                                + "document.getElementsByTagName('form')[0].submit();}) ();");
+
+//                        Log.i("MyLogs", "Auth started");
+                        flag = true;
                     }
+                    if (url.contains("code")) {
+                        App.getSharPref().saveCode(Uri.parse(url).getQueryParameter("code"));
+//                        Log.i("MyLogs", "Constants.USER_CODE = " + App.getSharPref().getCode());
+
+                        if (!(App.getSharPref().getCode().isEmpty())) {
+                            webView.destroy();
+                            getAccessToken();
+                        }
+                    }
+
+                    view.evaluateJavascript("(function() {return document.getElementById('sign-in').getElementsByTagName('li')[0].innerText;})();",
+                            s -> {
+//                                Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
+                                if (!s.equals("null")) {
+                                    EventBus.getDefault().post(new ShowMessageEvent(s));
+                                    getViewState().clearPasswordET();
+                                }
+                            });
                 }
 
-                view.evaluateJavascript("(function() {return document.getElementById('sign-in').getElementsByTagName('li')[0].innerText;})();",
-                        s -> {
-                            Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
-                            if (!s.equals("null")) {
-                                EventBus.getDefault().post(new ShowMessageEvent(s));
-                                getViewState().clearPasswordET();
-                            }
-                        });
-            }
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                    Log.i("MyLogs", "method: sOUL current url: " + url);
+                    view.loadUrl(url);
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i("MyLogs", "method: sOUL current url: " + url);
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-
-            @TargetApi(Build.VERSION_CODES.M)
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
-                EventBus.getDefault().post(new ShowMessage(error.getDescription().toString()));
-                Log.i("MyLogs", "ORE Error message: " + error.getDescription());
-                Log.i("MyLogs", "ORE Error code: " + error.getErrorCode());
-            }
-        });
+                @TargetApi(Build.VERSION_CODES.M)
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    super.onReceivedError(view, request, error);
+                    EventBus.getDefault().post(new ShowMessageEvent(error.getDescription().toString()));
+                    EventBus.getDefault().post(new HideLoaderEvent());
+                    App.getRouter().backTo(Screen.START.name());
+                    Log.i("MyLogs", "ORE Error message: " + error.getDescription());
+                    Log.i("MyLogs", "ORE Error code: " + error.getErrorCode());
+                }
+            });
+        }
     }
 
     public void onRegistrationButtonClick(View view) {
@@ -146,7 +154,7 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                     @Override
                     public void onSuccess(GetAccessTokenModel getAccessTokenModel) {
                         App.getSharPref().saveToken(getAccessTokenModel.token_type.concat(" ").concat(getAccessTokenModel.access_token));
-                        Log.i("MyLogs", "access_token: " + App.getSharPref().getToken());
+//                        Log.i("MyLogs", "access_token: " + App.getSharPref().getToken());
                         EventBus.getDefault().post(new HideLoaderEvent());
                         App.getRouter().newRootScreen(Screen.USERINFO.name());
                     }

@@ -18,6 +18,6 @@ public class AnData {
     public String family;
     @SerializedName("summary")
     @Expose
-    public List<Summary> summary = null;
+    public List<Summary> summary;
 
 }

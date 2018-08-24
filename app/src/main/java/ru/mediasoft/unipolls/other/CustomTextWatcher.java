@@ -19,4 +19,5 @@ public abstract class CustomTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
 
     }
+
 }

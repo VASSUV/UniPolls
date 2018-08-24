@@ -51,6 +51,13 @@
             android:layout_below="@+id/txtResponseCount"
             android:text="Аналитика"
             android:textSize="16sp"/>
+        <Button
+            android:id="@+id/detail_editPoll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonAnalytics"
+            android:text="Редактировать"
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/btnQuestions"

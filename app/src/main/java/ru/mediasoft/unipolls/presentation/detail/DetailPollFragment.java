@@ -24,7 +24,7 @@ public class DetailPollFragment extends MvpAppCompatFragment implements DetailPo
     private String pollId;
 
     private TextView txtTitle, txtDateCreated, txtDateModified, txtResponseCount;
-    private Button btnQuestions, buttonAnalytics;
+    private Button btnQuestions;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 

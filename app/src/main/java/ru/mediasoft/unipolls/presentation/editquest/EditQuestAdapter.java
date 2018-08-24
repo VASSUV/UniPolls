@@ -8,18 +8,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.domain.dataclass.createquestion.ChoicesCQ;
+import ru.mediasoft.unipolls.domain.dataclass.pollquestiondetail.Choice;
 import ru.mediasoft.unipolls.other.CustomTextWatcher;
 
 public class EditQuestAdapter extends RecyclerView.Adapter {
 
-    private List<String> list;
+    private List<Choice> list = new ArrayList<>();
 
-
-    public void setList(List<String> list) {
+    public void setList(List<Choice> list) {
         this.list = list;
+    }
+
+    public List<ChoicesCQ> getAnsList() {
+        int i = 0;
+        List<ChoicesCQ> listCQ = new ArrayList<>();
+        ChoicesCQ choice;
+        while (i < list.size()) {
+            choice = new ChoicesCQ();
+            choice.text = list.get(i).text;
+            choice.position = i + 1;
+            listCQ.add(choice);
+            i++;
+        }
+        return listCQ;
     }
 
     @NonNull
@@ -32,12 +48,14 @@ public class EditQuestAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         EditQuestAdapter.EditQuestViewHolder fholder = (EditQuestAdapter.EditQuestViewHolder) holder;
-        fholder.editquest_answName.setText(list.get(position));
+        fholder.editquest_answName.setText(list.get(position).text);
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list != null) {
+            return list.size();
+        } else return 0;
     }
 
     private class EditQuestViewHolder extends RecyclerView.ViewHolder {
@@ -55,7 +73,7 @@ public class EditQuestAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     super.onTextChanged(s, start, before, count);
-                    list.set(getAdapterPosition(), s.toString());
+                    list.get(getAdapterPosition()).text = s.toString();
                 }
             });
 
@@ -63,7 +81,7 @@ public class EditQuestAdapter extends RecyclerView.Adapter {
                 if (v != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        list.add(position + 1, "");
+                        list.add(position + 1, new Choice());
                         notifyDataSetChanged();
                         itemView.clearFocus();
                     }
@@ -76,7 +94,7 @@ public class EditQuestAdapter extends RecyclerView.Adapter {
                     if (position != RecyclerView.NO_POSITION) {
                         if (list.size() == 1) {
                             editquest_answName.setText("");
-                            list.set(position, "");
+                            list.get(position).text = "";
                             notifyDataSetChanged();
                         } else {
                             list.remove(position);

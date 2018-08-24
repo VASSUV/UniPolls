@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.other.CustomTextWatcher;
+import ru.mediasoft.unipolls.domain.dataclass.createquestion.ChoicesCQ;
+import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.presentation.main.MainActivity;
 
 public class AddQuestFragment extends MvpAppCompatFragment implements AddQuestView {
@@ -25,16 +27,15 @@ public class AddQuestFragment extends MvpAppCompatFragment implements AddQuestVi
     @InjectPresenter
     AddQuestPresenter mAddQuestPresenter;
 
-    List<String> anslist = new ArrayList<>();
     AddQuestAdapter adapter;
-
+    String pollId;
     RecyclerView recView;
-
+    List<ChoicesCQ> ansList;
     EditText questName;
+    String pageId;
 
-    public static AddQuestFragment newInstance() {
+    public static AddQuestFragment newInstance(Bundle args) {
         AddQuestFragment fragment = new AddQuestFragment();
-        Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,27 +50,30 @@ public class AddQuestFragment extends MvpAppCompatFragment implements AddQuestVi
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getArguments() != null) {
+            pollId = getArguments().getString(Constants.BundleKeys.POLL_ID_KEY);
+            pageId = getArguments().getString(Constants.BundleKeys.PAGE_ID_KEY);
+            Log.i("MyLogs", "pollId: " + pollId);
+            Log.i("MyLogs", "pageId: " + pollId);
+        }
+
+        view.findViewById(R.id.add_quest_saveButton).setOnClickListener(v -> mAddQuestPresenter.onSaveButtonClick(pollId, pageId, adapter.getAnswerList()));
+        Log.i("MyLogs", "pollId: " + pollId);
+
         questName = view.findViewById(R.id.add_quest_questname);
-        questName.addTextChangedListener(new CustomTextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                super.onTextChanged(s, start, before, count);
-                questName.setText(s.toString());
-            }
-        });
+        questName.addTextChangedListener(mAddQuestPresenter.getTextListener());
+
         recView = view.findViewById(R.id.add_quest_recView);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        view.findViewById(R.id.add_quest_saveButton).setOnClickListener(mAddQuestPresenter.onSaveButtonClick());
-
         adapter = new AddQuestAdapter();
-
         recView.setAdapter(adapter);
-        anslist.add("");
-        adapter.setAnswerList(anslist);
-        adapter.notifyDataSetChanged();
+        ansList = new ArrayList<>();
 
-//        anslist = adapter.getAnswerList();
+        ChoicesCQ choice = new ChoicesCQ();
+        choice.text = "";
+        choice.position = 1;
+        ansList.add(choice);
+        adapter.setAnswerList(ansList);
     }
 
     @Override

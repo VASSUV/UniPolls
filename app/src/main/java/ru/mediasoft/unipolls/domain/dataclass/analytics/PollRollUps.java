@@ -9,5 +9,5 @@ import java.util.List;
 public class PollRollUps {
     @SerializedName("data")
     @Expose
-    public List<AnData> data = null;
+    public List<AnData> data;
 }

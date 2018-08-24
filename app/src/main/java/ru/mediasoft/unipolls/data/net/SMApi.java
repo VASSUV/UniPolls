@@ -8,11 +8,14 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
 import ru.mediasoft.unipolls.domain.dataclass.GetAccessTokenModel;
 import ru.mediasoft.unipolls.domain.dataclass.analytics.PollRollUps;
+import ru.mediasoft.unipolls.domain.dataclass.createquestion.CreateQuestionModelRequest;
+import ru.mediasoft.unipolls.domain.dataclass.createquestion.CreateQuestionModelResponse;
 import ru.mediasoft.unipolls.domain.dataclass.polldetails.SearchResultDetails;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.SearchResultPages;
@@ -31,6 +34,14 @@ public interface SMApi {
     @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
     @POST("v3/surveys")
     Single<CreateSurveyModel> createSurvey(@Header("Authorization") String token, @Body CreateSurveyRequestModel request);
+
+    @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
+    @POST("v3/surveys/{poll_id}/pages/{page_id}/questions")
+    Single<CreateQuestionModelResponse> createQuestion(@Header("Authorization") String token, @Path("poll_id") String poll_id, @Path("page_id") String page_id, @Body CreateQuestionModelRequest request);
+
+    @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
+    @PUT("v3/surveys/{poll_id}/pages/{page_id}/questions/{question_id}")
+    Single<CreateQuestionModelResponse> replaceQuestion(@Header("Authorization") String token, @Path("poll_id") String poll_id, @Path("page_id") String page_id, @Path("question_id") String question_id, @Body CreateQuestionModelRequest request);
 
     @GET("v3/surveys")
     Single<SearchResultSurveys> getSurveys(@Header("Authorization") String token);

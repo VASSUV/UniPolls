@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
@@ -66,7 +68,7 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
         //webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        Log.i("MyLogs", "Start current url: " + Url);
+//        Log.i("MyLogs", "Start current url: " + Url);
 
         String fusername = "excel1228";
         String fpassword = "inernalstruggle73";
@@ -86,23 +88,24 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                Log.i("MyLogs", "method: onCreateButtonClick.oPF \ncurrent url: " + url);
+//                Log.i("MyLogs", "method: onCreateButtonClick.oPF \ncurrent url: " + url);
                 if (!flag) {
                     view.loadUrl("javascript: (function() {"
-                            + "document.getElementById('username').value='" + fusername + "';"
-                            + "document.getElementById('password').value='" + fpassword + "';"
-                            + "document.getElementById('email').value='" + femail + "';"
-                            + "document.getElementById('first_name').value='" + ffirstname + "';"
-                            + "document.getElementById('last_name').value='" + flastname + "';"
+                            + "document.getElementById('username').value='" + username + "';"
+                            + "document.getElementById('password').value='" + password + "';"
+                            + "document.getElementById('email').value='" + email + "';"
+                            + "document.getElementById('first_name').value='" + firstname + "';"
+                            + "document.getElementById('last_name').value='" + lastname + "';"
                             + "document.getElementById('submitform').click();"
-                            + "}) ();");
+                            + "}) ();"
+                    );
 
-                    Log.i("MyLogs", "Auth started");
+//                    Log.i("MyLogs", "Auth started");
                     flag = true;
                 }
                 if (url.contains("code")) {
                     App.getSharPref().saveCode(Uri.parse(url).getQueryParameter("code"));
-                    Log.i("MyLogs", "Constants.USER_CODE = " + App.getSharPref().getCode());
+//                    Log.i("MyLogs", "Constants.USER_CODE = " + App.getSharPref().getCode());
 
                     if (!(App.getSharPref().getCode().isEmpty())) {
                         webView.destroy();
@@ -111,7 +114,7 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
                 }
                 view.evaluateJavascript("(function() {return document.getElementsByClassName('ErrorMessage')[0].getElementsByTagName('li')[0].innerHTML;})();",
                         s -> {
-                            Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
+//                            Log.i("MyLogs", "onCreateButtonClick.oJS \nError message: " + s);
                             if (!s.equals("null")) {
                                 getViewState().clearPasswordET();
                                 EventBus.getDefault().post(new ShowMessageEvent(s));
@@ -122,7 +125,7 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i("MyLogs", "method: onCreateButtonClick.sOUL \ncurrent url: " + url);
+//                Log.i("MyLogs", "method: onCreateButtonClick.sOUL \ncurrent url: " + url);
                 view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
             }
@@ -131,7 +134,8 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                Log.i("MyLogs", "omethod: onCreateButtonClick.ORE \nError message: " + error.getDescription());
+//                Log.i("MyLogs", "omethod: onCreateButtonClick.ORE \nError message: " + error.getDescription());
+                EventBus.getDefault().post(new ShowMessageEvent("Ошибка сети: " + error.getDescription().toString()));
             }
         });
     }
@@ -151,7 +155,7 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
                     @Override
                     public void onSuccess(GetAccessTokenModel getAccessTokenModel) {
                         App.getSharPref().saveToken(getAccessTokenModel.token_type.concat(" ").concat(getAccessTokenModel.access_token));
-                        Log.i("MyLogs", "access_token: " + App.getSharPref().getToken());
+//                        Log.i("MyLogs", "access_token: " + App.getSharPref().getToken());
                         EventBus.getDefault().post(new HideLoaderEvent());
                         App.getRouter().newRootScreen(Screen.USERINFO.name());
                     }
@@ -208,6 +212,16 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 lastname = s.toString();
             }
+        };
+    }
+
+    public View.OnKeyListener OnKeyListener(WebView webView) {
+        return (v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                onCreateButtonClick(webView);
+                return true;
+            }
+            return false;
         };
     }
 }

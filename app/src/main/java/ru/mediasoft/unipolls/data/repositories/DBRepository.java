@@ -23,6 +23,7 @@ import ru.mediasoft.unipolls.domain.dataclass.pollquestions.Question;
 import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.PagesTable;
 import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.PollsTable;
 import ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.QuestionsTable;
+import ru.mediasoft.unipolls.presentation.editpoll.QuestionListWithIdModel;
 
 import static ru.mediasoft.unipolls.other.Constants.SurveyMonkeyDatabase.PollsTable.Queries.DELETE_OLD_POLLS;
 
@@ -163,6 +164,47 @@ public class DBRepository {
         return questionId;
     }
 
+    public List<QuestionListWithIdModel> getQuestionsListWIthIds(String pollId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<QuestionListWithIdModel> questList = new ArrayList<>();
+        QuestionListWithIdModel question;
+
+        Cursor cursor = db.rawQuery("SELECT " + QuestionsTable.Columns.COLUMN_NAME + ", "
+                + QuestionsTable.Columns.COLUMN_QUESTION_ID + " FROM " + QuestionsTable.TABLE_NAME
+                + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{pollId});
+
+        if (cursor.moveToFirst()) {
+            do {
+                question = new QuestionListWithIdModel();
+                question.questionName = cursor.getString(cursor.getColumnIndex(QuestionsTable.Columns.COLUMN_NAME));
+                question.questionId = cursor.getString(cursor.getColumnIndex(QuestionsTable.Columns.COLUMN_QUESTION_ID));
+                questList.add(question);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return questList;
+    }
+
+    public List<Choice> getAnsList(String questionId) {
+        List<Choice> choices = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + QuestionsTable.Columns.COLUMN_ANSWERS + " FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_QUESTION_ID + " = " + questionId, null);
+
+        if (cursor.moveToFirst()){
+            do {
+                String answersJson = cursor.getString(cursor.getColumnIndex(QuestionsTable.Columns.COLUMN_ANSWERS));
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Choice>>() {
+                }.getType();
+                choices = gson.fromJson(answersJson, type);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return choices;
+    }
+
     public List<Page> getPageList(String pollId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -209,6 +251,24 @@ public class DBRepository {
         String pageId = null;
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
+
+        if (cursor.moveToFirst()) {
+            do {
+                pageId = cursor.getString(cursor.getColumnIndex(QuestionsTable.Columns.COLUMN_PAGE_ID));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return pageId;
+    }
+
+    public String getPageId(String pollId){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String pageId = null;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + " = " + pollId, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -279,7 +339,7 @@ public class DBRepository {
         }
 
         db.close();
-
+        cursor.close();
         return searchResultQuestionDetails;
     }
 
@@ -402,4 +462,5 @@ public class DBRepository {
 
         db.close();
     }
+
 }

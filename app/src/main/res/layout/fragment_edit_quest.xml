@@ -1,33 +1,38 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp">
 
-    <EditText
-        android:id="@+id/editQuest_questName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16sp"
-        android:hint="Вопрос"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/edit_quest_recView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editQuest_questName">
+        <EditText
+            android:id="@+id/editQuest_questName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16sp"
+            android:hint="Вопрос"
+            android:textSize="18sp"
+            android:inputType="text"/>
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/edit_quest_recView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editQuest_questName">
 
-    <Button
-        android:id="@+id/edit_quest_saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Save"
-        android:textSize="18sp"
-        />
-</RelativeLayout>
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/edit_quest_saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_quest_recView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="Save"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</ScrollView>

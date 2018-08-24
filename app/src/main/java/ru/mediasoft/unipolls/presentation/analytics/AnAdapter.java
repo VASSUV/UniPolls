@@ -7,39 +7,52 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.presentation.editpoll.QuestionListWithIdModel;
 
 public class AnAdapter extends BaseExpandableListAdapter {
-    private ArrayList<String> questList;
-    private ArrayList<ArrayList<String>> ansList;
+    private List<QuestionListWithIdModel> questList;
+    private List<AnswersModel> ansList;
     private Context context;
+    Double chance;
 
-    AnAdapter(Context context, ArrayList<String> questList, ArrayList<ArrayList<String>> groups){
+    AnAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setAdapterData(List<QuestionListWithIdModel> questList, List<AnswersModel> groups) {
         this.questList = questList;
         this.ansList = groups;
+    }
+    public void setNewAdapterData(List<QuestionListWithIdModel> questList, List<AnswersModel> groups){
+        this.questList = questList;
+        this.ansList = groups;
+        for (int i = 0; i < ansList.size(); i ++){
+            Collections.sort(ansList.get(i).choices, new MyComparator());
+        }
     }
 
     @Override
     public int getGroupCount() {
-        return ansList.size();
+        return questList.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return ansList.get(groupPosition).size();
+        return ansList.get(groupPosition).choices.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return ansList.get(groupPosition);
+        return questList.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return ansList.get(groupPosition).get(childPosition);
+        return ansList.get(groupPosition).choices.get(childPosition);
     }
 
     @Override
@@ -54,34 +67,44 @@ public class AnAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return true;
+        return false;
     }
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.analytics_group, null);
         }
 
         TextView questName = convertView.findViewById(R.id.an_question_name);
-        questName.setText(questList.get(groupPosition));
+        questName.setText(questList.get(groupPosition).questionName);
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.analytics_child, null);
         }
-        TextView ansName = convertView.findViewById(R.id.an_child);
-        ansName.setText(ansList.get(groupPosition).get(childPosition));
+        TextView ansName = convertView.findViewById(R.id.an_answName);
+        TextView percent = convertView.findViewById(R.id.an_percent);
+        ansName.setText(ansList.get(groupPosition).choices.get(childPosition).name);
+        if (ansList.get(groupPosition).choices.get(childPosition).answered != null) {
+            if (ansList.get(groupPosition).choices.get(childPosition).answered == 0) {
+                chance = 0.;
+            } else {
+                chance = (double)ansList.get(groupPosition).choices.get(childPosition).answered / (double)ansList.get(groupPosition).questionAnswered;
+            }
+            chance *= 100;
+            percent.setText(String.valueOf(chance.intValue()).concat("%"));
+        }
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+        return false;
     }
 }

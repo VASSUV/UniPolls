@@ -14,5 +14,5 @@ public class Summary {
     public Integer skipped;
     @SerializedName("choices")
     @Expose
-    public List<Choices> choices = null;
+    public List<Choices> choices;
 }

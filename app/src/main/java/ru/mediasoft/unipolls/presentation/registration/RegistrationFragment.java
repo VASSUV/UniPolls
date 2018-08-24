@@ -47,7 +47,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
         super.onViewCreated(view, savedInstanceState);
 
         initViews(view);
-        setTextListeners();
+        setListeners();
         setButtonListeners(view);
     }
 
@@ -57,19 +57,20 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
 
     private void initViews(View view) {
         webView = view.findViewById(R.id.reg_webview);
-        username = view.findViewById(R.id.reg_username);
+        username = view.findViewById(R.id.reg_login);
         password = view.findViewById(R.id.reg_password);
         email = view.findViewById(R.id.reg_email);
         firstname = view.findViewById(R.id.reg_firstname);
         lastname = view.findViewById(R.id.reg_lastname);
     }
 
-    private void setTextListeners() {
+    private void setListeners() {
         username.addTextChangedListener(mRegistrationPresenter.getNameListener());
         password.addTextChangedListener(mRegistrationPresenter.getPasswordListener());
         email.addTextChangedListener(mRegistrationPresenter.getEmailListener());
         firstname.addTextChangedListener(mRegistrationPresenter.getFirstNameListener());
         lastname.addTextChangedListener(mRegistrationPresenter.getLastNameListener());
+        lastname.setOnKeyListener(mRegistrationPresenter.OnKeyListener(webView));
     }
 
     @Override

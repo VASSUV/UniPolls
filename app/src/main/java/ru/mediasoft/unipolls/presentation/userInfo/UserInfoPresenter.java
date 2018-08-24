@@ -2,7 +2,6 @@ package ru.mediasoft.unipolls.presentation.userInfo;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -46,8 +45,8 @@ public class UserInfoPresenter extends MvpPresenter<UserInfoView> {
 
             @Override
             public void onError(Throwable e) {
-                EventBus.getDefault().post(new ShowMessage(e.getMessage()));
-                Log.i("MyLogs", e.getMessage());
+                EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
+//                Log.i("MyLogs", e.getMessage());
                 EventBus.getDefault().post(new HideLoaderEvent());
                 if (e.getMessage().equals("HTTP 429 Too Many Requests")) {
                     Intent intent  = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.surveymonkey.com/pricing/upgrade/?ut_source=header_upgrade"));

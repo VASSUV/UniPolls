@@ -18,7 +18,6 @@ import java.util.List;
 
 import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
-import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.presentation.main.MainActivity;
 import ru.mediasoft.unipolls.presentation.polls.adapter.PollsAdapter;
@@ -43,8 +42,7 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_poll_list, container, false);
     }
 
@@ -52,7 +50,6 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         firstOperations(view);
-
         setHasOptionsMenu(true);
     }
 
@@ -62,9 +59,7 @@ public class PollListFragment extends MvpAppCompatFragment implements PollListVi
 
         swipeRefreshLayout = view.findViewById(R.id.swipeToRefreshPollList);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorSMGreen, R.color.colorSMOrange, R.color.legacy_primary);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            presenter.onRequest();
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.onRequest());
 
         adapter = new PollsAdapter(getActivity());
         adapter.setOnDetailButtonClickListener(PollListFragment.this);

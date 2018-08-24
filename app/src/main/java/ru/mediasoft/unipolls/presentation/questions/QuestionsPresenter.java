@@ -40,7 +40,6 @@ public class QuestionsPresenter extends MvpPresenter<QuestionsView> {
         } else {
             onRequest(pollId);
         }
-
     }
 
     public void onCreate(String pollId) {

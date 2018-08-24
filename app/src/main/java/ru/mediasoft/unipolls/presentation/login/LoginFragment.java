@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.widget.EditText;
 
@@ -44,15 +45,19 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
         super.onViewCreated(view, savedInstanceState);
         username = view.findViewById(R.id.login_username);
         password = view.findViewById(R.id.login_password);
+        webView = view.findViewById(R.id.auth_webview);
 
         username.addTextChangedListener(mLoginPresenter.getNameListener());
         password.addTextChangedListener(mLoginPresenter.getPasswordListener());
+        password.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                mLoginPresenter.onLoginButtonClick(webView);
+                return true;
+            }
+            return false;
+        });
 
-        webView = view.findViewById(R.id.auth_webview);
-
-        view.findViewById(R.id.login_login_button).setOnClickListener(v ->
-                mLoginPresenter.onLoginButtonClick(webView)
-        );
+        view.findViewById(R.id.login_login_button).setOnClickListener(v -> mLoginPresenter.onLoginButtonClick(webView));
         view.findViewById(R.id.login_registration_button).setOnClickListener(mLoginPresenter::onRegistrationButtonClick);
     }
 
@@ -64,7 +69,6 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity)getActivity()).setActionBarTitle("Авторизация");
+        ((MainActivity) getActivity()).setActionBarTitle("Авторизация");
     }
 }
-

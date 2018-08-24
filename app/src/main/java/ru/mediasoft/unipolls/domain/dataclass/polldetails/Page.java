@@ -12,4 +12,7 @@ public class Page {
     @SerializedName("question_count")
     @Expose
     public Integer questionCount;
+    @SerializedName("id")
+    @Expose
+    public String id;
 }

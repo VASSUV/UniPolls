@@ -19,12 +19,13 @@ public class Constants {
         public static final String PAGE_ID_KEY = "page_id";
         public static final String QUESTION_POSITION = "question_pos";
         public static final String QUESTION_TITLE_KEY = "qusetion_title";
+        public static final String QUESTION_ID_KEY = "qusetion_id";
     }
 
     public static class SurveyMonkeyAuthApi {
-        public static final String CLIENT_ID = "k0i_9kOwRkqCRlr31oWTNg";
+        public static final String CLIENT_ID = "5Rwe_g_nQMOZdnC80Riq0Q";
         public static final String REDIRECT_URI = "https://www.surveymonkey.com";
-        public static final String CLIENT_SECRET = "122160349797041951548922518374682087147";
+        public static final String CLIENT_SECRET = "327907589871769526989995616616281591565";
         public static final String GRANT_TYPE = "authorization_code";
     }
 
