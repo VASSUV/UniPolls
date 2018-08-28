@@ -17,7 +17,7 @@ import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.Screen;
 
-public class EditPollAdapter extends RecyclerView.Adapter {
+public class EditPollAdapter extends RecyclerView.Adapter{
 
     private static final int POLLITEMTYPE = 0;
     private static final int BUTTONTYPE = 1;
@@ -32,6 +32,11 @@ public class EditPollAdapter extends RecyclerView.Adapter {
 
     public void setQuestList(List<QuestionListWithIdModel> questList) {
         this.questList = questList;
+    }
+
+    public void removeItem(int itemPosition){
+        questList.remove(itemPosition);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -68,6 +73,11 @@ public class EditPollAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         return position < questList.size() ? POLLITEMTYPE : BUTTONTYPE;
     }
+
+    public List<QuestionListWithIdModel> getQuestList() {
+        return questList;
+    }
+
 
     public class EditPollViewHolder extends RecyclerView.ViewHolder {
         TextView editPollItem_questName;

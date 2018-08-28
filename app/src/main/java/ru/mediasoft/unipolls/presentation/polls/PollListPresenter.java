@@ -14,12 +14,11 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.Poll;
-import ru.mediasoft.unipolls.other.Constants;
-import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
-import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.domain.dataclass.polllist.SearchResultSurveys;
 import ru.mediasoft.unipolls.domain.interactor.LoadSurveysInteractor;
 import ru.mediasoft.unipolls.other.Screen;
+import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
+import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 
 @InjectViewState
@@ -82,5 +81,4 @@ public class PollListPresenter extends MvpPresenter<PollListView> {
     public void goToAddingPollFragment() {
         App.getRouter().navigateTo(Screen.ADDING_POLL.name());
     }
-
 }

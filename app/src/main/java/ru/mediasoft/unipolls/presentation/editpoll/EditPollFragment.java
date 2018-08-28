@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,11 @@ import java.util.Objects;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
+import ru.mediasoft.unipolls.other.AdapterItemTouchHelper;
 import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.presentation.main.MainActivity;
 
-public class EditPollFragment extends MvpAppCompatFragment implements EditPollView {
+public class EditPollFragment extends MvpAppCompatFragment implements EditPollView, AdapterItemTouchHelper.AdapterItemTouchListener {
     public static final String TAG = "EditPollFragment";
     @InjectPresenter
     EditPollPresenter mEditPollPresenter;
@@ -72,6 +74,8 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
         recView = view.findViewById(R.id.editPoll_recView);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new EditPollAdapter(pollId, pageId);
+        ItemTouchHelper.SimpleCallback ItemTouchHelper = new AdapterItemTouchHelper(0, android.support.v7.widget.helper.ItemTouchHelper.LEFT | android.support.v7.widget.helper.ItemTouchHelper.RIGHT, this);
+        new ItemTouchHelper(ItemTouchHelper).attachToRecyclerView(recView);
     }
 
     @Override
@@ -90,12 +94,28 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
     public void setAdapterList() {
         List<QuestionListWithIdModel> list = App.getDBRepository().getQuestionsListWIthIds(pollId);
         adapter.setQuestList(list);
-        adapter.notifyDataSetChanged();
+        refreshAdapter();
         recView.setAdapter(adapter);
     }
 
     @Override
     public void showRefreshing() {
         swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void removeAdapterItem(int position) {
+        adapter.removeItem(position);
+        mEditPollPresenter.onRequest(pollId);
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        mEditPollPresenter.deleteQuestion(pollId, pageId, adapter.getQuestList().get(position).questionId, position);
+    }
+
+    @Override
+    public void refreshAdapter() {
+        adapter.notifyDataSetChanged();
     }
 }

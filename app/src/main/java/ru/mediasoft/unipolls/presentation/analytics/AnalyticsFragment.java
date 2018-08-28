@@ -34,6 +34,7 @@ public class AnalyticsFragment extends MvpAppCompatFragment implements Analytics
     List<Choice> ansList;
     List<AnswersModel> answersModels;
     List<AnsChoices> ansEndForm;
+    private int currentPosition = -1;
 
     public static AnalyticsFragment newInstance(Bundle args) {
         AnalyticsFragment fragment = new AnalyticsFragment();
@@ -97,6 +98,14 @@ public class AnalyticsFragment extends MvpAppCompatFragment implements Analytics
             adapter.setAdapterData(questList, answersModels);
             adapter.notifyDataSetChanged();
             expandableListView.setAdapter(adapter);
+            expandableListView.setOnGroupExpandListener(groupPosition -> {
+                if (currentPosition != -1 && currentPosition != groupPosition) {
+                    expandableListView.collapseGroup(currentPosition);
+                }
+                currentPosition = groupPosition;
+                adapter.setSelectedGroupPosition(groupPosition);
+                adapter.startGroupAnimation();
+            });
         }
     }
 

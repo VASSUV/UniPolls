@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/an_child"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/an_answName"
@@ -18,8 +18,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:hint="%"
+        android:hint="-%"
         android:textSize="16sp" />
+
+    <ru.mediasoft.unipolls.other.customviews.ProgressView
+        android:id="@+id/an_progressView"
+        android:layout_width="match_parent"
+        android:layout_height="18sp"
+        android:layout_below="@+id/an_answName"
+        app:progressColor="@color/colorAccent"
+        app:progress="10"/>
 
 </RelativeLayout>

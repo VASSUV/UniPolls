@@ -10,5 +10,7 @@
     <color name="colorSMLightGreen">#20c13b</color>
     <color name="colorSMGrey">#272727</color>
     <color name="legacy_primary">#106200</color>
+    <color name="white">#FFFFFF</color>
+    <color name="simpleGreen">#008000</color>
 
 </resources>

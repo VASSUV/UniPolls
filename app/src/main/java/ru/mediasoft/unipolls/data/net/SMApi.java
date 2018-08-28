@@ -2,6 +2,7 @@ package ru.mediasoft.unipolls.data.net;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -42,6 +43,10 @@ public interface SMApi {
     @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
     @PUT("v3/surveys/{poll_id}/pages/{page_id}/questions/{question_id}")
     Single<CreateQuestionModelResponse> replaceQuestion(@Header("Authorization") String token, @Path("poll_id") String poll_id, @Path("page_id") String page_id, @Path("question_id") String question_id, @Body CreateQuestionModelRequest request);
+
+    @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
+    @DELETE("v3/surveys/{poll_id}/pages/{page_id}/questions/{question_id}")
+    Single<Object> deleteQuestion(@Header("Authorization") String token, @Path("poll_id") String poll_id, @Path("page_id") String page_id, @Path("question_id") String question_id);
 
     @GET("v3/surveys")
     Single<SearchResultSurveys> getSurveys(@Header("Authorization") String token);

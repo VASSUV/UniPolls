@@ -11,6 +11,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.domain.dataclass.pollpages.Page;
+import ru.mediasoft.unipolls.domain.interactor.DeleteQuestionInteractor;
 import ru.mediasoft.unipolls.domain.interactor.LoadMultiPageQuestionsInteractor;
 import ru.mediasoft.unipolls.domain.interactor.LoadQuestionDetailInteractor;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
@@ -20,10 +21,10 @@ import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 @InjectViewState
 public class EditPollPresenter extends MvpPresenter<EditPollView> {
 
-    LoadMultiPageQuestionsInteractor loadMultiPageQuestionsInteractor;
-    LoadQuestionDetailInteractor loadQuestionDetailInteractor;
+    private LoadQuestionDetailInteractor loadQuestionDetailInteractor;
     private Disposable disposableQuestions = null;
     private Disposable disposableDetails = null;
+    private Disposable disposableDelete = null;
     private String pollId;
 
     @Override
@@ -44,7 +45,8 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
     public void onRequest(String pollId) {
         getViewState().showRefreshing();
         EventBus.getDefault().post(new ShowMessageEvent("Обновляем данные"));
-        loadMultiPageQuestionsInteractor = new LoadMultiPageQuestionsInteractor();
+
+        LoadMultiPageQuestionsInteractor loadMultiPageQuestionsInteractor = new LoadMultiPageQuestionsInteractor();
         List<Page> pageList = App.getDBRepository().getPageList(pollId);
 
         loadMultiPageQuestionsInteractor.loadPageQuestions(App.getSharPref().getToken(), pageList, pollId, new SingleObserver<Boolean>() {
@@ -93,18 +95,43 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
         });
     }
 
+    public void deleteQuestion(String pollId, String pageId, String questionId, int position) {
+        DeleteQuestionInteractor deleteQuestionInteractor = new DeleteQuestionInteractor();
+        deleteQuestionInteractor.deleteQuestion(App.getSharPref().getToken(), pollId, pageId, questionId, new SingleObserver<Object>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposableDelete = d;
+            }
+
+            @Override
+            public void onSuccess(Object voidResponse) {
+                getViewState().removeAdapterItem(position);
+                EventBus.getDefault().post(new ShowMessageEvent("Вопрос удален"));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getViewState().refreshAdapter();
+                EventBus.getDefault().post(new ShowMessageEvent("Вопрос не удален\nПричниа: " + e.getMessage()));
+            }
+        });
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         onStop();
     }
 
-    public void onStop() {
+    private void onStop() {
         if (disposableDetails != null && !disposableDetails.isDisposed()) {
             disposableDetails.dispose();
         }
         if (disposableQuestions != null && !disposableQuestions.isDisposed()) {
             disposableQuestions.dispose();
+        }
+        if (disposableDelete != null && !disposableDelete.isDisposed()){
+            disposableDelete.dispose();
         }
     }
 }
