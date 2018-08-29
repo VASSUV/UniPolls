@@ -8,6 +8,7 @@ import android.widget.ExpandableListView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.idunnololz.widgets.AnimatedExpandableListView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +30,7 @@ public class AnalyticsFragment extends MvpAppCompatFragment implements Analytics
 
     private String pollId;
     private AnAdapter adapter;
-    private ExpandableListView expandableListView;
+    private AnimatedExpandableListView expandableListView;
     List<QuestionListWithIdModel> questList;
     List<Choice> ansList;
     List<AnswersModel> answersModels;
@@ -98,13 +99,20 @@ public class AnalyticsFragment extends MvpAppCompatFragment implements Analytics
             adapter.setAdapterData(questList, answersModels);
             adapter.notifyDataSetChanged();
             expandableListView.setAdapter(adapter);
-            expandableListView.setOnGroupExpandListener(groupPosition -> {
-                if (currentPosition != -1 && currentPosition != groupPosition) {
-                    expandableListView.collapseGroup(currentPosition);
+            expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    if (currentPosition != -1 && currentPosition != groupPosition) {
+                        expandableListView.collapseGroupWithAnimation(groupPosition);
+                    }
+                    expandableListView.expandGroupWithAnimation(groupPosition);
+                    expandableListView.collapseGroupWithAnimation(currentPosition);
+                    currentPosition = groupPosition;
+                    adapter.setSelectedGroupPosition(groupPosition);
+                    adapter.startGroupAnimation();
+
+                    return true;
                 }
-                currentPosition = groupPosition;
-                adapter.setSelectedGroupPosition(groupPosition);
-                adapter.startGroupAnimation();
             });
         }
     }
@@ -114,23 +122,23 @@ public class AnalyticsFragment extends MvpAppCompatFragment implements Analytics
         if (questList != null) {
             for (int i = 0; i < questList.size(); i++) {
                 if (pollRollUps != null)
-                for (int l = 0; l < pollRollUps.data.size(); l++) {
-                    if (answersModels != null)
-                    if (questList.get(i).questionId.equals(pollRollUps.data.get(l).id)) {//Нашли нужный вопрос
+                    for (int l = 0; l < pollRollUps.data.size(); l++) {
+                        if (answersModels != null)
+                            if (questList.get(i).questionId.equals(pollRollUps.data.get(l).id)) {//Нашли нужный вопрос
 
-                        answersModels.get(i).questionAnswered = pollRollUps.data.get(l).summary.get(0).answered; //Сколько раз ответили на вопрос
+                                answersModels.get(i).questionAnswered = pollRollUps.data.get(l).summary.get(0).answered; //Сколько раз ответили на вопрос
 
-                        for (int k = 0; k < answersModels.get(i).choices.size(); k++) {//Пробегаем по локальным ответам
+                                for (int k = 0; k < answersModels.get(i).choices.size(); k++) {//Пробегаем по локальным ответам
 
-                            for (int j = 0; j < pollRollUps.data.get(l).summary.get(0).choices.size(); j++) {//Пробегаем по полученным ответам
+                                    for (int j = 0; j < pollRollUps.data.get(l).summary.get(0).choices.size(); j++) {//Пробегаем по полученным ответам
 
-                                if (answersModels.get(i).choices.get(k).id.equals(pollRollUps.data.get(l).summary.get(0).choices.get(j).id)) {//Ищем нужный ответ
-                                    answersModels.get(i).choices.get(k).answered = pollRollUps.data.get(l).summary.get(0).choices.get(j).count;//Записываем кол-во выборов ответа
+                                        if (answersModels.get(i).choices.get(k).id.equals(pollRollUps.data.get(l).summary.get(0).choices.get(j).id)) {//Ищем нужный ответ
+                                            answersModels.get(i).choices.get(k).answered = pollRollUps.data.get(l).summary.get(0).choices.get(j).count;//Записываем кол-во выборов ответа
+                                        }
+                                    }
                                 }
                             }
-                        }
                     }
-                }
             }
         }
         adapter.setNewAdapterData(questList, answersModels);

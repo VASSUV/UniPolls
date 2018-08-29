@@ -8,11 +8,11 @@
     android:id="@+id/fragment_sub_container"
     android:layout_margin="8dp">
 
-    <ExpandableListView
+    <com.idunnololz.widgets.AnimatedExpandableListView
         android:id="@+id/an_exListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:groupIndicator="@null">
-    </ExpandableListView>
+    </com.idunnololz.widgets.AnimatedExpandableListView>
 
 </FrameLayout>

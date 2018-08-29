@@ -31,13 +31,19 @@ public class DBRepository {
 
     private static final String DB_NAME = "sm_db";
     private static final int DB_VERSION = 1;
-
     private DBHelper dbHelper;
+//    private SQLiteDatabase dbr;
+//    private SQLiteDatabase dbw;
 
     public DBRepository(Context ctx) {
         this.dbHelper = new DBHelper(ctx, DB_NAME, null, DB_VERSION);
     }
 
+//    public void openDb(){
+//        dbr = dbHelper.getReadableDatabase();
+//        dbw = dbHelper.getWritableDatabase();
+//    }
+    
     public void savePage(Page page, String pollId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

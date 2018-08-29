@@ -13,4 +13,7 @@ public class ChoicesCQ {
     @SerializedName("position")
     @Expose
     public Integer position;
+    public ChoicesCQ(String text){
+        this.text = text;
+    }
 }

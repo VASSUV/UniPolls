@@ -14,7 +14,7 @@ public class ProgressView extends View {
     private float DEF_PROGRESS_VALUE = 0f;
     private float progress;
     private final Paint progressPaint = new Paint();
-
+    private int heigh;
 
     public ProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,9 +27,9 @@ public class ProgressView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        heigh = canvas.getHeight();
 //        canvas.drawRect(0, 0, canvas.getWidth() * progress / MAX_PROGRESS_VALUE, canvas.getHeight(), progressPaint);
-//        canvas.drawRoundRect(0,0, 10, 10, canvas.getWidth() * progress / MAX_PROGRESS_VALUE, canvas.getHeight(), progressPaint );
-        canvas.drawRoundRect(0,0, canvas.getWidth() * progress / MAX_PROGRESS_VALUE, canvas.getHeight(), 100,100, progressPaint);
+        canvas.drawRoundRect(0, 0, canvas.getWidth() * progress / MAX_PROGRESS_VALUE, heigh, heigh / 2, heigh / 2, progressPaint);
     }
 
     public void setProgressPaintColor(int progressPaintColor) {

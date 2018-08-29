@@ -12,13 +12,9 @@ import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.domain.dataclass.pollquestiondetail.Choice;
 import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.presentation.main.MainActivity;
 
@@ -28,16 +24,23 @@ public class EditQuestFragment extends MvpAppCompatFragment implements EditQuest
     EditQuestPresenter mEditQuestPresenter;
     private EditText questName;
     private RecyclerView recView;
-    private List<String> ansList;
-    private EditQuestAdapter adapter;
-    private String pageId;
-    private String pollId;
-    private String questonId;
+    private String pageId, pollId, questonId;
 
     public static EditQuestFragment newInstance(Bundle args) {
         EditQuestFragment fragment = new EditQuestFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            pollId = getArguments().getString(Constants.BundleKeys.POLL_ID_KEY);
+            pageId = getArguments().getString(Constants.BundleKeys.PAGE_ID_KEY);
+            questonId = getArguments().getString(Constants.BundleKeys.QUESTION_ID_KEY);
+        }
+        mEditQuestPresenter.onCreate(pollId, pageId, questonId);
     }
 
     @Override
@@ -49,30 +52,18 @@ public class EditQuestFragment extends MvpAppCompatFragment implements EditQuest
     public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         questName = view.findViewById(R.id.editQuest_questName);
+
         if (getArguments() != null) {
-            pollId = getArguments().getString(Constants.BundleKeys.POLL_ID_KEY);
-            pageId = getArguments().getString(Constants.BundleKeys.PAGE_ID_KEY);
-            questonId = getArguments().getString(Constants.BundleKeys.QUESTION_ID_KEY);
             questName.setText(getArguments().getString(Constants.BundleKeys.QUESTION_TITLE_KEY));
         }
         questName.addTextChangedListener(mEditQuestPresenter.getTextListener(questName.getText().toString()));
-        view.findViewById(R.id.edit_quest_saveButton).setOnClickListener(v -> mEditQuestPresenter.onSaveButtonClick(pollId, pageId, questonId, adapter.getAnsList()));
+        view.findViewById(R.id.edit_quest_saveButton).setOnClickListener(v -> mEditQuestPresenter.onSaveButtonClick());
         recView = view.findViewById(R.id.edit_quest_recView);
+        mEditQuestPresenter.setRecView(recView);
+        recView.setAdapter(mEditQuestPresenter.getAdapter());
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        adapter = new EditQuestAdapter();
-
-        List<Choice> list = new ArrayList<>();
-        Choice choice = new Choice();
-        choice.text = "";
-        list.add(choice);
-        adapter.setList(list);
-        adapter.notifyDataSetChanged();
-        recView.setAdapter(adapter);
-        list = App.getDBRepository().getAnsList(questonId);
-        adapter.setList(list);
-        adapter.notifyDataSetChanged();
     }
+
 
     @Override
     public void onResume() {

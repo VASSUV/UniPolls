@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.idunnololz.widgets.AnimatedExpandableListView;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,7 @@ import ru.mediasoft.unipolls.R;
 import ru.mediasoft.unipolls.other.customviews.ProgressView;
 import ru.mediasoft.unipolls.presentation.editpoll.QuestionListWithIdModel;
 
-public class AnAdapter extends BaseExpandableListAdapter {
+public class AnAdapter extends AnimatedExpandableListView.AnimatedExpandableListAdapter {
     private List<QuestionListWithIdModel> questList;
     private List<AnswersModel> ansList;
     private Context context;
@@ -49,7 +50,7 @@ public class AnAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
+    public int getRealChildrenCount(int groupPosition) {
         return ansList.get(groupPosition).choices.size();
     }
 
@@ -91,7 +92,7 @@ public class AnAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.analytics_child, null);

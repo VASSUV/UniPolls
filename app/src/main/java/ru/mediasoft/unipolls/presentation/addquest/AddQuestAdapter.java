@@ -18,18 +18,24 @@ import ru.mediasoft.unipolls.other.CustomTextWatcher;
 public class AddQuestAdapter extends RecyclerView.Adapter {
 
     private List<ChoicesCQ> choices = new ArrayList<>();
+    private AddQuestListener addQuestListener;
 
     public void setAnswerList(List<ChoicesCQ> answerList) {
         this.choices = answerList;
     }
 
-    public List<ChoicesCQ> getAnswerList() {
-        for(int i = (choices.size() - 1); i >= 0; i--){
-            if(choices.get(i).text.isEmpty() || choices.get(i).text == null){
-                choices.remove(i);
-            }
-        }
-        return choices;
+    public void setListener(AddQuestListener addQuestListener) {
+        this.addQuestListener = addQuestListener;
+    }
+
+    public interface AddQuestListener {
+        void changeAnswer(int position, String answerText);
+
+        boolean enterKeyBoardClick(int actionId, String s, int adapterPosition);
+
+        void onDeleteClick(int position);
+
+        void onFocusChanged(int adapterPosition, boolean isFocus);
     }
 
     @NonNull
@@ -47,56 +53,46 @@ public class AddQuestAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return choices.size();
+        if (choices != null)
+            return choices.size();
+        return 0;
     }
 
     public class AddQuestViewHolder extends RecyclerView.ViewHolder {
         EditText answerName;
 
-        Button answerAdd, answerDelete;
+        Button answerDelete;
 
         public AddQuestViewHolder(View itemView) {
             super(itemView);
 
             answerName = itemView.findViewById(R.id.addquest_answer);
-            answerAdd = itemView.findViewById(R.id.addquest_AddButton);
             answerDelete = itemView.findViewById(R.id.addquest_deleteButton);
 
+            answerDelete.setVisibility(getAdapterPosition() == choices.size() - 1 ? View.GONE : View.VISIBLE);
             answerName.addTextChangedListener(new CustomTextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     super.onTextChanged(s, start, before, count);
-                    choices.get(getAdapterPosition()).text = s.toString();
+                    addQuestListener.changeAnswer(getAdapterPosition(), s.toString());
+                    answerDelete.setVisibility(getAdapterPosition() == choices.size() - 1 ? View.GONE : View.VISIBLE);
                 }
             });
 
-            answerAdd.setOnClickListener(v -> {
-                if (v != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        ChoicesCQ choice = new ChoicesCQ();
-                        choice.text = answerName.getText().toString();
-                        choice.position = position + 1;
-                        choices.add(position + 1, choice);
-                        choices.get(position + 1).text = "";
-                        notifyDataSetChanged();
-                        itemView.clearFocus();
-                    }
-                }
+            answerName.setOnFocusChangeListener((v, hasFocus) -> {
+                addQuestListener.onFocusChanged(getAdapterPosition(), hasFocus);
+            });
+
+            answerName.setOnEditorActionListener((v, actionId, event) -> {
+                return addQuestListener.enterKeyBoardClick(actionId, answerName.getText().toString(), getAdapterPosition());
             });
 
             answerDelete.setOnClickListener(v -> {
                 if (v != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        if (choices.size() == 1) {
-                            answerName.setText("");
-                            choices.get(position).text = "";
-                            notifyDataSetChanged();
-                        } else {
-                            choices.remove(position);
-                            notifyDataSetChanged();
-                        }
+                        answerName.clearFocus();
+                        addQuestListener.onDeleteClick(position);
                     }
                 }
             });

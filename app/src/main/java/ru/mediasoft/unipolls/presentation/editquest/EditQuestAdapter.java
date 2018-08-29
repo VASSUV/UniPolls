@@ -12,30 +12,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.domain.dataclass.createquestion.ChoicesCQ;
 import ru.mediasoft.unipolls.domain.dataclass.pollquestiondetail.Choice;
 import ru.mediasoft.unipolls.other.CustomTextWatcher;
 
 public class EditQuestAdapter extends RecyclerView.Adapter {
 
     private List<Choice> list = new ArrayList<>();
+    private EditQuestAdapterListener editQuestAdapterListener;
+    private IsComputingLayoutListener isComputingLayoutListener;
 
     public void setList(List<Choice> list) {
         this.list = list;
     }
 
-    public List<ChoicesCQ> getAnsList() {
-        int i = 0;
-        List<ChoicesCQ> listCQ = new ArrayList<>();
-        ChoicesCQ choice;
-        while (i < list.size()) {
-            choice = new ChoicesCQ();
-            choice.text = list.get(i).text;
-            choice.position = i + 1;
-            listCQ.add(choice);
-            i++;
-        }
-        return listCQ;
+    public void setListener(EditQuestAdapterListener editQuestAdapterListener) {
+        this.editQuestAdapterListener = editQuestAdapterListener;
+    }
+
+    public interface EditQuestAdapterListener {
+
+        void changeAnswer(int position, String answerText);
+
+        boolean enterKeyBoardClick(int actionId, String s, int adapterPosition);
+
+        void onDeleteClick(int position);
+
+        void onFocusChanged(int adapterPosition, boolean hasFocus);
+    }
+
+    public void setIsComputingLayoutListener(IsComputingLayoutListener isComputingLayoutListener) {
+        this.isComputingLayoutListener = isComputingLayoutListener;
+    }
+
+    public interface IsComputingLayoutListener {
+        boolean isComputing();
     }
 
     @NonNull
@@ -61,45 +71,32 @@ public class EditQuestAdapter extends RecyclerView.Adapter {
     private class EditQuestViewHolder extends RecyclerView.ViewHolder {
         EditText editquest_answName;
 
-        Button editquest_deleteButton, editquest_addButton;
+        Button editquest_deleteButton;
 
         public EditQuestViewHolder(View itemView) {
             super(itemView);
             editquest_answName = itemView.findViewById(R.id.editquest_answName);
-            editquest_addButton = itemView.findViewById(R.id.editquest_addButton);
             editquest_deleteButton = itemView.findViewById(R.id.editquest_deleteButton);
 
             editquest_answName.addTextChangedListener(new CustomTextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     super.onTextChanged(s, start, before, count);
-                    list.get(getAdapterPosition()).text = s.toString();
+                    if (!isComputingLayoutListener.isComputing())
+                        editQuestAdapterListener.changeAnswer(getAdapterPosition(), s.toString());
                 }
             });
 
-            editquest_addButton.setOnClickListener(v -> {
-                if (v != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        list.add(position + 1, new Choice());
-                        notifyDataSetChanged();
-                        itemView.clearFocus();
-                    }
-                }
-            });
+            editquest_answName.setOnFocusChangeListener((v, hasFocus) -> editQuestAdapterListener.onFocusChanged(getAdapterPosition(), hasFocus));
+
+            editquest_answName.setOnEditorActionListener((v, actionId, event) -> editQuestAdapterListener.enterKeyBoardClick(actionId, editquest_answName.getText().toString(), getAdapterPosition()));
 
             editquest_deleteButton.setOnClickListener(v -> {
                 if (v != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        if (list.size() == 1) {
-                            editquest_answName.setText("");
-                            list.get(position).text = "";
-                            notifyDataSetChanged();
-                        } else {
-                            list.remove(position);
-                            notifyDataSetChanged();
-                        }
+                        editquest_answName.clearFocus();
+                        editQuestAdapterListener.onDeleteClick(position);
                     }
                 }
             });
