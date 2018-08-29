@@ -2,7 +2,6 @@ package ru.mediasoft.unipolls.presentation.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,7 +10,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.mediasoft.unipolls.App;
 import ru.mediasoft.unipolls.R;
-import ru.mediasoft.unipolls.other.Constants;
 import ru.mediasoft.unipolls.other.Screen;
 import ru.mediasoft.unipolls.other.router.CustomNavigator;
 
@@ -29,7 +27,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        presenter.openDataBase();
         loader = findViewById(R.id.pre_loader);
 
         App.getNavigatorHolder().setNavigator(navigator);
@@ -96,6 +94,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.closeDataBase();
         App.getNavigatorHolder().removeNavigator();
     }
 
@@ -106,7 +105,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     protected void onStart() {
         super.onStart();
-
         presenter.onStart();
     }
 

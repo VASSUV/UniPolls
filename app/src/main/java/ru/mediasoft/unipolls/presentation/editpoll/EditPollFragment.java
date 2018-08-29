@@ -91,16 +91,16 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
     }
 
     @Override
+    public void showRefreshing() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void setAdapterList() {
         List<QuestionListWithIdModel> list = App.getDBRepository().getQuestionsListWIthIds(pollId);
         adapter.setQuestList(list);
         refreshAdapter();
         recView.setAdapter(adapter);
-    }
-
-    @Override
-    public void showRefreshing() {
-        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override

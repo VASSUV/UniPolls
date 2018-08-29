@@ -43,7 +43,6 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
     }
 
     public void onRequest(String pollId) {
-        getViewState().showRefreshing();
         EventBus.getDefault().post(new ShowMessageEvent("Обновляем данные"));
 
         LoadMultiPageQuestionsInteractor loadMultiPageQuestionsInteractor = new LoadMultiPageQuestionsInteractor();

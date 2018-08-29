@@ -50,4 +50,12 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public void clearPref() {
         App.getSharPref().removeCodeAndToken();
     }
+
+    public void openDataBase() {
+        App.getDBRepository().openDb();
+    }
+
+    public void closeDataBase() {
+        App.getDBRepository().closeDb();
+    }
 }

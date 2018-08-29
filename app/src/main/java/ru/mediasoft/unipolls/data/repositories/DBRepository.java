@@ -32,22 +32,25 @@ public class DBRepository {
     private static final String DB_NAME = "sm_db";
     private static final int DB_VERSION = 1;
     private DBHelper dbHelper;
-//    private SQLiteDatabase dbr;
-//    private SQLiteDatabase dbw;
+    private SQLiteDatabase dbr;
+    private SQLiteDatabase dbw;
 
     public DBRepository(Context ctx) {
         this.dbHelper = new DBHelper(ctx, DB_NAME, null, DB_VERSION);
     }
 
-//    public void openDb(){
-//        dbr = dbHelper.getReadableDatabase();
-//        dbw = dbHelper.getWritableDatabase();
-//    }
-    
-    public void savePage(Page page, String pollId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+    public void openDb() {
+        dbr = dbHelper.getReadableDatabase();
+        dbw = dbHelper.getWritableDatabase();
+    }
 
-        Cursor cursor = db.rawQuery(PagesTable.Queries.SELECT_ALL, null);
+    public void closeDb() {
+        dbr.close();
+        dbw.close();
+    }
+
+    public void savePage(Page page, String pollId) {
+        Cursor cursor = dbw.rawQuery(PagesTable.Queries.SELECT_ALL, null);
         if (cursor.moveToFirst()) {
             do {
                 String dbId = cursor.getString(cursor.getColumnIndex(PagesTable.Columns.COLUMN_PAGE_ID));
@@ -62,24 +65,22 @@ public class DBRepository {
         ContentValues cv = new ContentValues();
         cv.put(PagesTable.Columns.COLUMN_PAGE_ID, page.id);
         cv.put(PagesTable.Columns.COLUMN_POLL_ID, pollId);
-        db.insert(PagesTable.TABLE_NAME, null, cv);
+        dbw.insert(PagesTable.TABLE_NAME, null, cv);
 
-        db.close();
     }
 
     public void savePolls(List<Poll> pollList) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.beginTransaction();
+        dbw.beginTransaction();
 
         //delete
-        db.execSQL(String.format(DELETE_OLD_POLLS, toIds(pollList)) + ";");
+        dbw.execSQL(String.format(DELETE_OLD_POLLS, toIds(pollList)) + ";");
 
         // update
         ContentValues cv = new ContentValues();
         for (int i = 0; i < pollList.size(); i++) {
             cv.put(PollsTable.Columns.COLUMN_NAME, pollList.get(i).title);
-            db.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollList.get(i).id});
+            dbw.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollList.get(i).id});
         }
 
         //insert or ignore
@@ -89,14 +90,13 @@ public class DBRepository {
             if (i != 0) values.append(",");
             values.append("('").append(pollList.get(i).title).append("','").append(pollList.get(i).id).append("')");
         }
-        db.execSQL("INSERT OR IGNORE INTO " + PollsTable.TABLE_NAME +
+        dbw.execSQL("INSERT OR IGNORE INTO " + PollsTable.TABLE_NAME +
                 "(" + PollsTable.Columns.COLUMN_NAME + "," + PollsTable.Columns.COLUMN_ID + ")" +
                 " VALUES " + values + ";");
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        dbw.setTransactionSuccessful();
+        dbw.endTransaction();
 
-        db.close();
     }
 
     private String toIds(List<Poll> pollList) {
@@ -112,9 +112,8 @@ public class DBRepository {
     }
 
     public void saveQuestionList(List<Question> questionList, String pageId, String pollId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.beginTransaction();
+        dbw.beginTransaction();
 
         //update
         ContentValues cv = new ContentValues();
@@ -123,7 +122,7 @@ public class DBRepository {
             cv.put(QuestionsTable.Columns.COLUMN_POSITION, questionList.get(i).position);
             cv.put(QuestionsTable.Columns.COLUMN_PAGE_ID, pageId);
             cv.put(QuestionsTable.Columns.COLUMN_POLL_ID, pollId);
-            db.update(QuestionsTable.TABLE_NAME, cv, QuestionsTable.Columns.COLUMN_QUESTION_ID + " = ?", new String[]{questionList.get(i).id});
+            dbw.update(QuestionsTable.TABLE_NAME, cv, QuestionsTable.Columns.COLUMN_QUESTION_ID + " = ?", new String[]{questionList.get(i).id});
         }
 
         //insert or ignore
@@ -138,7 +137,7 @@ public class DBRepository {
                     .append(pageId).append("')");
         }
 
-        db.execSQL("INSERT OR IGNORE INTO " + QuestionsTable.TABLE_NAME +
+        dbw.execSQL("INSERT OR IGNORE INTO " + QuestionsTable.TABLE_NAME +
                 "(" + QuestionsTable.Columns.COLUMN_POLL_ID + "," +
                 QuestionsTable.Columns.COLUMN_POSITION + "," +
                 QuestionsTable.Columns.COLUMN_NAME + "," +
@@ -146,17 +145,15 @@ public class DBRepository {
                 QuestionsTable.Columns.COLUMN_PAGE_ID + ")" +
                 " VALUES " + values + ";");
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        dbw.setTransactionSuccessful();
+        dbw.endTransaction();
 
-        db.close();
     }
 
     public String getQuestionId(String position, String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String questionId = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -165,17 +162,15 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return questionId;
     }
 
     public List<QuestionListWithIdModel> getQuestionsListWIthIds(String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<QuestionListWithIdModel> questList = new ArrayList<>();
         QuestionListWithIdModel question;
 
-        Cursor cursor = db.rawQuery("SELECT " + QuestionsTable.Columns.COLUMN_NAME + ", "
+        Cursor cursor = dbr.rawQuery("SELECT " + QuestionsTable.Columns.COLUMN_NAME + ", "
                 + QuestionsTable.Columns.COLUMN_QUESTION_ID + " FROM " + QuestionsTable.TABLE_NAME
                 + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{pollId});
 
@@ -188,34 +183,30 @@ public class DBRepository {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return questList;
     }
 
     public List<Choice> getAnsList(String questionId) {
         List<Choice> choices = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + QuestionsTable.Columns.COLUMN_ANSWERS + " FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_QUESTION_ID + " = " + questionId, null);
+        Cursor cursor = dbr.rawQuery("SELECT " + QuestionsTable.Columns.COLUMN_ANSWERS + " FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_QUESTION_ID + " = " + questionId, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 String answersJson = cursor.getString(cursor.getColumnIndex(QuestionsTable.Columns.COLUMN_ANSWERS));
                 Gson gson = new Gson();
                 Type type = new TypeToken<List<Choice>>() {
                 }.getType();
                 choices = gson.fromJson(answersJson, type);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return choices;
     }
 
     public List<Page> getPageList(String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         List<Page> pageList = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PagesTable.TABLE_NAME + " WHERE " + PagesTable.Columns.COLUMN_POLL_ID + "=" + pollId, null);
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + PagesTable.TABLE_NAME + " WHERE " + PagesTable.Columns.COLUMN_POLL_ID + "=" + pollId, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -226,16 +217,14 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return pageList;
     }
 
     public List<Poll> getPollList() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         List<Poll> pollList = new ArrayList<>();
-        Cursor cursor = db.rawQuery(PollsTable.Queries.SELECT_ALL, null);
+        Cursor cursor = dbr.rawQuery(PollsTable.Queries.SELECT_ALL, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -247,16 +236,14 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return pollList;
     }
 
     public String getPageId(String position, String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String pageId = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -265,16 +252,14 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return pageId;
     }
 
-    public String getPageId(String pollId){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public String getPageId(String pollId) {
         String pageId = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + " = " + pollId, null);
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + " = " + pollId, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -283,7 +268,6 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return pageId;
     }
@@ -291,36 +275,31 @@ public class DBRepository {
     public int getQuestionCount(String pollId) {
         int count;
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + "=" + pollId, null);
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + "=" + pollId, null);
 
         count = cursor.getCount();
 
         cursor.close();
-        db.close();
 
         return count;
     }
 
     public void saveAnswers(String questionId, List<Choice> answers) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         Gson gson = new Gson();
         String answersJson = gson.toJson(answers);
 
         cv.put(QuestionsTable.Columns.COLUMN_ANSWERS, answersJson);
-        db.update(QuestionsTable.TABLE_NAME, cv, QuestionsTable.Columns.COLUMN_QUESTION_ID + " = ?", new String[]{questionId});
+        dbw.update(QuestionsTable.TABLE_NAME, cv, QuestionsTable.Columns.COLUMN_QUESTION_ID + " = ?", new String[]{questionId});
 
-        db.close();
     }
 
     public SearchResultQuestionDetails getQuestionByPosition(String position, String pollId) {
         SearchResultQuestionDetails searchResultQuestionDetails = new SearchResultQuestionDetails();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POSITION + " = ? AND " + QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{position, pollId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -344,49 +323,41 @@ public class DBRepository {
             } while (cursor.moveToNext());
         }
 
-        db.close();
         cursor.close();
         return searchResultQuestionDetails;
     }
 
     public void saveDateCreated(String pollId, String dateCreated) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put(PollsTable.Columns.COLUMN_DATE_CREATED, dateCreated);
-        db.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
+        dbw.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
 
-        db.close();
     }
 
     public void saveDateModified(String pollId, String dateModified) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put(PollsTable.Columns.COLUMN_DATE_MODIFIED, dateModified);
-        db.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
+        dbw.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
 
-        db.close();
     }
 
     public void saveResponseCount(String pollId, String responseCount) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put(PollsTable.Columns.COLUMN_RESPONSE_COUNT, responseCount);
-        db.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
+        dbw.update(PollsTable.TABLE_NAME, cv, PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
 
-        db.close();
     }
 
     public String getDateCreated(String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String dateCreated = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PollsTable.TABLE_NAME + " WHERE " + PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + PollsTable.TABLE_NAME + " WHERE " + PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -395,16 +366,14 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return dateCreated;
     }
 
     public String getDateModified(String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String dateModified = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PollsTable.TABLE_NAME + " WHERE " + PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + PollsTable.TABLE_NAME + " WHERE " + PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -413,16 +382,14 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return dateModified;
     }
 
     public String getResponseCount(String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String responseCount = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PollsTable.TABLE_NAME + " WHERE " + PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + PollsTable.TABLE_NAME + " WHERE " + PollsTable.Columns.COLUMN_ID + " = ?", new String[]{pollId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -431,15 +398,13 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return responseCount;
     }
 
     public boolean isHaveAnswers(String pollId) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + "=" + pollId, null);
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + QuestionsTable.TABLE_NAME + " WHERE " + QuestionsTable.Columns.COLUMN_POLL_ID + "=" + pollId, null);
 
         if (cursor.moveToFirst()) {
             if (cursor.getString(cursor.getColumnIndex(QuestionsTable.Columns.COLUMN_ANSWERS)) != null) {
@@ -448,25 +413,19 @@ public class DBRepository {
         }
 
         cursor.close();
-        db.close();
 
         return false;
     }
 
     public void deleteQuestionsFromTable(String pollId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.delete(QuestionsTable.TABLE_NAME, QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{pollId});
+        dbw.delete(QuestionsTable.TABLE_NAME, QuestionsTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{pollId});
 
-        db.close();
     }
 
     public void deletePagesFromTable(String pollId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        db.delete(PagesTable.TABLE_NAME, PagesTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{pollId});
-
-        db.close();
+        dbw.delete(PagesTable.TABLE_NAME, PagesTable.Columns.COLUMN_POLL_ID + " = ?", new String[]{pollId});
     }
+
 
 }
