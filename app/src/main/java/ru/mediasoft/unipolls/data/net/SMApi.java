@@ -8,12 +8,14 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyModel;
 import ru.mediasoft.unipolls.domain.dataclass.CreateSurveyRequestModel;
 import ru.mediasoft.unipolls.domain.dataclass.GetAccessTokenModel;
+import ru.mediasoft.unipolls.domain.dataclass.NewSurveyTitleModel;
 import ru.mediasoft.unipolls.domain.dataclass.analytics.PollRollUps;
 import ru.mediasoft.unipolls.domain.dataclass.createquestion.CreateQuestionModelRequest;
 import ru.mediasoft.unipolls.domain.dataclass.createquestion.CreateQuestionModelResponse;
@@ -47,6 +49,11 @@ public interface SMApi {
     @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
     @DELETE("v3/surveys/{poll_id}/pages/{page_id}/questions/{question_id}")
     Single<Object> deleteQuestion(@Header("Authorization") String token, @Path("poll_id") String poll_id, @Path("page_id") String page_id, @Path("question_id") String question_id);
+
+    @Headers(Constants.SurveyMonkeyApi.CONTENT_TYPE)
+    @PATCH("v3/surveys/{poll_id}")
+    Single<Object> changeSuveyName(@Header("Authorization") String token, @Path("poll_id") String poll_id, @Body NewSurveyTitleModel request);
+
 
     @GET("v3/surveys")
     Single<SearchResultSurveys> getSurveys(@Header("Authorization") String token);

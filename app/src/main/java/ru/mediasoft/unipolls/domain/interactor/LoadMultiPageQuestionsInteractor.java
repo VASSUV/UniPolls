@@ -1,5 +1,7 @@
 package ru.mediasoft.unipolls.domain.interactor;
 
+import android.util.Log;
+
 import java.util.List;
 
 import io.reactivex.Single;
@@ -16,6 +18,7 @@ public class LoadMultiPageQuestionsInteractor {
         App.getDBRepository().deleteQuestionsFromTable(surveyId);
         Single.<Boolean>create(emitter -> {
             for (Page page : pageList) {
+                Log.i("MyLogs", "Interactor pageId "+ page.id);
                 SearchResultQuestions searchResultQuestions = App.getNetworkService().smApi
                         .getPageQuestions(token, surveyId, page.id)
                         .blockingGet();

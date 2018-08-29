@@ -14,6 +14,8 @@ import ru.mediasoft.unipolls.domain.dataclass.pollpages.Page;
 import ru.mediasoft.unipolls.domain.interactor.DeleteQuestionInteractor;
 import ru.mediasoft.unipolls.domain.interactor.LoadMultiPageQuestionsInteractor;
 import ru.mediasoft.unipolls.domain.interactor.LoadQuestionDetailInteractor;
+import ru.mediasoft.unipolls.domain.interactor.PatchSurveyNameInteractor;
+import ru.mediasoft.unipolls.other.CustomTextWatcher;
 import ru.mediasoft.unipolls.other.events.HideLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowLoaderEvent;
 import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
@@ -21,15 +23,21 @@ import ru.mediasoft.unipolls.other.events.ShowMessageEvent;
 @InjectViewState
 public class EditPollPresenter extends MvpPresenter<EditPollView> {
 
+    private LoadMultiPageQuestionsInteractor loadMultiPageQuestionsInteractor;
     private LoadQuestionDetailInteractor loadQuestionDetailInteractor;
     private Disposable disposableQuestions = null;
     private Disposable disposableDetails = null;
     private Disposable disposableDelete = null;
     private String pollId;
+    private String pollName;
+    private Disposable disposablePatch;
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        loadMultiPageQuestionsInteractor = new LoadMultiPageQuestionsInteractor();
+        loadQuestionDetailInteractor = new LoadQuestionDetailInteractor();
+
         if (App.getDBRepository().isHaveAnswers(pollId)) {
             getViewState().setAdapterList();
         } else {
@@ -45,7 +53,6 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
     public void onRequest(String pollId) {
         EventBus.getDefault().post(new ShowMessageEvent("Обновляем данные"));
 
-        LoadMultiPageQuestionsInteractor loadMultiPageQuestionsInteractor = new LoadMultiPageQuestionsInteractor();
         List<Page> pageList = App.getDBRepository().getPageList(pollId);
 
         loadMultiPageQuestionsInteractor.loadPageQuestions(App.getSharPref().getToken(), pageList, pollId, new SingleObserver<Boolean>() {
@@ -57,7 +64,6 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
             @Override
             public void onSuccess(Boolean aBoolean) {
 
-                loadQuestionDetailInteractor = new LoadQuestionDetailInteractor();
                 loadQuestionDetailInteractor.loadQuestionsDetails(pollId, new SingleObserver<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -76,7 +82,6 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
                     public void onError(Throwable e) {
                         EventBus.getDefault().post(new ShowMessageEvent("Данные не обновленны\n" + e.getMessage()));
                         getViewState().hideRefreshing();
-                        onStop();
                         EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
                         EventBus.getDefault().post(new HideLoaderEvent());
                     }
@@ -87,7 +92,6 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
             public void onError(Throwable e) {
                 EventBus.getDefault().post(new ShowMessageEvent("Данные не обновленны\n" + e.getMessage()));
                 getViewState().hideRefreshing();
-                onStop();
                 EventBus.getDefault().post(new ShowMessageEvent(e.getMessage()));
                 EventBus.getDefault().post(new HideLoaderEvent());
             }
@@ -116,6 +120,29 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
         });
     }
 
+    public void patchPollName(String pollId){
+        EventBus.getDefault().post(new ShowLoaderEvent());
+        PatchSurveyNameInteractor patchSurveyNameInteractor = new PatchSurveyNameInteractor();
+        patchSurveyNameInteractor.patchSurvey(App.getSharPref().getToken(), pollId, pollName, new SingleObserver<Object>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposablePatch = d;
+            }
+
+            @Override
+            public void onSuccess(Object o) {
+                EventBus.getDefault().post(new ShowMessageEvent("Обновлено"));
+                EventBus.getDefault().post(new HideLoaderEvent());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                EventBus.getDefault().post(new ShowMessageEvent("Не удалось\nПричина: " + e.getMessage()));
+                EventBus.getDefault().post(new HideLoaderEvent());
+            }
+        });
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -132,5 +159,15 @@ public class EditPollPresenter extends MvpPresenter<EditPollView> {
         if (disposableDelete != null && !disposableDelete.isDisposed()){
             disposableDelete.dispose();
         }
+    }
+
+    public CustomTextWatcher getTextListener() {
+        return new CustomTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                pollName = s.toString();
+            }
+        };
     }
 }

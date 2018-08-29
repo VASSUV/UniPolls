@@ -9,7 +9,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -32,9 +33,10 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
 
     RecyclerView recView;
 
-    TextView editPollName;
+    EditText editPollName;
     SwipeRefreshLayout swipeRefreshLayout;
     String pollId, pollName;
+    Button editPoll_patchName;
     private String pageId;
 
     public static EditPollFragment newInstance(Bundle args) {
@@ -66,7 +68,9 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
 
         editPollName = view.findViewById(R.id.editPoll_pollName);
         editPollName.setText(pollName);
-
+        editPollName.addTextChangedListener(mEditPollPresenter.getTextListener());
+        editPoll_patchName = view.findViewById(R.id.editPoll_patchName);
+        editPoll_patchName.setOnClickListener(v -> mEditPollPresenter.patchPollName(pollId));
         swipeRefreshLayout = view.findViewById(R.id.swipeToRefreshEditPoll);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorSMGreen, R.color.colorSMOrange, R.color.legacy_primary);
         swipeRefreshLayout.setOnRefreshListener(() -> mEditPollPresenter.onRequest(pollId));
@@ -74,6 +78,7 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
         recView = view.findViewById(R.id.editPoll_recView);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new EditPollAdapter(pollId, pageId);
+        recView.setAdapter(adapter);
         ItemTouchHelper.SimpleCallback ItemTouchHelper = new AdapterItemTouchHelper(0, android.support.v7.widget.helper.ItemTouchHelper.LEFT | android.support.v7.widget.helper.ItemTouchHelper.RIGHT, this);
         new ItemTouchHelper(ItemTouchHelper).attachToRecyclerView(recView);
     }
@@ -100,7 +105,6 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
         List<QuestionListWithIdModel> list = App.getDBRepository().getQuestionsListWIthIds(pollId);
         adapter.setQuestList(list);
         refreshAdapter();
-        recView.setAdapter(adapter);
     }
 
     @Override
@@ -112,6 +116,11 @@ public class EditPollFragment extends MvpAppCompatFragment implements EditPollVi
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         mEditPollPresenter.deleteQuestion(pollId, pageId, adapter.getQuestList().get(position).questionId, position);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

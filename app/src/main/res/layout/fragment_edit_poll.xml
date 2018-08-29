@@ -1,5 +1,4 @@
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeToRefreshEditPoll"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,16 +8,31 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/editPoll_pollName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16sp"
             android:layout_marginEnd="20sp"
             android:layout_marginStart="20sp"
             android:layout_marginTop="16sp"
-            android:hint="Название опроса"
-            android:textSize="20sp" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editPoll_pollName"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Название опроса"
+                android:textSize="20sp"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/editPoll_patchName"
+                android:layout_width="36dp"
+                android:layout_height="38dp"
+                android:background="@drawable/ic_baseline_done_24px" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/editPoll_recView"

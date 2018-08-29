@@ -23,9 +23,9 @@ public class Constants {
     }
 
     public static class SurveyMonkeyAuthApi {
-        public static final String CLIENT_ID = "5Rwe_g_nQMOZdnC80Riq0Q";
+        public static final String CLIENT_ID = "7g9L6o7oTrODR4545GC-ow";
         public static final String REDIRECT_URI = "https://www.surveymonkey.com";
-        public static final String CLIENT_SECRET = "327907589871769526989995616616281591565";
+        public static final String CLIENT_SECRET = "262706628484249659316703520939334077391";
         public static final String GRANT_TYPE = "authorization_code";
     }
 
